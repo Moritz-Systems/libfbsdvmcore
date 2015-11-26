@@ -53,9 +53,11 @@ __FBSDID("$FreeBSD$");
 
 #include "kvm_private.h"
 
+#define PG_FRAME_PAE	(~((uint64_t)PAGE_MASK))
+
 struct hpte {
 	struct hpte *next;
-	vm_paddr_t pa;
+	uint64_t pa;
 	int64_t off;
 };
 
@@ -66,12 +68,12 @@ struct vmstate {
 	int minidump;		/* 1 = minidump mode */
 	struct minidumphdr hdr;
 	void *hpt_head[HPT_SIZE];
-	uint64_t *bitmap;
-	uint64_t *page_map;
+	uint32_t *bitmap;
+	void *ptemap;
 };
 
 static void
-hpt_insert(kvm_t *kd, vm_paddr_t pa, int64_t off)
+hpt_insert(kvm_t *kd, uint64_t pa, int64_t off)
 {
 	struct hpte *hpte;
 	uint32_t fnv = FNV1_32_INIT;
@@ -86,7 +88,7 @@ hpt_insert(kvm_t *kd, vm_paddr_t pa, int64_t off)
 }
 
 static int64_t
-hpt_find(kvm_t *kd, vm_paddr_t pa)
+hpt_find(kvm_t *kd, uint64_t pa)
 {
 	struct hpte *hpte;
 	uint32_t fnv = FNV1_32_INIT;
@@ -101,16 +103,16 @@ hpt_find(kvm_t *kd, vm_paddr_t pa)
 }
 
 static int
-inithash(kvm_t *kd, uint64_t *base, int len, off_t off)
+inithash(kvm_t *kd, uint32_t *base, int len, off_t off)
 {
 	uint64_t idx;
-	uint64_t bit, bits;
-	vm_paddr_t pa;
+	uint32_t bit, bits;
+	uint64_t pa;
 
 	for (idx = 0; idx < len / sizeof(*base); idx++) {
 		bits = base[idx];
 		while (bits) {
-			bit = bsfq(bits);
+			bit = bsfl(bits);
 			bits &= ~(1ul << bit);
 			pa = (idx * sizeof(*base) * NBBY + bit) * PAGE_SIZE;
 			hpt_insert(kd, pa, off);
@@ -127,8 +129,8 @@ _kvm_minidump_freevtop(kvm_t *kd)
 
 	if (vm->bitmap)
 		free(vm->bitmap);
-	if (vm->page_map)
-		free(vm->page_map);
+	if (vm->ptemap)
+		free(vm->ptemap);
 	free(vm);
 	kd->vmst = NULL;
 }
@@ -155,12 +157,7 @@ _kvm_minidump_initvtop(kvm_t *kd)
 		_kvm_err(kd, kd->program, "not a minidump for this platform");
 		return (-1);
 	}
-
-	/*
-	 * NB: amd64 minidump header is binary compatible between version 1
-	 * and version 2; this may not be the case for the future versions.
-	 */
-	if (vmst->hdr.version != MINIDUMP_VERSION && vmst->hdr.version != 1) {
+	if (vmst->hdr.version != MINIDUMP_VERSION) {
 		_kvm_err(kd, kd->program, "wrong minidump version. expected %d got %d",
 		    MINIDUMP_VERSION, vmst->hdr.version);
 		return (-1);
@@ -175,23 +172,23 @@ _kvm_minidump_initvtop(kvm_t *kd)
 		return (-1);
 	}
 	if (pread(kd->pmfd, vmst->bitmap, vmst->hdr.bitmapsize, off) !=
-	    vmst->hdr.bitmapsize) {
+	    (ssize_t)vmst->hdr.bitmapsize) {
 		_kvm_err(kd, kd->program, "cannot read %d bytes for page bitmap", vmst->hdr.bitmapsize);
 		return (-1);
 	}
 	off += round_page(vmst->hdr.bitmapsize);
 
-	vmst->page_map = _kvm_malloc(kd, vmst->hdr.pmapsize);
-	if (vmst->page_map == NULL) {
-		_kvm_err(kd, kd->program, "cannot allocate %d bytes for page_map", vmst->hdr.pmapsize);
+	vmst->ptemap = _kvm_malloc(kd, vmst->hdr.ptesize);
+	if (vmst->ptemap == NULL) {
+		_kvm_err(kd, kd->program, "cannot allocate %d bytes for ptemap", vmst->hdr.ptesize);
 		return (-1);
 	}
-	if (pread(kd->pmfd, vmst->page_map, vmst->hdr.pmapsize, off) !=
-	    vmst->hdr.pmapsize) {
-		_kvm_err(kd, kd->program, "cannot read %d bytes for page_map", vmst->hdr.pmapsize);
+	if (pread(kd->pmfd, vmst->ptemap, vmst->hdr.ptesize, off) !=
+	    (ssize_t)vmst->hdr.ptesize) {
+		_kvm_err(kd, kd->program, "cannot read %d bytes for ptemap", vmst->hdr.ptesize);
 		return (-1);
 	}
-	off += vmst->hdr.pmapsize;
+	off += vmst->hdr.ptesize;
 
 	/* build physical address hash table for sparse pages */
 	inithash(kd, vmst->bitmap, vmst->hdr.bitmapsize, off);
@@ -200,40 +197,31 @@ _kvm_minidump_initvtop(kvm_t *kd)
 }
 
 static int
-_kvm_minidump_vatop_v1(kvm_t *kd, u_long va, off_t *pa)
+_kvm_minidump_vatop_pae(kvm_t *kd, u_long va, off_t *pa)
 {
 	struct vmstate *vm;
-	u_long offset;
-	pt_entry_t pte;
+	uint64_t offset;
+	uint64_t pte;
 	u_long pteindex;
-	u_long a;
+	uint64_t a;
 	off_t ofs;
+	uint64_t *ptemap;
 
 	vm = kd->vmst;
+	ptemap = vm->ptemap;
 	offset = va & (PAGE_SIZE - 1);
 
 	if (va >= vm->hdr.kernbase) {
 		pteindex = (va - vm->hdr.kernbase) >> PAGE_SHIFT;
-		if (pteindex >= vm->hdr.pmapsize / sizeof(*vm->page_map))
-			goto invalid;
-		pte = vm->page_map[pteindex];
-		if (((u_long)pte & PG_V) == 0) {
+		pte = ptemap[pteindex];
+		if ((pte & PG_V) == 0) {
 			_kvm_err(kd, kd->program, "_kvm_vatop: pte not valid");
 			goto invalid;
 		}
-		a = pte & PG_FRAME;
+		a = pte & PG_FRAME_PAE;
 		ofs = hpt_find(kd, a);
 		if (ofs == -1) {
-			_kvm_err(kd, kd->program, "_kvm_vatop: physical address 0x%lx not in minidump", a);
-			goto invalid;
-		}
-		*pa = ofs + offset;
-		return (PAGE_SIZE - offset);
-	} else if (va >= vm->hdr.dmapbase && va < vm->hdr.dmapend) {
-		a = (va - vm->hdr.dmapbase) & ~PAGE_MASK;
-		ofs = hpt_find(kd, a);
-		if (ofs == -1) {
-			_kvm_err(kd, kd->program, "_kvm_vatop: direct map address 0x%lx not in minidump", va);
+			_kvm_err(kd, kd->program, "_kvm_vatop: physical address 0x%llx not in minidump", a);
 			goto invalid;
 		}
 		*pa = ofs + offset;
@@ -251,62 +239,29 @@ invalid:
 static int
 _kvm_minidump_vatop(kvm_t *kd, u_long va, off_t *pa)
 {
-	pt_entry_t pt[NPTEPG];
 	struct vmstate *vm;
 	u_long offset;
-	pd_entry_t pde;
-	pd_entry_t pte;
+	pt_entry_t pte;
 	u_long pteindex;
-	u_long pdeindex;
 	u_long a;
 	off_t ofs;
+	uint32_t *ptemap;
 
 	vm = kd->vmst;
-	offset = va & PAGE_MASK;
+	ptemap = vm->ptemap;
+	offset = va & (PAGE_SIZE - 1);
 
 	if (va >= vm->hdr.kernbase) {
-		pdeindex = (va - vm->hdr.kernbase) >> PDRSHIFT;
-		if (pdeindex >= vm->hdr.pmapsize / sizeof(*vm->page_map))
-			goto invalid;
-		pde = vm->page_map[pdeindex];
-		if (((u_long)pde & PG_V) == 0) {
-			_kvm_err(kd, kd->program, "_kvm_vatop: pde not valid");
+		pteindex = (va - vm->hdr.kernbase) >> PAGE_SHIFT;
+		pte = ptemap[pteindex];
+		if ((pte & PG_V) == 0) {
+			_kvm_err(kd, kd->program, "_kvm_vatop: pte not valid");
 			goto invalid;
 		}
-		if ((pde & PG_PS) == 0) {
-			a = pde & PG_FRAME;
-			ofs = hpt_find(kd, a);
-			if (ofs == -1) {
-				_kvm_err(kd, kd->program, "_kvm_vatop: pt physical address 0x%lx not in minidump", a);
-				goto invalid;
-			}
-			if (pread(kd->pmfd, &pt, PAGE_SIZE, ofs) != PAGE_SIZE) {
-				_kvm_err(kd, kd->program, "cannot read %d bytes for pt", PAGE_SIZE);
-				return (-1);
-			}
-			pteindex = (va >> PAGE_SHIFT) & ((1ul << NPTEPGSHIFT) - 1);
-			pte = pt[pteindex];
-			if (((u_long)pte & PG_V) == 0) {
-				_kvm_err(kd, kd->program, "_kvm_vatop: pte not valid");
-				goto invalid;
-			}
-			a = pte & PG_FRAME;
-		} else {
-			a = pde & PG_PS_FRAME;
-			a += (va & PDRMASK) ^ offset;
-		}
+		a = pte & PG_FRAME;
 		ofs = hpt_find(kd, a);
 		if (ofs == -1) {
 			_kvm_err(kd, kd->program, "_kvm_vatop: physical address 0x%lx not in minidump", a);
-			goto invalid;
-		}
-		*pa = ofs + offset;
-		return (PAGE_SIZE - offset);
-	} else if (va >= vm->hdr.dmapbase && va < vm->hdr.dmapend) {
-		a = (va - vm->hdr.dmapbase) & ~PAGE_MASK;
-		ofs = hpt_find(kd, a);
-		if (ofs == -1) {
-			_kvm_err(kd, kd->program, "_kvm_vatop: direct map address 0x%lx not in minidump", va);
 			goto invalid;
 		}
 		*pa = ofs + offset;
@@ -329,8 +284,8 @@ _kvm_minidump_kvatop(kvm_t *kd, u_long va, off_t *pa)
 		_kvm_err(kd, 0, "kvm_kvatop called in live kernel!");
 		return (0);
 	}
-	if (((struct vmstate *)kd->vmst)->hdr.version == 1)
-		return (_kvm_minidump_vatop_v1(kd, va, pa));
+	if (kd->vmst->hdr.paemode)
+		return (_kvm_minidump_vatop_pae(kd, va, pa));
 	else
 		return (_kvm_minidump_vatop(kd, va, pa));
 }
