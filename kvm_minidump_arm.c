@@ -157,11 +157,6 @@ _arm_minidump_kvatop(kvm_t *kd, kvaddr_t va, off_t *pa)
 	kvaddr_t pteindex;
 	off_t ofs;
 
-	if (ISALIVE(kd)) {
-		_kvm_err(kd, 0, "_arm_minidump_kvatop called in live kernel!");
-		return (0);
-	}
-
 	vm = kd->vmst;
 
 	if (va >= vm->hdr.kernbase) {

@@ -396,10 +396,6 @@ static int
 _i386_kvatop(kvm_t *kd, kvaddr_t va, off_t *pa)
 {
 
-	if (ISALIVE(kd)) {
-		_kvm_err(kd, 0, "vatop called in live kernel!");
-		return (0);
-	}
 	if (kd->vmst->pae)
 		return (_i386_vatop_pae(kd, va, pa));
 	else

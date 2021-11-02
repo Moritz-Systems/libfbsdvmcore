@@ -170,10 +170,6 @@ failed:
 static int
 _powerpc64_minidump_kvatop(kvm_t *kd, kvaddr_t va, off_t *pa)
 {
-	if (ISALIVE(kd)) {
-		_kvm_err(kd, 0, "%s called in live kernel!", __func__);
-		return (0);
-	}
 	return (PPC64_MMU_OP(kd, kvatop, va, pa));
 }
 

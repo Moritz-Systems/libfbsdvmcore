@@ -330,11 +330,6 @@ static int
 _amd64_minidump_kvatop(kvm_t *kd, kvaddr_t va, off_t *pa)
 {
 
-	if (ISALIVE(kd)) {
-		_kvm_err(kd, 0,
-		    "_amd64_minidump_kvatop called in live kernel!");
-		return (0);
-	}
 	if (((struct vmstate *)kd->vmst)->hdr.version == 1)
 		return (_amd64_minidump_vatop_v1(kd, va, pa));
 	else

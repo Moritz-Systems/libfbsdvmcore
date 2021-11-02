@@ -79,8 +79,6 @@ install(
     kvm_close.3
     kvm_counter_u64_fetch.3
     kvm_dpcpu_setcpu.3
-    kvm_getargv.3
-    kvm_getenvv.3
     kvm_geterr.3
     kvm_getloadavg.3
     kvm_getmaxcpu.3

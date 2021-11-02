@@ -94,10 +94,6 @@ kvm_getcptime(kvm_t *kd, long *cp_time)
 		return (0);
 	}
 
-	if (ISALIVE(kd))
-		return (getsysctl(kd, "kern.cp_time", cp_time, sizeof(long) *
-		    CPUSTATES));
-
 	if (!kd->arch->ka_native(kd)) {
 		_kvm_err(kd, kd->program,
 		    "cannot read cp_time from non-native core");

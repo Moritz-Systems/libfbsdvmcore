@@ -119,7 +119,6 @@ _kvm_open(kvm_t *kd, const char *uf, const char *mf, int flag, char *errout)
 	struct kvm_arch **parch;
 	struct stat st;
 
-	kd->vmfd = -1;
 	kd->pmfd = -1;
 	kd->nlfd = -1;
 	kd->vmst = NULL;
@@ -153,24 +152,10 @@ _kvm_open(kvm_t *kd, const char *uf, const char *mf, int flag, char *errout)
 		_kvm_syserr(kd, kd->program, "empty file");
 		goto failed;
 	}
-	if (S_ISCHR(st.st_mode)) {
-		/*
-		 * If this is a character special device, then check that
-		 * it's /dev/mem.  If so, open kmem too.  (Maybe we should
-		 * make it work for either /dev/mem or /dev/kmem -- in either
-		 * case you're working with a live kernel.)
-		 */
-		if (strcmp(mf, _PATH_DEVNULL) == 0) {
-			kd->vmfd = open(_PATH_DEVNULL, O_RDONLY | O_CLOEXEC);
-			return (kd);
-		} else if (strcmp(mf, _PATH_MEM) == 0) {
-			if ((kd->vmfd = open(_PATH_KMEM, flag | O_CLOEXEC)) <
-			    0) {
-				_kvm_syserr(kd, kd->program, "%s", _PATH_KMEM);
-				goto failed;
-			}
-			return (kd);
-		}
+	if (!S_ISREG(st.st_mode)) {
+		errno = EINVAL;
+		_kvm_syserr(kd, kd->program, "not a regular file");
+		goto failed;
 	}
 
 	/*
@@ -285,8 +270,6 @@ kvm_close(kvm_t *kd)
 		kd->arch->ka_freevtop(kd);
 	if (kd->pmfd >= 0)
 		error |= close(kd->pmfd);
-	if (kd->vmfd >= 0)
-		error |= close(kd->vmfd);
 	if (kd->nlfd >= 0)
 		error |= close(kd->nlfd);
 	if (kd->procbase != 0)
@@ -374,26 +357,6 @@ kvm_read2(kvm_t *kd, kvaddr_t kva, void *buf, size_t len)
 	off_t pa;
 	char *cp;
 
-	if (ISALIVE(kd)) {
-		/*
-		 * We're using /dev/kmem.  Just read straight from the
-		 * device and let the active kernel do the address translation.
-		 */
-		errno = 0;
-		if (lseek(kd->vmfd, (off_t)kva, 0) == -1 && errno != 0) {
-			_kvm_err(kd, 0, "invalid address (0x%jx)",
-			    (uintmax_t)kva);
-			return (-1);
-		}
-		cr = read(kd->vmfd, buf, len);
-		if (cr < 0) {
-			_kvm_syserr(kd, 0, "kvm_read");
-			return (-1);
-		} else if (cr < (ssize_t)len)
-			_kvm_err(kd, kd->program, "short read");
-		return (cr);
-	}
-
 	cp = buf;
 	while (len > 0) {
 		cc = kd->arch->ka_kvatop(kd, kva, &pa);
@@ -434,28 +397,10 @@ kvm_write(kvm_t *kd, u_long kva, const void *buf, size_t len)
 	off_t pa;
 	const char *cp;
 
-	if (!ISALIVE(kd) && !kd->writable) {
+	if (!kd->writable) {
 		_kvm_err(kd, kd->program,
 		    "kvm_write not implemented for dead kernels");
 		return (-1);
-	}
-
-	if (ISALIVE(kd)) {
-		/*
-		 * Just like kvm_read, only we write.
-		 */
-		errno = 0;
-		if (lseek(kd->vmfd, (off_t)kva, 0) == -1 && errno != 0) {
-			_kvm_err(kd, 0, "invalid address (%lx)", kva);
-			return (-1);
-		}
-		cc = write(kd->vmfd, buf, len);
-		if (cc < 0) {
-			_kvm_syserr(kd, 0, "kvm_write");
-			return (-1);
-		} else if ((size_t)cc < len)
-			_kvm_err(kd, kd->program, "short write");
-		return (cc);
 	}
 
 	cp = buf;
@@ -494,8 +439,6 @@ int
 kvm_native(kvm_t *kd)
 {
 
-	if (ISALIVE(kd))
-		return (1);
 	return (kd->arch->ka_native(kd));
 }
 
@@ -515,22 +458,6 @@ kvm_kerndisp(kvm_t *kd)
 	unsigned long kernbase, rel_kernbase;
 	size_t kernbase_len = sizeof(kernbase);
 	size_t rel_kernbase_len = sizeof(rel_kernbase);
-
-	if (ISALIVE(kd)) {
-		if (sysctlbyname("kern.base_address", &kernbase,
-		    &kernbase_len, NULL, 0) == -1) {
-			_kvm_syserr(kd, kd->program,
-				"failed to get kernel base address");
-			return (0);
-		}
-		if (sysctlbyname("kern.relbase_address", &rel_kernbase,
-		    &rel_kernbase_len, NULL, 0) == -1) {
-			_kvm_syserr(kd, kd->program,
-				"failed to get relocated kernel base address");
-			return (0);
-		}
-		return (rel_kernbase - kernbase);
-	}
 
 	if (kd->arch->ka_kerndisp == NULL)
 		return (0);

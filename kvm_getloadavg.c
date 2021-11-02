@@ -65,9 +65,6 @@ kvm_getloadavg(kvm_t *kd, double loadavg[], int nelem)
 	struct nlist *p;
 	int fscale, i;
 
-	if (ISALIVE(kd))
-		return (getloadavg(loadavg, nelem));
-
 	if (!kd->arch->ka_native(kd)) {
 		_kvm_err(kd, kd->program,
 		    "cannot read loadavg from non-native core");

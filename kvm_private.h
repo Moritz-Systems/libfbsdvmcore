@@ -62,9 +62,7 @@ struct __kvm {
 	const char *program;
 	char	*errp;		/* XXX this can probably go away */
 	char	errbuf[_POSIX2_LINE_MAX];
-#define ISALIVE(kd) ((kd)->vmfd >= 0)
 	int	pmfd;		/* physical memory file (or crashdump) */
-	int	vmfd;		/* virtual memory file (-1 if crashdump) */
 	int	nlfd;		/* namelist file (e.g., /kernel) */
 	GElf_Ehdr nlehdr;	/* ELF file header for namelist file */
 	int	(*resolve_symbol)(const char *, kvaddr_t *);

@@ -104,11 +104,7 @@ kvm_getswapinfo(kvm_t *kd, struct kvm_swap *swap_ary, int swap_max, int flags)
 		return(0);
 	}
 
-	if (ISALIVE(kd)) {
-		return kvm_getswapinfo_sysctl(kd, swap_ary, swap_max, flags);
-	} else {
-		return kvm_getswapinfo_kvm(kd, swap_ary, swap_max, flags);
-	}
+	return kvm_getswapinfo_kvm(kd, swap_ary, swap_max, flags);
 }
 
 int
@@ -154,75 +150,6 @@ kvm_getswapinfo_kvm(kvm_t *kd, struct kvm_swap *swap_ary, int swap_max,
 		swap_ary[i] = tot;
 
         return(i);
-}
-
-#define	GETSYSCTL(kd, name, var)					\
-	    getsysctl(kd, name, &(var), sizeof(var))
-
-/* The maximum MIB length for vm.swap_info and an additional device number */
-#define	SWI_MAXMIB	3
-
-int
-kvm_getswapinfo_sysctl(kvm_t *kd, struct kvm_swap *swap_ary, int swap_max,
-    int flags)
-{
-	int ti, ttl;
-	size_t mibi, len;
-	int soid[SWI_MAXMIB];
-	struct xswdev xsd;
-	struct kvm_swap tot;
-
-	if (!GETSYSCTL(kd, "vm.dmmax", dmmax))
-		return -1;
-
-	mibi = SWI_MAXMIB - 1;
-	if (sysctlnametomib("vm.swap_info", soid, &mibi) == -1) {
-		_kvm_err(kd, kd->program, "sysctlnametomib failed: %s",
-		    strerror(errno));
-		return -1;
-	}
-	bzero(&tot, sizeof(tot));
-	for (unswdev = 0;; unswdev++) {
-		soid[mibi] = unswdev;
-		len = sizeof(xsd);
-		if (sysctl(soid, mibi + 1, &xsd, &len, NULL, 0) == -1) {
-			if (errno == ENOENT)
-				break;
-			_kvm_err(kd, kd->program, "cannot read sysctl: %s.",
-			    strerror(errno));
-			return -1;
-		}
-		if (len != sizeof(xsd)) {
-			_kvm_err(kd, kd->program, "struct xswdev has unexpected "
-			    "size;  kernel and libkvm out of sync?");
-			return -1;
-		}
-		if (xsd.xsw_version != XSWDEV_VERSION) {
-			_kvm_err(kd, kd->program, "struct xswdev version "
-			    "mismatch; kernel and libkvm out of sync?");
-			return -1;
-		}
-
-		ttl = xsd.xsw_nblks - dmmax;
-		if (unswdev < swap_max - 1) {
-			bzero(&swap_ary[unswdev], sizeof(swap_ary[unswdev]));
-			swap_ary[unswdev].ksw_total = ttl;
-			swap_ary[unswdev].ksw_used = xsd.xsw_used;
-			swap_ary[unswdev].ksw_flags = xsd.xsw_flags;
-			GETSWDEVNAME(xsd.xsw_dev, swap_ary[unswdev].ksw_devname,
-			     flags);
-		}
-		tot.ksw_total += ttl;
-		tot.ksw_used += xsd.xsw_used;
-	}
-
-	ti = unswdev;
-	if (ti >= swap_max)
-		ti = swap_max - 1;
-	if (ti >= 0)
-		swap_ary[ti] = tot;
-
-        return(ti);
 }
 
 static int

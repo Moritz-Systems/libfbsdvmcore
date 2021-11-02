@@ -160,11 +160,6 @@ _mips_minidump_kvatop(kvm_t *kd, kvaddr_t va, off_t *pa)
 	mips32_pte_t pte32;
 	mips64_pte_t pte64;
 
-	if (ISALIVE(kd)) {
-		_kvm_err(kd, 0, "_mips_minidump_kvatop called in live kernel!");
-		return (0);
-	}
-
 	offset = va & MIPS_PAGE_MASK;
 	/* Operate with page-aligned address */
 	va &= ~MIPS_PAGE_MASK;

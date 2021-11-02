@@ -529,6 +529,8 @@ kvm_getprocs(kvm_t *kd, int op, int arg, int *cnt)
 	int mib[4], st, nprocs;
 	size_t size, osize;
 	int temp_op;
+	struct nlist nl[6], *p;
+	struct nlist nlz[2];
 
 	if (kd->procbase != 0) {
 		free((void *)kd->procbase);
@@ -538,140 +540,72 @@ kvm_getprocs(kvm_t *kd, int op, int arg, int *cnt)
 		 */
 		kd->procbase = 0;
 	}
-	if (ISALIVE(kd)) {
-		size = 0;
-		mib[0] = CTL_KERN;
-		mib[1] = KERN_PROC;
-		mib[2] = op;
-		mib[3] = arg;
-		temp_op = op & ~KERN_PROC_INC_THREAD;
-		st = sysctl(mib,
-		    temp_op == KERN_PROC_ALL || temp_op == KERN_PROC_PROC ?
-		    3 : 4, NULL, &size, NULL, 0);
-		if (st == -1) {
-			_kvm_syserr(kd, kd->program, "kvm_getprocs");
-			return (0);
-		}
-		/*
-		 * We can't continue with a size of 0 because we pass
-		 * it to realloc() (via _kvm_realloc()), and passing 0
-		 * to realloc() results in undefined behavior.
-		 */
-		if (size == 0) {
-			/*
-			 * XXX: We should probably return an invalid,
-			 * but non-NULL, pointer here so any client
-			 * program trying to dereference it will
-			 * crash.  However, _kvm_freeprocs() calls
-			 * free() on kd->procbase if it isn't NULL,
-			 * and free()'ing a junk pointer isn't good.
-			 * Then again, _kvm_freeprocs() isn't used
-			 * anywhere . . .
-			 */
-			kd->procbase = _kvm_malloc(kd, 1);
-			goto liveout;
-		}
-		do {
-			size += size / 10;
-			kd->procbase = (struct kinfo_proc *)
-			    _kvm_realloc(kd, kd->procbase, size);
-			if (kd->procbase == NULL)
-				return (0);
-			osize = size;
-			st = sysctl(mib, temp_op == KERN_PROC_ALL ||
-			    temp_op == KERN_PROC_PROC ? 3 : 4,
-			    kd->procbase, &size, NULL, 0);
-		} while (st == -1 && errno == ENOMEM && size == osize);
-		if (st == -1) {
-			_kvm_syserr(kd, kd->program, "kvm_getprocs");
-			return (0);
-		}
-		/*
-		 * We have to check the size again because sysctl()
-		 * may "round up" oldlenp if oldp is NULL; hence it
-		 * might've told us that there was data to get when
-		 * there really isn't any.
-		 */
-		if (size > 0 &&
-		    kd->procbase->ki_structsize != sizeof(struct kinfo_proc)) {
-			_kvm_err(kd, kd->program,
-			    "kinfo_proc size mismatch (expected %zu, got %d)",
-			    sizeof(struct kinfo_proc),
-			    kd->procbase->ki_structsize);
-			return (0);
-		}
-liveout:
-		nprocs = size == 0 ? 0 : size / kd->procbase->ki_structsize;
-	} else {
-		struct nlist nl[6], *p;
-		struct nlist nlz[2];
 
-		nl[0].n_name = "_nprocs";
-		nl[1].n_name = "_allproc";
-		nl[2].n_name = "_ticks";
-		nl[3].n_name = "_hz";
-		nl[4].n_name = "_cpu_tick_frequency";
-		nl[5].n_name = 0;
+	nl[0].n_name = "_nprocs";
+	nl[1].n_name = "_allproc";
+	nl[2].n_name = "_ticks";
+	nl[3].n_name = "_hz";
+	nl[4].n_name = "_cpu_tick_frequency";
+	nl[5].n_name = 0;
 
-		nlz[0].n_name = "_zombproc";
-		nlz[1].n_name = 0;
+	nlz[0].n_name = "_zombproc";
+	nlz[1].n_name = 0;
 
-		if (!kd->arch->ka_native(kd)) {
-			_kvm_err(kd, kd->program,
-			    "cannot read procs from non-native core");
-			return (0);
-		}
-
-		if (kvm_nlist(kd, nl) != 0) {
-			for (p = nl; p->n_type != 0; ++p)
-				;
-			_kvm_err(kd, kd->program,
-				 "%s: no such symbol", p->n_name);
-			return (0);
-		}
-		(void) kvm_nlist(kd, nlz);	/* attempt to get zombproc */
-		if (KREAD(kd, nl[0].n_value, &nprocs)) {
-			_kvm_err(kd, kd->program, "can't read nprocs");
-			return (0);
-		}
-		/*
-		 * If returning all threads, we don't know how many that
-		 * might be.  Presume that there are, on average, no more
-		 * than 10 threads per process.
-		 */
-		if (op == KERN_PROC_ALL || (op & KERN_PROC_INC_THREAD))
-			nprocs *= 10;		/* XXX */
-		if (KREAD(kd, nl[2].n_value, &ticks)) {
-			_kvm_err(kd, kd->program, "can't read ticks");
-			return (0);
-		}
-		if (KREAD(kd, nl[3].n_value, &hz)) {
-			_kvm_err(kd, kd->program, "can't read hz");
-			return (0);
-		}
-		if (KREAD(kd, nl[4].n_value, &cpu_tick_frequency)) {
-			_kvm_err(kd, kd->program,
-			    "can't read cpu_tick_frequency");
-			return (0);
-		}
-		size = nprocs * sizeof(struct kinfo_proc);
-		kd->procbase = (struct kinfo_proc *)_kvm_malloc(kd, size);
-		if (kd->procbase == NULL)
-			return (0);
-
-		nprocs = kvm_deadprocs(kd, op, arg, nl[1].n_value,
-				      nlz[0].n_value, nprocs);
-		if (nprocs <= 0) {
-			_kvm_freeprocs(kd);
-			nprocs = 0;
-		}
-#ifdef notdef
-		else {
-			size = nprocs * sizeof(struct kinfo_proc);
-			kd->procbase = realloc(kd->procbase, size);
-		}
-#endif
+	if (!kd->arch->ka_native(kd)) {
+		_kvm_err(kd, kd->program,
+		    "cannot read procs from non-native core");
+		return (0);
 	}
+
+	if (kvm_nlist(kd, nl) != 0) {
+		for (p = nl; p->n_type != 0; ++p)
+			;
+		_kvm_err(kd, kd->program,
+			 "%s: no such symbol", p->n_name);
+		return (0);
+	}
+	(void) kvm_nlist(kd, nlz);	/* attempt to get zombproc */
+	if (KREAD(kd, nl[0].n_value, &nprocs)) {
+		_kvm_err(kd, kd->program, "can't read nprocs");
+		return (0);
+	}
+	/*
+	 * If returning all threads, we don't know how many that
+	 * might be.  Presume that there are, on average, no more
+	 * than 10 threads per process.
+	 */
+	if (op == KERN_PROC_ALL || (op & KERN_PROC_INC_THREAD))
+		nprocs *= 10;		/* XXX */
+	if (KREAD(kd, nl[2].n_value, &ticks)) {
+		_kvm_err(kd, kd->program, "can't read ticks");
+		return (0);
+	}
+	if (KREAD(kd, nl[3].n_value, &hz)) {
+		_kvm_err(kd, kd->program, "can't read hz");
+		return (0);
+	}
+	if (KREAD(kd, nl[4].n_value, &cpu_tick_frequency)) {
+		_kvm_err(kd, kd->program,
+		    "can't read cpu_tick_frequency");
+		return (0);
+	}
+	size = nprocs * sizeof(struct kinfo_proc);
+	kd->procbase = (struct kinfo_proc *)_kvm_malloc(kd, size);
+	if (kd->procbase == NULL)
+		return (0);
+
+	nprocs = kvm_deadprocs(kd, op, arg, nl[1].n_value,
+			      nlz[0].n_value, nprocs);
+	if (nprocs <= 0) {
+		_kvm_freeprocs(kd);
+		nprocs = 0;
+	}
+#ifdef notdef
+	else {
+		size = nprocs * sizeof(struct kinfo_proc);
+		kd->procbase = realloc(kd->procbase, size);
+	}
+#endif
 	*cnt = nprocs;
 	return (kd->procbase);
 }
@@ -693,96 +627,4 @@ _kvm_realloc(kvm_t *kd, void *p, size_t n)
 	if (np == NULL)
 		_kvm_err(kd, kd->program, "out of memory");
 	return (np);
-}
-
-/*
- * Get the command args or environment.
- */
-static char **
-kvm_argv(kvm_t *kd, const struct kinfo_proc *kp, int env, int nchr)
-{
-	int oid[4];
-	int i;
-	size_t bufsz;
-	static int buflen;
-	static char *buf, *p;
-	static char **bufp;
-	static int argc;
-	char **nbufp;
-
-	if (!ISALIVE(kd)) {
-		_kvm_err(kd, kd->program,
-		    "cannot read user space from dead kernel");
-		return (NULL);
-	}
-
-	if (nchr == 0 || nchr > ARG_MAX)
-		nchr = ARG_MAX;
-	if (buflen == 0) {
-		buf = malloc(nchr);
-		if (buf == NULL) {
-			_kvm_err(kd, kd->program, "cannot allocate memory");
-			return (NULL);
-		}
-		argc = 32;
-		bufp = malloc(sizeof(char *) * argc);
-		if (bufp == NULL) {
-			free(buf);
-			buf = NULL;
-			_kvm_err(kd, kd->program, "cannot allocate memory");
-			return (NULL);
-		}
-		buflen = nchr;
-	} else if (nchr > buflen) {
-		p = realloc(buf, nchr);
-		if (p != NULL) {
-			buf = p;
-			buflen = nchr;
-		}
-	}
-	oid[0] = CTL_KERN;
-	oid[1] = KERN_PROC;
-	oid[2] = env ? KERN_PROC_ENV : KERN_PROC_ARGS;
-	oid[3] = kp->ki_pid;
-	bufsz = buflen;
-	if (sysctl(oid, 4, buf, &bufsz, 0, 0) == -1) {
-		/*
-		 * If the supplied buf is too short to hold the requested
-		 * value the sysctl returns with ENOMEM. The buf is filled
-		 * with the truncated value and the returned bufsz is equal
-		 * to the requested len.
-		 */
-		if (errno != ENOMEM || bufsz != (size_t)buflen)
-			return (NULL);
-		buf[bufsz - 1] = '\0';
-		errno = 0;
-	} else if (bufsz == 0)
-		return (NULL);
-	i = 0;
-	p = buf;
-	do {
-		bufp[i++] = p;
-		p += strlen(p) + 1;
-		if (i >= argc) {
-			argc += argc;
-			nbufp = realloc(bufp, sizeof(char *) * argc);
-			if (nbufp == NULL)
-				return (NULL);
-			bufp = nbufp;
-		}
-	} while (p < buf + bufsz);
-	bufp[i++] = 0;
-	return (bufp);
-}
-
-char **
-kvm_getargv(kvm_t *kd, const struct kinfo_proc *kp, int nchr)
-{
-	return (kvm_argv(kd, kp, 0, nchr));
-}
-
-char **
-kvm_getenvv(kvm_t *kd, const struct kinfo_proc *kp, int nchr)
-{
-	return (kvm_argv(kd, kp, 1, nchr));
 }

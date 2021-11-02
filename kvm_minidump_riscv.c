@@ -202,11 +202,6 @@ static int
 _riscv_minidump_kvatop(kvm_t *kd, kvaddr_t va, off_t *pa)
 {
 
-	if (ISALIVE(kd)) {
-		_kvm_err(kd, 0,
-		    "_riscv_minidump_kvatop called in live kernel!");
-		return (0);
-	}
 	return (_riscv_minidump_vatop(kd, va, pa));
 }
 
