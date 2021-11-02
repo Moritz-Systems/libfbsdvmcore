@@ -32,7 +32,6 @@
  */
 
 #include <sys/param.h>
-#include <sys/fnv_hash.h>
 
 #define	_WANT_VNET
 
