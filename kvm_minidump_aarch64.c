@@ -25,9 +25,6 @@
  * From: FreeBSD: src/lib/libkvm/kvm_minidump_amd64.c r261799
  */
 
-#include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
-
 /*
  * ARM64 (AArch64) machine dependent routines for kvm and minidumps.
  */

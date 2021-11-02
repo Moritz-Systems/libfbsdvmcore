@@ -7,7 +7,6 @@ project(
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
-add_definitions(-DNO__SCCSID)
 include_directories(
     /usr/src/lib/libkvm
     /usr/src/sys)
