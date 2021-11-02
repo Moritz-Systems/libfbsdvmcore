@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 cmake_policy(VERSION 3.0)
 project(
-    libfbsdvmcore
+    fbsdvmcore
     VERSION 0.0.0
     LANGUAGES C)
 
@@ -45,6 +45,27 @@ set_target_properties(
     PUBLIC_HEADER "kvm.h"
     VERSION "${PROJECT_VERSION}"
     SOVERSION "${PROJECT_VERSION_MAJOR}")
+
+set(ENABLE_TESTS ON)
+find_program(KYUA kyua)
+if(NOT KYUA)
+  message(WARNING "kyua not found, tests will be disabled")
+  set(ENABLE_TESTS OFF)
+endif()
+
+include(FindPkgConfig)
+pkg_check_modules(ATF atf-c)
+if(NOT ATF_FOUND)
+  message(WARNING "atf-c not found, tests will be disabled")
+  set(ENABLE_TESTS OFF)
+else()
+  string(REPLACE ";" " " ATF_CFLAGS "${ATF_CFLAGS}")
+  string(REPLACE ";" " " ATF_LDFLAGS "${ATF_LDFLAGS}")
+endif()
+
+if(ENABLE_TESTS)
+  add_subdirectory(tests)
+endif()
 
 include(GNUInstallDirs)
 install(
