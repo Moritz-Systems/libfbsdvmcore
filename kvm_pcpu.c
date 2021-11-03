@@ -205,7 +205,7 @@ kvm_getncpus(kvm_t *kd)
 }
 
 static int
-_kvm_dpcpu_setcpu(kvm_t *kd, u_int cpu, int report_error)
+_kvm_dpcpu_setcpu(kvm_t *kd, unsigned int cpu, int report_error)
 {
 
 	if (!kd->dpcpu_initialized) {
@@ -250,7 +250,7 @@ _kvm_dpcpu_init(kvm_t *kd)
 	};
 	uintptr_t *dpcpu_off_buf;
 	size_t len;
-	u_int dpcpu_maxcpus;
+	unsigned int dpcpu_maxcpus;
 
 	/*
 	 * XXX: This only works for native kernels for now.
@@ -323,7 +323,7 @@ _kvm_dpcpu_validaddr(kvm_t *kd, kvaddr_t value)
 }
 
 int
-kvm_dpcpu_setcpu(kvm_t *kd, u_int cpu)
+kvm_dpcpu_setcpu(kvm_t *kd, unsigned int cpu)
 {
 	int ret;
 

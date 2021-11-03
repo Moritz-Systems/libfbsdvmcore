@@ -74,7 +74,7 @@ _Static_assert(PDRSHIFT_NOPAE == I386_PDRSHIFT, "PDRSHIFT mismatch");
 
 _Static_assert(PG_V == I386_PG_V, "PG_V mismatch");
 _Static_assert(PG_PS == I386_PG_PS, "PG_PS mismatch");
-_Static_assert((u_int)PG_FRAME_NOPAE == I386_PG_FRAME, "PG_FRAME mismatch");
+_Static_assert((unsigned int)PG_FRAME_NOPAE == I386_PG_FRAME, "PG_FRAME mismatch");
 _Static_assert(PG_PS_FRAME_NOPAE == I386_PG_PS_FRAME, "PG_PS_FRAME mismatch");
 #endif
 

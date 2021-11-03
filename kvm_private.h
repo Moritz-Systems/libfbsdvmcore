@@ -96,9 +96,9 @@ struct __kvm {
 	int		dpcpu_initialized;	/* dpcpu fields set up */
 	kvaddr_t	dpcpu_start;	/* start of kernel's dpcpu region */
 	kvaddr_t	dpcpu_stop;	/* stop of kernel's dpcpu region */
-	u_int		dpcpu_maxcpus;	/* size of base array */
+	unsigned int	dpcpu_maxcpus;	/* size of base array */
 	uintptr_t	*dpcpu_off;	/* base array, indexed by CPU ID */
-	u_int		dpcpu_curcpu;	/* CPU we're currently working with */
+	unsigned int	dpcpu_curcpu;	/* CPU we're currently working with */
 	kvaddr_t	dpcpu_curoff;	/* dpcpu base of current CPU */
 
 	/* Page table lookup structures. */

@@ -72,16 +72,16 @@ struct kinfo_proc;
 struct proc;
 
 struct kvm_swap {
-	char	ksw_devname[32];
-	u_int	ksw_used;
-	u_int	ksw_total;
-	int	ksw_flags;
-	u_int	ksw_reserved1;
-	u_int	ksw_reserved2;
+	char		ksw_devname[32];
+	unsigned int	ksw_used;
+	unsigned int	ksw_total;
+	int		ksw_flags;
+	unsigned int	ksw_reserved1;
+	unsigned int	ksw_reserved2;
 };
 
 struct kvm_page {
-	u_int		kp_version;
+	unsigned int	kp_version;
 	kpaddr_t	kp_paddr;
 	kvaddr_t	kp_kmap_vaddr;
 	kvaddr_t	kp_dmap_vaddr;
