@@ -8,6 +8,7 @@ project(
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 include_directories(
+    .
     /usr/src/lib/libkvm
     /usr/src/sys)
 
