@@ -50,16 +50,6 @@ typedef u_char vm_prot_t;
 #define	VRS_SYM		"_version"
 #define	VRS_KEY		"VERSION"
 
-#ifndef _SIZE_T_DECLARED
-typedef	__size_t	size_t;
-#define	_SIZE_T_DECLARED
-#endif
-
-#ifndef _SSIZE_T_DECLARED
-typedef	__ssize_t	ssize_t;
-#define	_SSIZE_T_DECLARED
-#endif
-
 struct kvm_nlist {
 	const char *n_name;
 	unsigned char n_type;
