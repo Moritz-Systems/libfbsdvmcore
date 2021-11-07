@@ -40,7 +40,7 @@
 
 #include "kvm_private.h"
 
-static struct nlist nl[] = {
+static struct kvm_nlist nl[] = {
 	{ .n_name = "_averunnable" },
 #define	X_AVERUNNABLE	0
 	{ .n_name = "_fscale" },
@@ -66,7 +66,7 @@ kvm_getloadavg(kvm_t *kd, double loadavg[], int nelem)
 		return (-1);
 	}
 
-	if (kvm_nlist(kd, nl) != 0 && nl[X_AVERUNNABLE].n_type == 0) {
+	if (kvm_nlist2(kd, nl) != 0 && nl[X_AVERUNNABLE].n_type == 0) {
 		_kvm_err(kd, kd->program,
 		    "%s: no such symbol", nl[X_AVERUNNABLE].n_name);
 		return (-1);
