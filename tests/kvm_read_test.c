@@ -52,11 +52,11 @@ ATF_TC_HEAD(kvm_read_positive_test_no_error, tc)
 ATF_TC_BODY(kvm_read_positive_test_no_error, tc)
 {
 	kvm_t *kd;
-	struct nlist nl[] = {
+	struct kvm_nlist nl[] = {
 #define	SYMNAME	"_mp_maxcpus"
 #define	X_MAXCPUS	0
-		{ SYMNAME, 0, 0, 0, 0 },
-		{ NULL, 0, 0, 0, 0 },
+		{ SYMNAME, 0, 0 },
+		{ NULL, 0, 0 },
 	};
 	ssize_t rc;
 	int sysctl_maxcpus, mp_maxcpus, retcode;
@@ -66,9 +66,9 @@ ATF_TC_BODY(kvm_read_positive_test_no_error, tc)
 	kd = kvm_open(NULL, NULL, NULL, O_RDONLY, errbuf);
 	ATF_CHECK(!errbuf_has_error(errbuf));
 	ATF_REQUIRE_MSG(kd != NULL, "kvm_open failed: %s", errbuf);
-	retcode = kvm_nlist(kd, nl);
+	retcode = kvm_nlist2(kd, nl);
 	ATF_REQUIRE_MSG(retcode != -1,
-	    "kvm_nlist failed (returned %d): %s", retcode, kvm_geterr(kd));
+	    "kvm_nlist2 failed (returned %d): %s", retcode, kvm_geterr(kd));
 	if (nl[X_MAXCPUS].n_type == 0)
 		atf_tc_skip("symbol (\"%s\") couldn't be found", SYMNAME);
 
