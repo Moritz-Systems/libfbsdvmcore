@@ -49,7 +49,7 @@
 
 #include "kvm_private.h"
 
-static struct nlist kvm_swap_nl[] = {
+static struct kvm_nlist kvm_swap_nl[] = {
 	{ .n_name = "_swtailq" },	/* list of swap devices and sizes */
 	{ .n_name = "_dmmax" },		/* maximum size of a swap block */
 	{ .n_name = NULL }
@@ -153,7 +153,7 @@ nlist_init(kvm_t *kd)
 	if (kvm_swap_nl_cached)
 		return (1);
 
-	if (kvm_nlist(kd, kvm_swap_nl) < 0)
+	if (kvm_nlist2(kd, kvm_swap_nl) < 0)
 		return (0);
 
 	/* Required entries */
