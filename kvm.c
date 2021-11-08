@@ -299,44 +299,6 @@ kvm_nlist2(kvm_t *kd, struct kvm_nlist *nl)
 	return (_kvm_nlist(kd, nl, 1));
 }
 
-int
-kvm_nlist(kvm_t *kd, struct nlist *nl)
-{
-	struct kvm_nlist *kl;
-	int count, i, nfail;
-
-	/*
-	 * Avoid reporting truncated addresses by failing for non-native
-	 * cores.
-	 */
-	if (!kvm_native(kd)) {
-		_kvm_err(kd, kd->program, "kvm_nlist of non-native vmcore");
-		return (-1);
-	}
-
-	for (count = 0; nl[count].n_name != NULL && nl[count].n_name[0] != '\0';
-	     count++)
-		;
-	if (count == 0)
-		return (0);
-	kl = calloc(count + 1, sizeof(*kl));
-	if (kl == NULL) {
-		_kvm_err(kd, kd->program, "cannot allocate memory");
-		return (-1);
-	}
-	for (i = 0; i < count; i++)
-		kl[i].n_name = nl[i].n_name;
-	nfail = kvm_nlist2(kd, kl);
-	for (i = 0; i < count; i++) {
-		nl[i].n_type = kl[i].n_type;
-		nl[i].n_other = 0;
-		nl[i].n_desc = 0;
-		nl[i].n_value = kl[i].n_value;
-	}
-	free(kl);
-	return (nfail);
-}
-
 ssize_t
 kvm_read(kvm_t *kd, u_long kva, void *buf, size_t len)
 {
