@@ -525,8 +525,8 @@ kvm_getprocs(kvm_t *kd, int op, int arg, int *cnt)
 	int mib[4], st, nprocs;
 	size_t size, osize;
 	int temp_op;
-	struct nlist nl[6], *p;
-	struct nlist nlz[2];
+	struct kvm_nlist nl[6], *p;
+	struct kvm_nlist nlz[2];
 
 	if (kd->procbase != 0) {
 		free((void *)kd->procbase);
@@ -553,14 +553,14 @@ kvm_getprocs(kvm_t *kd, int op, int arg, int *cnt)
 		return (0);
 	}
 
-	if (kvm_nlist(kd, nl) != 0) {
+	if (kvm_nlist2(kd, nl) != 0) {
 		for (p = nl; p->n_type != 0; ++p)
 			;
 		_kvm_err(kd, kd->program,
 			 "%s: no such symbol", p->n_name);
 		return (0);
 	}
-	(void) kvm_nlist(kd, nlz);	/* attempt to get zombproc */
+	(void) kvm_nlist2(kd, nlz);	/* attempt to get zombproc */
 	if (KREAD(kd, nl[0].n_value, &nprocs)) {
 		_kvm_err(kd, kd->program, "can't read nprocs");
 		return (0);
