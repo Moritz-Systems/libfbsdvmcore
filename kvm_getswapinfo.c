@@ -31,7 +31,6 @@
 #include <sys/stat.h>
 #include <sys/blist.h>
 #include <sys/queue.h>
-#include <sys/sysctl.h>
 
 #include <vm/swap_pager.h>
 #include <vm/vm_param.h>
@@ -64,9 +63,7 @@ static int unswdev;  /* number of found swap dev's */
 static int dmmax;
 
 static int  kvm_getswapinfo_kvm(kvm_t *, struct kvm_swap *, int, int);
-static int  kvm_getswapinfo_sysctl(kvm_t *, struct kvm_swap *, int, int);
 static int  nlist_init(kvm_t *);
-static int  getsysctl(kvm_t *, const char *, void *, size_t);
 
 #define KREAD(kd, addr, obj) \
 	(kvm_read(kd, addr, (char *)(obj), sizeof(*obj)) != sizeof(*obj))
@@ -174,21 +171,5 @@ nlist_init(kvm_t *kd)
 	KGET(NL_DMMAX, &dmmax);
 
 	kvm_swap_nl_cached = 1;
-	return (1);
-}
-
-static int
-getsysctl(kvm_t *kd, const char *name, void *ptr, size_t len)
-{
-	size_t nlen = len;
-	if (sysctlbyname(name, ptr, &nlen, NULL, 0) == -1) {
-		_kvm_err(kd, kd->program, "cannot read sysctl %s:%s", name,
-		    strerror(errno));
-		return (0);
-	}
-	if (nlen != len) {
-		_kvm_err(kd, kd->program, "sysctl %s has unexpected size", name);
-		return (0);
-	}
 	return (1);
 }
