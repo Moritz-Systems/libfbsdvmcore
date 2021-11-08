@@ -61,25 +61,6 @@ _kvm_cp_time_init(kvm_t *kd)
 	return (0);
 }
 
-static int
-getsysctl(kvm_t *kd, const char *name, void *buf, size_t len)
-{
-	size_t nlen;
-
-	nlen = len;
-	if (sysctlbyname(name, buf, &nlen, NULL, 0) < 0) {
-		_kvm_err(kd, kd->program, "cannot read sysctl %s:%s", name,
-		    strerror(errno));
-		return (-1);
-	}
-	if (nlen != len) {
-		_kvm_err(kd, kd->program, "sysctl %s has unexpected size",
-		    name);
-		return (-1);
-	}
-	return (0);
-}
-
 int
 kvm_getcptime(kvm_t *kd, long *cp_time)
 {
