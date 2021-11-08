@@ -42,7 +42,7 @@
 
 #include "kvm_private.h"
 
-static struct nlist kvm_cp_time_nl[] = {
+static struct kvm_nlist kvm_cp_time_nl[] = {
 	{ .n_name = "_cp_time" },		/* (deprecated) */
 	{ .n_name = NULL },
 };
@@ -55,7 +55,7 @@ static int
 _kvm_cp_time_init(kvm_t *kd)
 {
 
-	if (kvm_nlist(kd, kvm_cp_time_nl) < 0)
+	if (kvm_nlist2(kd, kvm_cp_time_nl) < 0)
 		return (-1);
 	kvm_cp_time_cached = 1;
 	return (0);
