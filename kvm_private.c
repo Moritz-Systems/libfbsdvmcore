@@ -665,7 +665,7 @@ _kvm_nlist(kvm_t *kd, struct kvm_nlist *nl, int initialize)
 	int error;
 	const char *prefix = "";
 	char symname[1024]; /* XXX-BZ symbol name length limit? */
-	int tried_vnet, tried_dpcpu;
+	int tried_vnet;
 
 	/*
 	 * If we can't use the kld symbol lookup, revert to the
@@ -678,10 +678,6 @@ _kvm_nlist(kvm_t *kd, struct kvm_nlist *nl, int initialize)
 	if (_kvm_vnet_initialized(kd, initialize))
 		error = kvm_fdnlist_prefix(kd, nl, error,
 		    VNET_SYMPREFIX, _kvm_vnet_validaddr);
-
-	if (error > 0 && _kvm_dpcpu_initialized(kd, initialize))
-		error = kvm_fdnlist_prefix(kd, nl, error,
-		    DPCPU_SYMPREFIX, _kvm_dpcpu_validaddr);
 
 	return (error);
 }

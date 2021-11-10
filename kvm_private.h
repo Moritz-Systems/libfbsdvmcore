@@ -88,19 +88,6 @@ struct __kvm {
 	kvaddr_t	vnet_current;	/* vnet we're working with */
 	kvaddr_t	vnet_base;	/* vnet base of current vnet */
 
-	/*
-	 * Dynamic per-CPU kernel memory.  We translate symbols, on-demand,
-	 * to the data associated with dpcpu_curcpu, set with
-	 * kvm_dpcpu_setcpu().
-	 */
-	int		dpcpu_initialized;	/* dpcpu fields set up */
-	kvaddr_t	dpcpu_start;	/* start of kernel's dpcpu region */
-	kvaddr_t	dpcpu_stop;	/* stop of kernel's dpcpu region */
-	unsigned int	dpcpu_maxcpus;	/* size of base array */
-	uintptr_t	*dpcpu_off;	/* base array, indexed by CPU ID */
-	unsigned int	dpcpu_curcpu;	/* CPU we're currently working with */
-	kvaddr_t	dpcpu_curoff;	/* dpcpu base of current CPU */
-
 	/* Page table lookup structures. */
 	uint64_t	*pt_map;
 	size_t		pt_map_size;
@@ -182,8 +169,6 @@ void	 _kvm_syserr (kvm_t *kd, const char *program, const char *fmt, ...)
 int	 _kvm_vnet_selectpid(kvm_t *, pid_t);
 int	 _kvm_vnet_initialized(kvm_t *, int);
 kvaddr_t _kvm_vnet_validaddr(kvm_t *, kvaddr_t);
-int	 _kvm_dpcpu_initialized(kvm_t *, int);
-kvaddr_t _kvm_dpcpu_validaddr(kvm_t *, kvaddr_t);
 int	 _kvm_probe_elf_kernel(kvm_t *, int, int);
 int	 _kvm_is_minidump(kvm_t *);
 int	 _kvm_read_core_phdrs(kvm_t *, size_t *, GElf_Phdr **);

@@ -28,7 +28,6 @@ add_library(
     kvm_minidump_powerpc64.c
     kvm_minidump_powerpc64_hpt.c
     kvm_minidump_riscv.c
-    kvm_pcpu.c
     kvm_powerpc.c
     kvm_powerpc64.c
     kvm_private.c
@@ -76,12 +75,8 @@ install(
     FILES
     kvm.3
     kvm_close.3
-    kvm_counter_u64_fetch.3
-    kvm_dpcpu_setcpu.3
     kvm_geterr.3
     kvm_getloadavg.3
-    kvm_getmaxcpu.3
-    kvm_getpcpu.3
     kvm_getprocs.3
     kvm_getswapinfo.3
     kvm_kerndisp.3
@@ -93,6 +88,5 @@ install(
     kvm_openfiles.3
     kvm_read.3
     kvm_read2.3
-    kvm_read_zpcpu.3
     kvm_write.3
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man3")
