@@ -17,7 +17,6 @@ add_library(
     kvm.c
     kvm_amd64.c
     kvm_arm.c
-    kvm_cptime.c
     kvm_getloadavg.c
     kvm_getswapinfo.c
     kvm_i386.c

@@ -87,7 +87,6 @@ struct kvm_page {
 __BEGIN_DECLS
 int	  kvm_close(kvm_t *);
 int	  kvm_dpcpu_setcpu(kvm_t *, unsigned int);
-int	  kvm_getcptime(kvm_t *, long *);
 char	 *kvm_geterr(kvm_t *);
 int	  kvm_getloadavg(kvm_t *, double [], int);
 int	  kvm_getmaxcpu(kvm_t *);
