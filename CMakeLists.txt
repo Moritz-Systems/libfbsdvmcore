@@ -30,7 +30,6 @@ add_library(
     kvm_powerpc.c
     kvm_powerpc64.c
     kvm_private.c
-    kvm_proc.c
     kvm_vnet.c
     kvm.h
     )
@@ -75,7 +74,6 @@ install(
     kvm.3
     kvm_close.3
     kvm_geterr.3
-    kvm_getprocs.3
     kvm_getswapinfo.3
     kvm_kerndisp.3
     kvm_native.3
