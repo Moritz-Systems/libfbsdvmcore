@@ -17,7 +17,6 @@ add_library(
     kvm.c
     kvm_amd64.c
     kvm_arm.c
-    kvm_getloadavg.c
     kvm_getswapinfo.c
     kvm_i386.c
     kvm_minidump_aarch64.c
@@ -76,7 +75,6 @@ install(
     kvm.3
     kvm_close.3
     kvm_geterr.3
-    kvm_getloadavg.3
     kvm_getprocs.3
     kvm_getswapinfo.3
     kvm_kerndisp.3

@@ -87,7 +87,6 @@ struct kvm_page {
 __BEGIN_DECLS
 int	  kvm_close(kvm_t *);
 char	 *kvm_geterr(kvm_t *);
-int	  kvm_getloadavg(kvm_t *, double [], int);
 struct kinfo_proc *
 	  kvm_getprocs(kvm_t *, int, int, int *);
 int	  kvm_getswapinfo(kvm_t *, struct kvm_swap *, int, int);
