@@ -29,7 +29,6 @@ add_library(
     kvm_powerpc.c
     kvm_powerpc64.c
     kvm_private.c
-    kvm_vnet.c
     kvm.h
     )
 set_target_properties(

@@ -82,12 +82,6 @@ struct __kvm {
 	int	rawdump;	/* raw dump format */
 	int	writable;	/* physical memory is writable */
 
-	int		vnet_initialized;	/* vnet fields set up */
-	kvaddr_t	vnet_start;	/* start of kernel's vnet region */
-	kvaddr_t	vnet_stop;	/* stop of kernel's vnet region */
-	kvaddr_t	vnet_current;	/* vnet we're working with */
-	kvaddr_t	vnet_base;	/* vnet base of current vnet */
-
 	/* Page table lookup structures. */
 	uint64_t	*pt_map;
 	size_t		pt_map_size;
@@ -164,9 +158,6 @@ void	*_kvm_malloc(kvm_t *kd, size_t);
 int	 _kvm_nlist(kvm_t *, struct kvm_nlist *, int);
 void	 _kvm_syserr (kvm_t *kd, const char *program, const char *fmt, ...)
 	    __printflike(3, 4);
-int	 _kvm_vnet_selectpid(kvm_t *, pid_t);
-int	 _kvm_vnet_initialized(kvm_t *, int);
-kvaddr_t _kvm_vnet_validaddr(kvm_t *, kvaddr_t);
 int	 _kvm_probe_elf_kernel(kvm_t *, int, int);
 int	 _kvm_is_minidump(kvm_t *);
 int	 _kvm_read_core_phdrs(kvm_t *, size_t *, GElf_Phdr **);

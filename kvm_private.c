@@ -33,8 +33,6 @@
 
 #include <sys/param.h>
 
-#define	_WANT_VNET
-
 #include <sys/user.h>
 #include <sys/linker.h>
 #include <sys/pcpu.h>
@@ -42,7 +40,6 @@
 #include <sys/mman.h>
 
 #include <stdbool.h>
-#include <net/vnet.h>
 
 #include <assert.h>
 #include <fcntl.h>
@@ -665,7 +662,6 @@ _kvm_nlist(kvm_t *kd, struct kvm_nlist *nl, int initialize)
 	int error;
 	const char *prefix = "";
 	char symname[1024]; /* XXX-BZ symbol name length limit? */
-	int tried_vnet;
 
 	/*
 	 * If we can't use the kld symbol lookup, revert to the
@@ -674,10 +670,6 @@ _kvm_nlist(kvm_t *kd, struct kvm_nlist *nl, int initialize)
 	error = kvm_fdnlist(kd, nl);
 	if (error <= 0)			/* Hard error or success. */
 		return (error);
-
-	if (_kvm_vnet_initialized(kd, initialize))
-		error = kvm_fdnlist_prefix(kd, nl, error,
-		    VNET_SYMPREFIX, _kvm_vnet_validaddr);
 
 	return (error);
 }

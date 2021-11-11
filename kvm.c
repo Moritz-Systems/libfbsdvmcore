@@ -35,8 +35,6 @@
 
 #include <sys/param.h>
 
-#define	_WANT_VNET
-
 #include <sys/user.h>
 #include <sys/linker.h>
 #include <sys/pcpu.h>
@@ -45,7 +43,6 @@
 #include <sys/mman.h>
 
 #include <stdbool.h>
-#include <net/vnet.h>
 
 #include <fcntl.h>
 #include <kvm.h>
