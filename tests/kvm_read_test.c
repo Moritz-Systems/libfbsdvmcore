@@ -73,18 +73,18 @@ ATF_TC_BODY(kvm_read_positive_test_no_error, tc)
 	if (nl[X_MAXCPUS].n_type == 0)
 		atf_tc_skip("symbol (\"%s\") couldn't be found", SYMNAME);
 
-	rc = kvm_read(kd, nl[X_MAXCPUS].n_value, &mp_maxcpus,
+	rc = kvm_read2(kd, nl[X_MAXCPUS].n_value, &mp_maxcpus,
 	    sizeof(mp_maxcpus));
 
-	ATF_REQUIRE_MSG(rc != -1, "kvm_read failed: %s", kvm_geterr(kd));
+	ATF_REQUIRE_MSG(rc != -1, "kvm_read2 failed: %s", kvm_geterr(kd));
 	ATF_REQUIRE_MSG(kvm_close(kd) == 0, "kvm_close failed: %s",
 	    strerror(errno));
 
-	/* Check if value read from kvm_read is sane */
+	/* Check if value read from kvm_read2 is sane */
         retcode = sysctlbyname("kern.smp.maxcpus", &sysctl_maxcpus, &len, NULL, 0);
 	ATF_REQUIRE_MSG(retcode == 0, "sysctl read failed : %d", retcode);
 	ATF_REQUIRE_EQ_MSG(mp_maxcpus, sysctl_maxcpus,
-	    "failed: kvm_read of mp_maxcpus returned %d but sysctl maxcpus returned %d",
+	    "failed: kvm_read2 of mp_maxcpus returned %d but sysctl maxcpus returned %d",
 	    mp_maxcpus, sysctl_maxcpus);
 }
 

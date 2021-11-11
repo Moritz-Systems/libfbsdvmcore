@@ -284,13 +284,6 @@ kvm_close(kvm_t *kd)
 }
 
 ssize_t
-kvm_read(kvm_t *kd, u_long kva, void *buf, size_t len)
-{
-
-	return (kvm_read2(kd, kva, buf, len));
-}
-
-ssize_t
 kvm_read2(kvm_t *kd, kvaddr_t kva, void *buf, size_t len)
 {
 	int cc;
@@ -312,7 +305,7 @@ kvm_read2(kvm_t *kd, kvaddr_t kva, void *buf, size_t len)
 		}
 		cr = read(kd->pmfd, cp, cc);
 		if (cr < 0) {
-			_kvm_syserr(kd, kd->program, "kvm_read");
+			_kvm_syserr(kd, kd->program, "kvm_read2");
 			break;
 		}
 		/*
