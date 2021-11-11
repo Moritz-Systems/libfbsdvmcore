@@ -74,8 +74,6 @@ install(
     kvm_geterr.3
     kvm_kerndisp.3
     kvm_native.3
-    kvm_nlist.3
-    kvm_nlist2.3
     kvm_open.3
     kvm_open2.3
     kvm_openfiles.3

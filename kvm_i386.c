@@ -133,7 +133,7 @@ _i386_initvtop(kvm_t *kd)
 	nl[0].n_name = "kernbase";
 	nl[1].n_name = 0;
 
-	if (kvm_nlist2(kd, nl) != 0) {
+	if (_kvm_nlist(kd, nl) != 0) {
 #ifdef __i386__
 		kernbase = KERNBASE;	/* for old kernels */
 #else
@@ -146,7 +146,7 @@ _i386_initvtop(kvm_t *kd)
 	nl[0].n_name = "IdlePDPT";
 	nl[1].n_name = 0;
 
-	if (kvm_nlist2(kd, nl) == 0) {
+	if (_kvm_nlist(kd, nl) == 0) {
 		i386_physaddr_pae_t pa64;
 
 		if (kvm_read2(kd, (nl[0].n_value - kernbase), &pa,
@@ -182,7 +182,7 @@ _i386_initvtop(kvm_t *kd)
 		nl[0].n_name = "IdlePTD";
 		nl[1].n_name = 0;
 
-		if (kvm_nlist2(kd, nl) != 0) {
+		if (_kvm_nlist(kd, nl) != 0) {
 			_kvm_err(kd, kd->program, "bad namelist");
 			return (-1);
 		}

@@ -36,7 +36,6 @@
 #define	_KVM_H_
 
 #include <sys/types.h>
-#include <nlist.h>
 
 /*
  * Including vm/vm.h causes namespace pollution issues.  For the
@@ -49,12 +48,6 @@ typedef u_char vm_prot_t;
 /* Default version symbol. */
 #define	VRS_SYM		"_version"
 #define	VRS_KEY		"VERSION"
-
-struct kvm_nlist {
-	const char *n_name;
-	unsigned char n_type;
-	kvaddr_t n_value;
-};
 
 typedef struct __kvm kvm_t;
 
@@ -88,7 +81,6 @@ __BEGIN_DECLS
 int	  kvm_close(kvm_t *);
 char	 *kvm_geterr(kvm_t *);
 int	  kvm_native(kvm_t *);
-int	  kvm_nlist2(kvm_t *, struct kvm_nlist *);
 kvm_t	 *kvm_open
 	    (const char *, const char *, const char *, int, const char *);
 kvm_t	 *kvm_openfiles

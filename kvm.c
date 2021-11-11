@@ -283,17 +283,6 @@ kvm_close(kvm_t *kd)
 	return (error);
 }
 
-int
-kvm_nlist2(kvm_t *kd, struct kvm_nlist *nl)
-{
-
-	/*
-	 * If called via the public interface, permit initialization of
-	 * further virtualized modules on demand.
-	 */
-	return (_kvm_nlist(kd, nl, 1));
-}
-
 ssize_t
 kvm_read(kvm_t *kd, u_long kva, void *buf, size_t len)
 {

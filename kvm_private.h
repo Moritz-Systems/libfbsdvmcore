@@ -40,6 +40,12 @@
 #include <sys/linker_set.h>
 #include <gelf.h>
 
+struct kvm_nlist {
+	const char *n_name;
+	unsigned char n_type;
+	kvaddr_t n_value;
+};
+
 struct kvm_arch {
 	int	(*ka_probe)(kvm_t *);
 	int	(*ka_initvtop)(kvm_t *);
@@ -155,7 +161,7 @@ void	 _kvm_bitmap_deinit(struct kvm_bitmap *);
 void	 _kvm_err(kvm_t *kd, const char *program, const char *fmt, ...)
 	    __printflike(3, 4);
 void	*_kvm_malloc(kvm_t *kd, size_t);
-int	 _kvm_nlist(kvm_t *, struct kvm_nlist *, int);
+int	 _kvm_nlist(kvm_t *, struct kvm_nlist *);
 void	 _kvm_syserr (kvm_t *kd, const char *program, const char *fmt, ...)
 	    __printflike(3, 4);
 int	 _kvm_probe_elf_kernel(kvm_t *, int, int);

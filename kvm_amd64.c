@@ -127,7 +127,7 @@ _amd64_initvtop(kvm_t *kd)
 	nl[0].n_name = "kernbase";
 	nl[1].n_name = 0;
 
-	if (kvm_nlist2(kd, nl) != 0) {
+	if (_kvm_nlist(kd, nl) != 0) {
 		_kvm_err(kd, kd->program, "bad namelist - no kernbase");
 		return (-1);
 	}
@@ -136,7 +136,7 @@ _amd64_initvtop(kvm_t *kd)
 	nl[0].n_name = "KPML4phys";
 	nl[1].n_name = 0;
 
-	if (kvm_nlist2(kd, nl) != 0) {
+	if (_kvm_nlist(kd, nl) != 0) {
 		_kvm_err(kd, kd->program, "bad namelist - no KPML4phys");
 		return (-1);
 	}

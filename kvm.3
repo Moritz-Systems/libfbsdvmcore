@@ -71,10 +71,9 @@ In most respects, the Sun kvm interface is consistent and clean.
 Accordingly, the generic portion of the interface (i.e.,
 .Fn kvm_open ,
 .Fn kvm_close ,
-.Fn kvm_read ,
-.Fn kvm_write ,
+.Fn kvm_read
 and
-.Fn kvm_nlist )
+.Fn kvm_write )
 has been incorporated into the
 .Bx
 interface.
@@ -116,20 +115,11 @@ the kvm interface defines an integer type
 .Pq Vt kvaddr_t
 that is large enough to hold all valid addresses of all supported
 architectures.
-The interface also defines a new namelist structure type
-.Pq Vt "struct kvm_nlist"
-for use with
-.Fn kvm_nlist2 .
 To avoid address truncation issues,
 the caller should use
-.Fn kvm_nlist2
-and
 .Fn kvm_read2
 in place of
-.Fn kvm_nlist
-and
-.Fn kvm_read ,
-respectively.
+.Fn kvm_read .
 Finally, only a limited subset of operations are supported for non-native
 crash dumps:
 .Fn kvm_close ,
@@ -137,7 +127,6 @@ crash dumps:
 .Fn kvm_kerndisp ,
 .Fn kvm_open2 ,
 .Fn kvm_native ,
-.Fn kvm_nlist2 ,
 and
 .Fn kvm_read2 .
 .Sh SEE ALSO
@@ -147,8 +136,6 @@ and
 .Xr kvm_geterr 3 ,
 .Xr kvm_kerndisp 3 ,
 .Xr kvm_native 3 ,
-.Xr kvm_nlist 3 ,
-.Xr kvm_nlist2 3 ,
 .Xr kvm_open 3 ,
 .Xr kvm_open2 3 ,
 .Xr kvm_openfiles 3 ,

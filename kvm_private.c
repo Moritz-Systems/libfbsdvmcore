@@ -46,6 +46,7 @@
 #include <vm/vm.h>
 #include <kvm.h>
 #include <limits.h>
+#include <nlist.h>
 #include <paths.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -654,7 +655,7 @@ kvm_fdnlist_prefix(kvm_t *kd, struct kvm_nlist *nl, int missing,
 }
 
 int
-_kvm_nlist(kvm_t *kd, struct kvm_nlist *nl, int initialize)
+_kvm_nlist(kvm_t *kd, struct kvm_nlist *nl)
 {
 	struct kvm_nlist *p;
 	int nvalid;

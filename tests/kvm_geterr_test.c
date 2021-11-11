@@ -107,9 +107,9 @@ ATF_TC_BODY(kvm_geterr_positive_test_no_error, tc)
 	kd = kvm_open2(NULL, NULL, O_RDONLY, errbuf, NULL);
 	ATF_CHECK(!errbuf_has_error(errbuf));
 	ATF_REQUIRE_MSG(kd != NULL, "kvm_open2 failed: %s", errbuf);
-	retcode = kvm_nlist2(kd, nl);
+	retcode = _kvm_nlist(kd, nl);
 	ATF_REQUIRE_MSG(retcode != -1,
-	    "kvm_nlist2 failed (returned %d): %s", retcode, kvm_geterr(kd));
+	    "_kvm_nlist failed (returned %d): %s", retcode, kvm_geterr(kd));
 	if (nl[X_MAXCPUS].n_type == 0)
 		atf_tc_skip("symbol (\"%s\") couldn't be found", SYMNAME);
 	_kvm_err(kd, NULL, "%s", ALL_IS_WELL); /* XXX: internal API */

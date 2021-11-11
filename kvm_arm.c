@@ -139,7 +139,7 @@ _arm_initvtop(kvm_t *kd)
 	nl[1].n_name = NULL;
 	if (!found) {
 		nl[0].n_name = "kernbase";
-		if (kvm_nlist2(kd, nl) != 0) {
+		if (_kvm_nlist(kd, nl) != 0) {
 #ifdef __arm__
 			kernbase = KERNBASE;
 #else
@@ -150,14 +150,14 @@ _arm_initvtop(kvm_t *kd)
 			kernbase = nl[0].n_value;
 
 		nl[0].n_name = "physaddr";
-		if (kvm_nlist2(kd, nl) != 0) {
+		if (_kvm_nlist(kd, nl) != 0) {
 			_kvm_err(kd, kd->program, "couldn't get phys addr");
 			return (-1);
 		}
 		physaddr = nl[0].n_value;
 	}
 	nl[0].n_name = "kernel_l1pa";
-	if (kvm_nlist2(kd, nl) != 0) {
+	if (_kvm_nlist(kd, nl) != 0) {
 		_kvm_err(kd, kd->program, "bad namelist");
 		return (-1);
 	}
