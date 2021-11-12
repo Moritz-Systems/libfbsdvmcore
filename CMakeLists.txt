@@ -74,9 +74,7 @@ install(
     kvm_geterr.3
     kvm_kerndisp.3
     kvm_native.3
-    kvm_open.3
     kvm_open2.3
-    kvm_openfiles.3
     kvm_read2.3
     kvm_write.3
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man3")

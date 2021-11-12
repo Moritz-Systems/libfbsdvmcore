@@ -38,6 +38,8 @@
  * vm code will one day obsolete this module.
  */
 
+#include <stdio.h>
+
 #include <sys/param.h>
 #include <sys/endian.h>
 #include <stdint.h>

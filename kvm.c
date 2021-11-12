@@ -203,37 +203,6 @@ failed:
 }
 
 kvm_t *
-kvm_openfiles(const char *uf, const char *mf, const char *sf __unused, int flag,
-    char *errout)
-{
-	kvm_t *kd;
-
-	if ((kd = calloc(1, sizeof(*kd))) == NULL) {
-		if (errout != NULL)
-			(void)strlcpy(errout, strerror(errno),
-			    _POSIX2_LINE_MAX);
-		return (NULL);
-	}
-	return (_kvm_open(kd, uf, mf, flag, errout));
-}
-
-kvm_t *
-kvm_open(const char *uf, const char *mf, const char *sf __unused, int flag,
-    const char *errstr)
-{
-	kvm_t *kd;
-
-	if ((kd = calloc(1, sizeof(*kd))) == NULL) {
-		if (errstr != NULL)
-			(void)fprintf(stderr, "%s: %s\n",
-				      errstr, strerror(errno));
-		return (NULL);
-	}
-	kd->program = errstr;
-	return (_kvm_open(kd, uf, mf, flag, NULL));
-}
-
-kvm_t *
 kvm_open2(const char *uf, const char *mf, int flag, char *errout,
     int (*resolver)(const char *, kvaddr_t *))
 {

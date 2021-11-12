@@ -1,7 +1,6 @@
 set(TESTS
     kvm_close_test
     kvm_geterr_test
-    kvm_open_test
     kvm_open2_test
     kvm_read_test
     )

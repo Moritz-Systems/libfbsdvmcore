@@ -68,18 +68,14 @@ or an error has not been captured for
 .Xr kvm_close 3 ,
 .Xr kvm_getargv 3 ,
 .Xr kvm_getenvv 3 ,
-.Xr kvm_open 3 ,
-.Xr kvm_openfiles 3 ,
 .Xr kvm_read2 3 ,
 .Xr kvm_write 3
 .Sh BUGS
 This routine cannot be used to access error conditions due to a failed
-.Fn kvm_openfiles
+.Fn kvm_open2
 call, since failure is indicated by returning a
 .Dv NULL
 descriptor.
 Therefore, errors on open are output to the special error buffer
 passed to
-.Fn kvm_openfiles .
-This option is not available to
-.Fn kvm_open .
+.Fn kvm_open2 .

@@ -81,10 +81,6 @@ __BEGIN_DECLS
 int	  kvm_close(kvm_t *);
 char	 *kvm_geterr(kvm_t *);
 int	  kvm_native(kvm_t *);
-kvm_t	 *kvm_open
-	    (const char *, const char *, const char *, int, const char *);
-kvm_t	 *kvm_openfiles
-	    (const char *, const char *, const char *, int, char *);
 kvm_t	 *kvm_open2
 	    (const char *, const char *, int, char *,
 	    int (*)(const char *, kvaddr_t *));
