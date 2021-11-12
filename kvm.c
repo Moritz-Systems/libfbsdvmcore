@@ -114,9 +114,6 @@ _kvm_open(kvm_t *kd, const char *uf, const char *mf, int flag, char *errout)
 	kd->pmfd = -1;
 	kd->nlfd = -1;
 	kd->vmst = NULL;
-	kd->procbase = NULL;
-	kd->argspc = NULL;
-	kd->argv = NULL;
 
 	if (uf == NULL)
 		uf = getbootfile();
@@ -233,14 +230,6 @@ kvm_close(kvm_t *kd)
 		error |= close(kd->pmfd);
 	if (kd->nlfd >= 0)
 		error |= close(kd->nlfd);
-	if (kd->procbase != 0)
-		free((void *)kd->procbase);
-	if (kd->argbuf != 0)
-		free((void *) kd->argbuf);
-	if (kd->argspc != 0)
-		free((void *) kd->argspc);
-	if (kd->argv != 0)
-		free((void *)kd->argv);
 	if (kd->pt_map != NULL)
 		free(kd->pt_map);
 	if (kd->page_map != NULL)

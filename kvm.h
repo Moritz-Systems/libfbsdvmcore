@@ -51,17 +51,7 @@ typedef u_char vm_prot_t;
 
 typedef struct __kvm kvm_t;
 
-struct kinfo_proc;
 struct proc;
-
-struct kvm_swap {
-	char		ksw_devname[32];
-	unsigned int	ksw_used;
-	unsigned int	ksw_total;
-	int		ksw_flags;
-	unsigned int	ksw_reserved1;
-	unsigned int	ksw_reserved2;
-};
 
 struct kvm_page {
 	unsigned int	kp_version;
