@@ -174,12 +174,8 @@ _fvc_open(fvc_t *kd, const char *uf, const char *mf, int flag, char *errout)
 		goto failed;
 	}
 
-	/*
-	 * Non-native kernels require a symbol resolver.
-	 */
-	if (!kd->arch->ka_native(kd) && kd->resolve_symbol == NULL) {
-		_fvc_err(kd, kd->program,
-		    "non-native kernel requires a symbol resolver");
+	if (kd->resolve_symbol == NULL) {
+		_fvc_err(kd, kd->program, "a symbol resolver must be provided");
 		goto failed;
 	}
 

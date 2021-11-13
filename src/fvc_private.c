@@ -62,9 +62,6 @@
  * Routines private to libfvc.
  */
 
-/* from src/lib/libc/gen/nlist.c */
-int __fdnlist(int, struct nlist *);
-
 /*
  * Report an error using printf style arguments.  "program" is kd->program
  * on hard errors, and 0 on soft errors, so that under sun error emulation,
@@ -516,25 +513,6 @@ fvc_fdnlist(fvc_t *kd, struct fvc_nlist *list)
 {
 	kvaddr_t addr;
 	int error, nfail;
-
-	if (kd->resolve_symbol == NULL) {
-		struct nlist *nl;
-		int count, i;
-
-		for (count = 0; list[count].n_name != NULL &&
-		     list[count].n_name[0] != '\0'; count++)
-			;
-		nl = calloc(count + 1, sizeof(*nl));
-		for (i = 0; i < count; i++)
-			nl[i].n_name = list[i].n_name;
-		nfail = __fdnlist(kd->nlfd, nl);
-		for (i = 0; i < count; i++) {
-			list[i].n_type = nl[i].n_type;
-			list[i].n_value = nl[i].n_value;
-		}
-		free(nl);
-		return (nfail);
-	}
 
 	nfail = 0;
 	while (list->n_name != NULL && list->n_name[0] != '\0') {
