@@ -306,23 +306,11 @@ _amd64_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
 	return (_amd64_vatop(kd, va, pa));
 }
 
-int
-_amd64_native(fvc_t *kd __unused)
-{
-
-#ifdef __amd64__
-	return (1);
-#else
-	return (0);
-#endif
-}
-
 static struct fvc_arch fvc_amd64 = {
 	.ka_probe = _amd64_probe,
 	.ka_initvtop = _amd64_initvtop,
 	.ka_freevtop = _amd64_freevtop,
 	.ka_kvatop = _amd64_kvatop,
-	.ka_native = _amd64_native,
 };
 
 KVM_ARCH(fvc_amd64);

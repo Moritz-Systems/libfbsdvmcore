@@ -263,7 +263,6 @@ static struct fvc_arch fvc_arm_minidump = {
 	.ka_initvtop = _arm_minidump_initvtop,
 	.ka_freevtop = _arm_minidump_freevtop,
 	.ka_kvatop = _arm_minidump_kvatop,
-	.ka_native = _arm_native,
 	.ka_walk_pages = _arm_minidump_walk_pages,
 };
 

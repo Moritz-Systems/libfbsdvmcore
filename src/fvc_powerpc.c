@@ -212,23 +212,11 @@ _powerpc_kvatop(fvc_t *kd, kvaddr_t va, off_t *ofs)
 	return (0);
 }
 
-static int
-_powerpc_native(fvc_t *kd __unused)
-{
-
-#if defined(__powerpc__) && !defined(__powerpc64__)
-	return (1);
-#else
-	return (0);
-#endif
-}
-
 static struct fvc_arch fvc_powerpc = {
 	.ka_probe = _powerpc_probe,
 	.ka_initvtop = _powerpc_initvtop,
 	.ka_freevtop = _powerpc_freevtop,
 	.ka_kvatop = _powerpc_kvatop,
-	.ka_native = _powerpc_native,
 };
 
 KVM_ARCH(fvc_powerpc);

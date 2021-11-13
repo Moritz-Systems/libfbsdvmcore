@@ -247,31 +247,11 @@ _fvc_mdopen(fvc_t *kd)
 }
 #endif
 
-int
-#ifdef __arm__
-_arm_native(fvc_t *kd)
-#else
-_arm_native(fvc_t *kd __unused)
-#endif
-{
-
-#ifdef __arm__
-#if _BYTE_ORDER == _LITTLE_ENDIAN
-	return (kd->nlehdr.e_ident[EI_DATA] == ELFDATA2LSB);
-#else
-	return (kd->nlehdr.e_ident[EI_DATA] == ELFDATA2MSB);
-#endif
-#else
-	return (0);
-#endif
-}
-
 static struct fvc_arch fvc_arm = {
 	.ka_probe = _arm_probe,
 	.ka_initvtop = _arm_initvtop,
 	.ka_freevtop = _arm_freevtop,
 	.ka_kvatop = _arm_kvatop,
-	.ka_native = _arm_native,
 };
 
 KVM_ARCH(fvc_arm);

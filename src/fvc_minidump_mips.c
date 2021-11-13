@@ -227,39 +227,6 @@ invalid:
 	return (0);
 }
 
-static int
-#ifdef __mips__
-_mips_native(fvc_t *kd)
-#else
-_mips_native(fvc_t *kd __unused)
-#endif
-{
-
-#ifdef __mips__
-#ifdef __mips_n64
-	if (kd->nlehdr.e_ident[EI_CLASS] != ELFCLASS64)
-		return (0);
-#else
-	if (kd->nlehdr.e_ident[EI_CLASS] != ELFCLASS32)
-		return (0);
-#ifdef __mips_n32
-	if (!(kd->nlehdr.e_flags & EF_MIPS_ABI2))
-		return (0);
-#else
-	if (kd->nlehdr.e_flags & EF_MIPS_ABI2)
-		return (0);
-#endif
-#endif
-#if _BYTE_ORDER == _LITTLE_ENDIAN
-	return (kd->nlehdr.e_ident[EI_DATA] == ELFDATA2LSB);
-#else
-	return (kd->nlehdr.e_ident[EI_DATA] == ELFDATA2MSB);
-#endif
-#else
-	return (0);
-#endif
-}
-
 struct mips_iter {
 	fvc_t *kd;
 	u_long nptes;
@@ -353,7 +320,6 @@ static struct fvc_arch fvc_mips_minidump = {
 	.ka_initvtop = _mips_minidump_initvtop,
 	.ka_freevtop = _mips_minidump_freevtop,
 	.ka_kvatop = _mips_minidump_kvatop,
-	.ka_native = _mips_native,
 	.ka_walk_pages = _mips_minidump_walk_pages,
 };
 

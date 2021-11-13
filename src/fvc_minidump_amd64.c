@@ -427,7 +427,6 @@ static struct fvc_arch fvc_amd64_minidump = {
 	.ka_initvtop = _amd64_minidump_initvtop,
 	.ka_freevtop = _amd64_minidump_freevtop,
 	.ka_kvatop = _amd64_minidump_kvatop,
-	.ka_native = _amd64_native,
 	.ka_walk_pages = _amd64_minidump_walk_pages,
 };
 

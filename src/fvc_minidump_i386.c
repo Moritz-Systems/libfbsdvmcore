@@ -332,7 +332,6 @@ static struct fvc_arch fvc_i386_minidump = {
 	.ka_initvtop = _i386_minidump_initvtop,
 	.ka_freevtop = _i386_minidump_freevtop,
 	.ka_kvatop = _i386_minidump_kvatop,
-	.ka_native = _i386_native,
 	.ka_walk_pages = _i386_minidump_walk_pages,
 };
 

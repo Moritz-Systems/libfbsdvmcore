@@ -328,13 +328,6 @@ fvc_write(fvc_t *kd, u_long kva, const void *buf, size_t len)
 }
 
 int
-fvc_native(fvc_t *kd)
-{
-
-	return (kd->arch->ka_native(kd));
-}
-
-int
 fvc_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *closure)
 {
 

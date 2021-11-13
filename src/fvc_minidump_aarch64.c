@@ -201,17 +201,6 @@ _aarch64_minidump_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
 	return (_aarch64_minidump_vatop(kd, va, pa));
 }
 
-static int
-_aarch64_native(fvc_t *kd __unused)
-{
-
-#ifdef __aarch64__
-	return (1);
-#else
-	return (0);
-#endif
-}
-
 static vm_prot_t
 _aarch64_entry_to_prot(aarch64_pte_t pte)
 {
@@ -279,7 +268,6 @@ static struct fvc_arch fvc_aarch64_minidump = {
 	.ka_initvtop = _aarch64_minidump_initvtop,
 	.ka_freevtop = _aarch64_minidump_freevtop,
 	.ka_kvatop = _aarch64_minidump_kvatop,
-	.ka_native = _aarch64_native,
 	.ka_walk_pages = _aarch64_minidump_walk_pages,
 };
 

@@ -51,7 +51,6 @@ struct fvc_arch {
 	int	(*ka_initvtop)(fvc_t *);
 	void	(*ka_freevtop)(fvc_t *);
 	int	(*ka_kvatop)(fvc_t *, kvaddr_t, off_t *);
-	int	(*ka_native)(fvc_t *);
 	int	(*ka_walk_pages)(fvc_t *, fvc_walk_pages_cb_t *, void *);
 	kssize_t (*ka_kerndisp)(fvc_t *);
 };

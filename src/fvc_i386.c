@@ -398,23 +398,11 @@ _i386_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
 		return (_i386_vatop(kd, va, pa));
 }
 
-int
-_i386_native(fvc_t *kd __unused)
-{
-
-#ifdef __i386__
-	return (1);
-#else
-	return (0);
-#endif
-}
-
 static struct fvc_arch fvc_i386 = {
 	.ka_probe = _i386_probe,
 	.ka_initvtop = _i386_initvtop,
 	.ka_freevtop = _i386_freevtop,
 	.ka_kvatop = _i386_kvatop,
-	.ka_native = _i386_native,
 };
 
 KVM_ARCH(fvc_i386);

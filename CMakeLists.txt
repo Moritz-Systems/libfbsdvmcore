@@ -72,7 +72,6 @@ install(
     man/fvc_close.3
     man/fvc_geterr.3
     man/fvc_kerndisp.3
-    man/fvc_native.3
     man/fvc_open.3
     man/fvc_read.3
     man/fvc_write.3

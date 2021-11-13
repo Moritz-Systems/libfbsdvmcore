@@ -202,17 +202,6 @@ _riscv_minidump_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
 	return (_riscv_minidump_vatop(kd, va, pa));
 }
 
-static int
-_riscv_native(fvc_t *kd __unused)
-{
-
-#ifdef __riscv
-	return (1);
-#else
-	return (0);
-#endif
-}
-
 static vm_prot_t
 _riscv_entry_to_prot(riscv_pt_entry_t pte)
 {
@@ -280,7 +269,6 @@ static struct fvc_arch fvc_riscv_minidump = {
 	.ka_initvtop = _riscv_minidump_initvtop,
 	.ka_freevtop = _riscv_minidump_freevtop,
 	.ka_kvatop = _riscv_minidump_kvatop,
-	.ka_native = _riscv_native,
 	.ka_walk_pages = _riscv_minidump_walk_pages,
 };
 

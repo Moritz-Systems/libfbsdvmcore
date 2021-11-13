@@ -225,34 +225,11 @@ _powerpc64_kvatop(fvc_t *kd, kvaddr_t va, off_t *ofs)
 	return (0);
 }
 
-static int
-_powerpc64_native(fvc_t *kd __unused)
-{
-
-#if defined(__powerpc64__) && BYTE_ORDER == BIG_ENDIAN
-	return (1);
-#else
-	return (0);
-#endif
-}
-
-static int
-_powerpc64le_native(fvc_t *kd __unused)
-{
-
-#if defined(__powerpc64__) && BYTE_ORDER == LITTLE_ENDIAN
-	return (1);
-#else
-	return (0);
-#endif
-}
-
 static struct fvc_arch fvc_powerpc64 = {
 	.ka_probe = _powerpc64_probe,
 	.ka_initvtop = _powerpc64_initvtop,
 	.ka_freevtop = _powerpc64_freevtop,
 	.ka_kvatop = _powerpc64_kvatop,
-	.ka_native = _powerpc64_native,
 };
 
 static struct fvc_arch fvc_powerpc64le = {
@@ -260,7 +237,6 @@ static struct fvc_arch fvc_powerpc64le = {
 	.ka_initvtop = _powerpc64_initvtop,
 	.ka_freevtop = _powerpc64_freevtop,
 	.ka_kvatop = _powerpc64_kvatop,
-	.ka_native = _powerpc64le_native,
 };
 
 KVM_ARCH(fvc_powerpc64);

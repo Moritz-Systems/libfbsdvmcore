@@ -169,16 +169,6 @@ _powerpc64_minidump_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
 	return (PPC64_MMU_OP(kd, kvatop, va, pa));
 }
 
-static int
-_powerpc64_native(fvc_t *kd __unused)
-{
-#ifdef __powerpc64__
-	return (1);
-#else
-	return (0);
-#endif
-}
-
 static kssize_t
 _powerpc64_kerndisp(fvc_t *kd)
 {
@@ -197,7 +187,6 @@ static struct fvc_arch fvc_powerpc64_minidump = {
 	.ka_freevtop	= _powerpc64_minidump_freevtop,
 	.ka_kvatop	= _powerpc64_minidump_kvatop,
 	.ka_walk_pages	= _powerpc64_minidump_walk_pages,
-	.ka_native	= _powerpc64_native,
 	.ka_kerndisp	= _powerpc64_kerndisp,
 };
 
