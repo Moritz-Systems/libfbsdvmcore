@@ -113,7 +113,7 @@ _i386_initvtop(fvc_t *kd)
 {
 	struct fvc_nlist nl[2];
 	i386_physaddr_t pa;
-	kvaddr_t kernbase;
+	fvc_addr_t kernbase;
 	char		*PTD;
 	int		i;
 
@@ -208,15 +208,15 @@ _i386_initvtop(fvc_t *kd)
 }
 
 static int
-_i386_vatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_i386_vatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm;
 	i386_physaddr_t offset;
 	i386_physaddr_t pte_pa;
 	i386_pde_t pde;
 	i386_pte_t pte;
-	kvaddr_t pdeindex;
-	kvaddr_t pteindex;
+	fvc_addr_t pdeindex;
+	fvc_addr_t pteindex;
 	size_t s;
 	i386_physaddr_t a;
 	off_t ofs;
@@ -298,15 +298,15 @@ invalid:
 }
 
 static int
-_i386_vatop_pae(fvc_t *kd, kvaddr_t va, off_t *pa)
+_i386_vatop_pae(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm;
 	i386_physaddr_pae_t offset;
 	i386_physaddr_pae_t pte_pa;
 	i386_pde_pae_t pde;
 	i386_pte_pae_t pte;
-	kvaddr_t pdeindex;
-	kvaddr_t pteindex;
+	fvc_addr_t pdeindex;
+	fvc_addr_t pteindex;
 	size_t s;
 	i386_physaddr_pae_t a;
 	off_t ofs;
@@ -389,7 +389,7 @@ invalid:
 }
 
 static int
-_i386_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_i386_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 
 	if (kd->vmst->pae)

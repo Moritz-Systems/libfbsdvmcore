@@ -45,7 +45,7 @@
 #include "fvc_private.h"
 #include "fvc_riscv.h"
 
-#define	riscv_round_page(x)	roundup2((kvaddr_t)(x), RISCV_PAGE_SIZE)
+#define	riscv_round_page(x)	roundup2((fvc_addr_t)(x), RISCV_PAGE_SIZE)
 
 struct vmstate {
 	struct minidumphdr hdr;
@@ -139,12 +139,12 @@ _riscv_minidump_initvtop(fvc_t *kd)
 }
 
 static int
-_riscv_minidump_vatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_riscv_minidump_vatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm;
 	riscv_physaddr_t offset;
 	riscv_pt_entry_t l3;
-	kvaddr_t l3_index;
+	fvc_addr_t l3_index;
 	riscv_physaddr_t a;
 	off_t ofs;
 
@@ -196,7 +196,7 @@ invalid:
 }
 
 static int
-_riscv_minidump_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_riscv_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 
 	return (_riscv_minidump_vatop(kd, va, pa));

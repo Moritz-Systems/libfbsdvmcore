@@ -110,7 +110,7 @@ _amd64_initvtop(fvc_t *kd)
 {
 	struct fvc_nlist nl[2];
 	amd64_physaddr_t pa;
-	kvaddr_t kernbase;
+	fvc_addr_t kernbase;
 	amd64_pml4e_t *PML4;
 
 	kd->vmst = (struct vmstate *)_fvc_malloc(kd, sizeof(*kd->vmst));
@@ -163,7 +163,7 @@ _amd64_initvtop(fvc_t *kd)
 }
 
 static int
-_amd64_vatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_amd64_vatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm;
 	amd64_physaddr_t offset;
@@ -174,10 +174,10 @@ _amd64_vatop(fvc_t *kd, kvaddr_t va, off_t *pa)
 	amd64_pdpe_t pdpe;
 	amd64_pde_t pde;
 	amd64_pte_t pte;
-	kvaddr_t pml4eindex;
-	kvaddr_t pdpeindex;
-	kvaddr_t pdeindex;
-	kvaddr_t pteindex;
+	fvc_addr_t pml4eindex;
+	fvc_addr_t pdpeindex;
+	fvc_addr_t pdeindex;
+	fvc_addr_t pteindex;
 	amd64_physaddr_t a;
 	off_t ofs;
 	size_t s;
@@ -301,7 +301,7 @@ invalid:
 }
 
 static int
-_amd64_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_amd64_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	return (_amd64_vatop(kd, va, pa));
 }

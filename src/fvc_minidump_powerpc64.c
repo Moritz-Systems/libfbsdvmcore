@@ -164,7 +164,7 @@ failed:
 }
 
 static int
-_powerpc64_minidump_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_powerpc64_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	return (PPC64_MMU_OP(kd, kvatop, va, pa));
 }

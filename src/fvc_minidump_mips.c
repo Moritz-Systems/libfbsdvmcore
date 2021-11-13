@@ -46,7 +46,7 @@
 #include "fvc_private.h"
 #include "fvc_mips.h"
 
-#define	mips_round_page(x)	roundup2((kvaddr_t)(x), MIPS_PAGE_SIZE)
+#define	mips_round_page(x)	roundup2((fvc_addr_t)(x), MIPS_PAGE_SIZE)
 
 struct vmstate {
 	struct		minidumphdr hdr;
@@ -143,11 +143,11 @@ _mips_minidump_initvtop(fvc_t *kd)
 }
 
 static int
-_mips_minidump_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_mips_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm;
 	mips_physaddr_t offset, a;
-	kvaddr_t pteindex;
+	fvc_addr_t pteindex;
 	u_long valid;
 	off_t ofs;
 	mips32_pte_t pte32;

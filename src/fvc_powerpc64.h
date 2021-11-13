@@ -47,7 +47,7 @@
 #define	PPC64_PAGE_SIZE		(1ULL << PPC64_PAGE_SHIFT)
 #define	PPC64_PAGE_MASK		(PPC64_PAGE_SIZE - 1)
 
-#define	ppc64_round_page(x)	roundup2((kvaddr_t)(x), PPC64_PAGE_SIZE)
+#define	ppc64_round_page(x)	roundup2((fvc_addr_t)(x), PPC64_PAGE_SIZE)
 
 #define	PPC64_MMU_G5		"mmu_g5"
 #define	PPC64_MMU_PHYP		"mmu_phyp"
@@ -60,7 +60,7 @@
 struct ppc64_mmu_ops {
 	int (*init)(fvc_t *);
 	void (*cleanup)(fvc_t *);
-	int (*kvatop)(fvc_t *, kvaddr_t, off_t *);
+	int (*kvatop)(fvc_t *, fvc_addr_t, off_t *);
 	int (*walk_pages)(fvc_t *, fvc_walk_pages_cb_t *, void *);
 };
 

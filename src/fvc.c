@@ -192,7 +192,7 @@ failed:
 
 fvc_t *
 fvc_open(const char *uf, const char *mf, int flag, char *errout,
-    int (*resolver)(const char *, kvaddr_t *, void *),
+    int (*resolver)(const char *, fvc_addr_t *, void *),
     void *resolver_data)
 {
 	fvc_t *kd;
@@ -242,7 +242,7 @@ fvc_close(fvc_t *kd)
 }
 
 ssize_t
-fvc_read(fvc_t *kd, kvaddr_t kva, void *buf, size_t len)
+fvc_read(fvc_t *kd, fvc_addr_t kva, void *buf, size_t len)
 {
 	int cc;
 	ssize_t cr;

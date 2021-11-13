@@ -273,7 +273,7 @@ failed:
 }
 
 static ppc64_slb_entry_t *
-slb_search(fvc_t *kd, kvaddr_t ea)
+slb_search(fvc_t *kd, fvc_addr_t ea)
 {
 	struct hpt_data *data;
 	ppc64_slb_entry_t *slb;
@@ -319,7 +319,7 @@ pte_get(fvc_t *kd, u_long ptex)
 }
 
 static int
-pte_search(fvc_t *kd, ppc64_slb_entry_t *slb, uint64_t hid, kvaddr_t ea,
+pte_search(fvc_t *kd, ppc64_slb_entry_t *slb, uint64_t hid, fvc_addr_t ea,
     ppc64_pt_entry_t *p)
 {
 	uint64_t hash, hmask;
@@ -429,7 +429,7 @@ pte_search(fvc_t *kd, ppc64_slb_entry_t *slb, uint64_t hid, kvaddr_t ea,
 }
 
 static int
-pte_lookup(fvc_t *kd, kvaddr_t ea, ppc64_pt_entry_t *pte)
+pte_lookup(fvc_t *kd, fvc_addr_t ea, ppc64_pt_entry_t *pte)
 {
 	ppc64_slb_entry_t *slb;
 
@@ -442,7 +442,7 @@ pte_lookup(fvc_t *kd, kvaddr_t ea, ppc64_pt_entry_t *pte)
 }
 
 static int
-ppc64mmu_hpt_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+ppc64mmu_hpt_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct minidumphdr *hdr;
 	struct vmstate *vm;

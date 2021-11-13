@@ -53,11 +53,13 @@ typedef struct __fvc fvc_t;
 
 struct proc;
 
+typedef uint64_t fvc_addr_t;
+
 struct fvc_page {
 	unsigned int	kp_version;
-	kpaddr_t	kp_paddr;
-	kvaddr_t	kp_kmap_vaddr;
-	kvaddr_t	kp_dmap_vaddr;
+	fvc_addr_t	kp_paddr;
+	fvc_addr_t	kp_kmap_vaddr;
+	fvc_addr_t	kp_dmap_vaddr;
 	vm_prot_t	kp_prot;
 	off_t		kp_offset;
 	size_t		kp_len;
@@ -73,8 +75,8 @@ char	 *fvc_geterr(fvc_t *);
 int	  fvc_native(fvc_t *);
 fvc_t	 *fvc_open
 	    (const char *, const char *, int, char *,
-	    int (*)(const char *, kvaddr_t *, void *), void *);
-ssize_t	  fvc_read(fvc_t *, kvaddr_t, void *, size_t);
+	    int (*)(const char *, fvc_addr_t *, void *), void *);
+ssize_t	  fvc_read(fvc_t *, fvc_addr_t, void *, size_t);
 ssize_t	  fvc_write(fvc_t *, unsigned long, const void *, size_t);
 kssize_t  fvc_kerndisp(fvc_t *);
 

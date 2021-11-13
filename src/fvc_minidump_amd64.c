@@ -45,7 +45,7 @@
 #include "fvc_private.h"
 #include "fvc_amd64.h"
 
-#define	amd64_round_page(x)	roundup2((kvaddr_t)(x), AMD64_PAGE_SIZE)
+#define	amd64_round_page(x)	roundup2((fvc_addr_t)(x), AMD64_PAGE_SIZE)
 #define	VM_IS_V1(vm)		(vm->hdr.version == 1)
 #define	VA_OFF(vm, va)		\
 	(VM_IS_V1(vm) ? ((va) & (AMD64_PAGE_SIZE - 1)) : ((va) & AMD64_PAGE_MASK))
@@ -180,12 +180,12 @@ _amd64_minidump_initvtop(fvc_t *kd)
 }
 
 static int
-_amd64_minidump_vatop_v1(fvc_t *kd, kvaddr_t va, off_t *pa)
+_amd64_minidump_vatop_v1(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm;
 	amd64_physaddr_t offset;
 	amd64_pte_t pte;
-	kvaddr_t pteindex;
+	fvc_addr_t pteindex;
 	amd64_physaddr_t a;
 	off_t ofs;
 
@@ -236,15 +236,15 @@ invalid:
 }
 
 static int
-_amd64_minidump_vatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_amd64_minidump_vatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	amd64_pte_t pt[AMD64_NPTEPG];
 	struct vmstate *vm;
 	amd64_physaddr_t offset;
 	amd64_pde_t pde;
 	amd64_pte_t pte;
-	kvaddr_t pteindex;
-	kvaddr_t pdeindex;
+	fvc_addr_t pteindex;
+	fvc_addr_t pdeindex;
 	amd64_physaddr_t a;
 	off_t ofs;
 
@@ -324,7 +324,7 @@ invalid:
 }
 
 static int
-_amd64_minidump_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_amd64_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 
 	if (((struct vmstate *)kd->vmst)->hdr.version == 1)

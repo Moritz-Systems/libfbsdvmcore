@@ -511,7 +511,7 @@ _fvc_pt_find(fvc_t *kd, uint64_t pa, unsigned int page_size)
 static int
 fvc_fdnlist(fvc_t *kd, struct fvc_nlist *list)
 {
-	kvaddr_t addr;
+	fvc_addr_t addr;
 	int error, nfail;
 
 	nfail = 0;
@@ -537,7 +537,7 @@ fvc_fdnlist(fvc_t *kd, struct fvc_nlist *list)
  */
 static int
 fvc_fdnlist_prefix(fvc_t *kd, struct fvc_nlist *nl, int missing,
-    const char *prefix, kvaddr_t (*validate_fn)(fvc_t *, kvaddr_t))
+    const char *prefix, fvc_addr_t (*validate_fn)(fvc_t *, kvaddr_t))
 {
 	struct fvc_nlist *n, *np, *p;
 	char *cp, *ce;
@@ -722,7 +722,7 @@ _fvc_visit_cb(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg, u_long pa,
 }
 
 int
-_fvc_libelf_resolver(const char *name, kvaddr_t *addr, void *data)
+_fvc_libelf_resolver(const char *name, fvc_addr_t *addr, void *data)
 {
 	struct fvc_libelf_resolver_data *r_data = data;
 	size_t sh_index, sh_num;

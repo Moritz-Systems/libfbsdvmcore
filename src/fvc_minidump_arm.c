@@ -47,7 +47,7 @@
 #include "fvc_private.h"
 #include "fvc_arm.h"
 
-#define	arm_round_page(x)	roundup2((kvaddr_t)(x), ARM_PAGE_SIZE)
+#define	arm_round_page(x)	roundup2((fvc_addr_t)(x), ARM_PAGE_SIZE)
 
 struct vmstate {
 	struct		minidumphdr hdr;
@@ -146,12 +146,12 @@ _arm_minidump_initvtop(fvc_t *kd)
 }
 
 static int
-_arm_minidump_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_arm_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm;
 	arm_pt_entry_t pte;
 	arm_physaddr_t offset, a;
-	kvaddr_t pteindex;
+	fvc_addr_t pteindex;
 	off_t ofs;
 
 	vm = kd->vmst;

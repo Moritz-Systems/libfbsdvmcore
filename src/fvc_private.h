@@ -43,14 +43,14 @@
 struct fvc_nlist {
 	const char *n_name;
 	unsigned char n_type;
-	kvaddr_t n_value;
+	fvc_addr_t n_value;
 };
 
 struct fvc_arch {
 	int	(*ka_probe)(fvc_t *);
 	int	(*ka_initvtop)(fvc_t *);
 	void	(*ka_freevtop)(fvc_t *);
-	int	(*ka_kvatop)(fvc_t *, kvaddr_t, off_t *);
+	int	(*ka_kvatop)(fvc_t *, fvc_addr_t, off_t *);
 	int	(*ka_walk_pages)(fvc_t *, fvc_walk_pages_cb_t *, void *);
 	kssize_t (*ka_kerndisp)(fvc_t *);
 };
@@ -70,7 +70,7 @@ struct __fvc {
 	int	pmfd;		/* physical memory file (or crashdump) */
 	int	nlfd;		/* namelist file (e.g., /kernel) */
 	GElf_Ehdr nlehdr;	/* ELF file header for namelist file */
-	int	(*resolve_symbol)(const char *, kvaddr_t *, void *);
+	int	(*resolve_symbol)(const char *, fvc_addr_t *, void *);
 	void	*resolve_symbol_data;
 	/*
 	 * Kernel virtual address translation state.  This only gets filled
@@ -174,6 +174,6 @@ int	 _fvc_pmap_init(fvc_t *, uint32_t, off_t);
 void *	 _fvc_pmap_get(fvc_t *, u_long, size_t);
 void *	 _fvc_map_get(fvc_t *, u_long, unsigned int);
 
-int	 _fvc_libelf_resolver(const char *, kvaddr_t *, void *);
+int	 _fvc_libelf_resolver(const char *, fvc_addr_t *, void *);
 int	 _fvc_libelf_resolver_data_init(fvc_t *, const char *);
 void	 _fvc_libelf_resolver_data_deinit(fvc_t *);

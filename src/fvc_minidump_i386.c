@@ -45,7 +45,7 @@
 #include "fvc_private.h"
 #include "fvc_i386.h"
 
-#define	i386_round_page(x)	roundup2((kvaddr_t)(x), I386_PAGE_SIZE)
+#define	i386_round_page(x)	roundup2((fvc_addr_t)(x), I386_PAGE_SIZE)
 
 struct vmstate {
 	struct minidumphdr hdr;
@@ -142,12 +142,12 @@ _i386_minidump_initvtop(fvc_t *kd)
 }
 
 static int
-_i386_minidump_vatop_pae(fvc_t *kd, kvaddr_t va, off_t *pa)
+_i386_minidump_vatop_pae(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm;
 	i386_physaddr_pae_t offset;
 	i386_pte_pae_t pte;
-	kvaddr_t pteindex;
+	fvc_addr_t pteindex;
 	i386_physaddr_pae_t a;
 	off_t ofs;
 
@@ -187,12 +187,12 @@ invalid:
 }
 
 static int
-_i386_minidump_vatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_i386_minidump_vatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm;
 	i386_physaddr_t offset;
 	i386_pte_t pte;
-	kvaddr_t pteindex;
+	fvc_addr_t pteindex;
 	i386_physaddr_t a;
 	off_t ofs;
 
@@ -232,7 +232,7 @@ invalid:
 }
 
 static int
-_i386_minidump_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_i386_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 
 	if (kd->vmst->hdr.paemode)

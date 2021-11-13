@@ -144,7 +144,7 @@ powerpc_maphdrs(fvc_t *kd)
  * 0 when the virtual address is invalid.
  */
 static size_t
-powerpc_va2off(fvc_t *kd, kvaddr_t va, off_t *ofs)
+powerpc_va2off(fvc_t *kd, fvc_addr_t va, off_t *ofs)
 {
 	struct vmstate *vm = kd->vmst;
 	Elf32_Phdr *ph;
@@ -200,7 +200,7 @@ _powerpc_initvtop(fvc_t *kd)
 }
 
 static int
-_powerpc_kvatop(fvc_t *kd, kvaddr_t va, off_t *ofs)
+_powerpc_kvatop(fvc_t *kd, fvc_addr_t va, off_t *ofs)
 {
 	struct vmstate *vm;
 

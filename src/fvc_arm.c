@@ -104,7 +104,7 @@ _arm_initvtop(fvc_t *kd)
 {
 	struct vmstate *vm;
 	struct fvc_nlist nl[2];
-	kvaddr_t kernbase;
+	fvc_addr_t kernbase;
 	arm_physaddr_t physaddr, pa;
 	arm_pd_entry_t *l1pt;
 	size_t i;
@@ -190,7 +190,7 @@ _arm_initvtop(fvc_t *kd)
 
 
 static int
-_arm_kvatop(fvc_t *kd, kvaddr_t va, off_t *pa)
+_arm_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 {
 	struct vmstate *vm = kd->vmst;
 	arm_pd_entry_t pd;
