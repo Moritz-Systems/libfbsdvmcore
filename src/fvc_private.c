@@ -720,3 +720,98 @@ _fvc_visit_cb(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg, u_long pa,
 
 	return cb(&p, arg);
 }
+
+int
+_fvc_libelf_resolver(const char *name, kvaddr_t *addr, void *data)
+{
+	struct fvc_libelf_resolver_data *r_data = data;
+	size_t sh_index, sh_num;
+
+	if (elf_getshdrnum(r_data->elf, &sh_num) != 0)
+		return (-1);
+
+	for (sh_index = 1; sh_index < sh_num; sh_index++) {
+		Elf_Scn *scn;
+		GElf_Shdr shdr_mem, *shdr;
+		Elf_Data *data = NULL;
+
+		scn = elf_getscn(r_data->elf, sh_index);
+		if (scn == NULL)
+			continue;
+		shdr = gelf_getshdr(scn, &shdr_mem);
+		if (shdr == NULL)
+			continue;
+		if (shdr->sh_type != SHT_SYMTAB)
+			continue;
+
+		while ((data = elf_getdata(scn, data))) {
+			size_t count = shdr->sh_size / shdr->sh_entsize;
+			size_t i;
+
+			for (i = 0; i < count; i++) {
+				GElf_Sym sym_mem, *sym;
+				const char *symbol_name;
+
+				sym = gelf_getsym(data, i, &sym_mem);
+				if (!sym)
+					continue;
+				symbol_name = elf_strptr(r_data->elf,
+				    shdr->sh_link, sym->st_name);
+
+				if (!strcmp(symbol_name, name)) {
+					*addr = sym->st_value;
+					return (0);
+				}
+			}
+		}
+	}
+
+	return (-1);
+}
+
+int
+_fvc_libelf_resolver_data_init(fvc_t *kd, const char *path)
+{
+	const size_t data_len = sizeof(struct fvc_libelf_resolver_data);
+	struct fvc_libelf_resolver_data *r_data;
+
+	kd->resolve_symbol_data = _fvc_malloc(kd, data_len);
+	if (kd->resolve_symbol_data == NULL) {
+		_fvc_err(kd, kd->program, "cannot allocate %zu bytes for "
+		    "resolver data", data_len);
+		return (-1);
+	}
+
+	r_data = kd->resolve_symbol_data;
+	if ((r_data->fd = open(path, O_RDONLY | O_CLOEXEC, 0)) < 0) {
+		_fvc_syserr(kd, kd->program, "%s", path);
+		free(kd->resolve_symbol_data);
+		return (-1);
+	}
+
+	if (elf_version(EV_CURRENT) == EV_NONE) {
+		_fvc_err(kd, kd->program, "Unsupported libelf");
+		close(r_data->fd);
+		free(kd->resolve_symbol_data);
+		return (-1);
+	}
+	r_data->elf = elf_begin(r_data->fd, ELF_C_READ, NULL);
+	if (r_data->elf == NULL) {
+		_fvc_err(kd, kd->program, "%s", elf_errmsg(0));
+		close(r_data->fd);
+		free(kd->resolve_symbol_data);
+		return (-1);
+	}
+
+	return (0);
+}
+
+void
+_fvc_libelf_resolver_data_deinit(fvc_t *kd)
+{
+	struct fvc_libelf_resolver_data *r_data = kd->resolve_symbol_data;
+
+	elf_end(r_data->elf);
+	close(r_data->fd);
+	free(kd->resolve_symbol_data);
+}

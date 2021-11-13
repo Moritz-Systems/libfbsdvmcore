@@ -174,11 +174,6 @@ _fvc_open(fvc_t *kd, const char *uf, const char *mf, int flag, char *errout)
 		goto failed;
 	}
 
-	if (kd->resolve_symbol == NULL) {
-		_fvc_err(kd, kd->program, "a symbol resolver must be provided");
-		goto failed;
-	}
-
 	/*
 	 * Initialize the virtual address translation machinery.
 	 */
@@ -208,8 +203,15 @@ fvc_open(const char *uf, const char *mf, int flag, char *errout,
 			    _POSIX2_LINE_MAX);
 		return (NULL);
 	}
-	kd->resolve_symbol = resolver;
-	kd->resolve_symbol_data = resolver_data;
+
+	if (resolver != NULL) {
+		kd->resolve_symbol = resolver;
+		kd->resolve_symbol_data = resolver_data;
+	} else {
+		kd->resolve_symbol = _fvc_libelf_resolver;
+		if (_fvc_libelf_resolver_data_init(kd, uf) != 0)
+			return (NULL);
+	}
 	return (_fvc_open(kd, uf, mf, flag, errout));
 }
 

@@ -105,6 +105,11 @@ struct fvc_bitmap {
 	u_long size;
 };
 
+struct fvc_libelf_resolver_data {
+	int	fd;
+	Elf	*elf;
+};
+
 /* Page table lookup constants. */
 #define POPCOUNT_BITS	1024
 #define BITS_IN(v)	(sizeof(v) * NBBY)
@@ -169,3 +174,7 @@ int	 _fvc_visit_cb(fvc_t *, fvc_walk_pages_cb_t *, void *, u_long,
 int	 _fvc_pmap_init(fvc_t *, uint32_t, off_t);
 void *	 _fvc_pmap_get(fvc_t *, u_long, size_t);
 void *	 _fvc_map_get(fvc_t *, u_long, unsigned int);
+
+int	 _fvc_libelf_resolver(const char *, kvaddr_t *, void *);
+int	 _fvc_libelf_resolver_data_init(fvc_t *, const char *);
+void	 _fvc_libelf_resolver_data_deinit(fvc_t *);
