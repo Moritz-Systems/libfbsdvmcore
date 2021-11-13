@@ -2,10 +2,10 @@ include_directories(
   ${CMAKE_TOP_SOURCE_DIRECTORY}/src)
 
 set(TESTS
-    kvm_close_test
-    kvm_geterr_test
-    kvm_open2_test
-    kvm_read_test
+    fvc_close_test
+    fvc_geterr_test
+    fvc_open2_test
+    fvc_read_test
     )
 
 set(KYUAFILE "syntax(2)\ntest_suite(\"${CMAKE_PROJECT_NAME}\")\n")
@@ -15,7 +15,7 @@ foreach(T ${TESTS})
       ${T}
       EXCLUDE_FROM_ALL
       ${T}.c
-      kvm_test_common.c)
+      fvc_test_common.c)
   set_target_properties(
       ${T}
       PROPERTIES

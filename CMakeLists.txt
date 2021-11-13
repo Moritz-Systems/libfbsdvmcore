@@ -13,29 +13,29 @@ include_directories(
 
 add_library(
     fbsdvmcore
-    src/kvm.c
-    src/kvm_amd64.c
-    src/kvm_arm.c
-    src/kvm_i386.c
-    src/kvm_minidump_aarch64.c
-    src/kvm_minidump_amd64.c
-    src/kvm_minidump_arm.c
-    src/kvm_minidump_i386.c
-    src/kvm_minidump_mips.c
-    src/kvm_minidump_powerpc64.c
-    src/kvm_minidump_powerpc64_hpt.c
-    src/kvm_minidump_riscv.c
-    src/kvm_powerpc.c
-    src/kvm_powerpc64.c
-    src/kvm_private.c
-    src/kvm.h
+    src/fvc.c
+    src/fvc_amd64.c
+    src/fvc_arm.c
+    src/fvc_i386.c
+    src/fvc_minidump_aarch64.c
+    src/fvc_minidump_amd64.c
+    src/fvc_minidump_arm.c
+    src/fvc_minidump_i386.c
+    src/fvc_minidump_mips.c
+    src/fvc_minidump_powerpc64.c
+    src/fvc_minidump_powerpc64_hpt.c
+    src/fvc_minidump_riscv.c
+    src/fvc_powerpc.c
+    src/fvc_powerpc64.c
+    src/fvc_private.c
+    src/fvc.h
     )
 set_target_properties(
     fbsdvmcore
     PROPERTIES
     LINK_FLAGS "-Wl,-z,defs"
     LINK_LIBRARIES elf
-    PUBLIC_HEADER "kvm.h"
+    PUBLIC_HEADER "fvc.h"
     VERSION "${PROJECT_VERSION}"
     SOVERSION "${PROJECT_VERSION_MAJOR}")
 
@@ -68,12 +68,12 @@ install(
 
 install(
     FILES
-    man/kvm.3
-    man/kvm_close.3
-    man/kvm_geterr.3
-    man/kvm_kerndisp.3
-    man/kvm_native.3
-    man/kvm_open2.3
-    man/kvm_read2.3
-    man/kvm_write.3
+    man/fvc.3
+    man/fvc_close.3
+    man/fvc_geterr.3
+    man/fvc_kerndisp.3
+    man/fvc_native.3
+    man/fvc_open2.3
+    man/fvc_read2.3
+    man/fvc_write.3
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man3")
