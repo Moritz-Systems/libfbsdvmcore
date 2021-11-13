@@ -74,7 +74,7 @@ int	  fvc_native(fvc_t *);
 fvc_t	 *fvc_open
 	    (const char *, const char *, int, char *,
 	    int (*)(const char *, kvaddr_t *));
-ssize_t	  fvc_read2(fvc_t *, kvaddr_t, void *, size_t);
+ssize_t	  fvc_read(fvc_t *, kvaddr_t, void *, size_t);
 ssize_t	  fvc_write(fvc_t *, unsigned long, const void *, size_t);
 kssize_t  fvc_kerndisp(fvc_t *);
 

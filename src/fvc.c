@@ -242,7 +242,7 @@ fvc_close(fvc_t *kd)
 }
 
 ssize_t
-fvc_read2(fvc_t *kd, kvaddr_t kva, void *buf, size_t len)
+fvc_read(fvc_t *kd, kvaddr_t kva, void *buf, size_t len)
 {
 	int cc;
 	ssize_t cr;
@@ -263,7 +263,7 @@ fvc_read2(fvc_t *kd, kvaddr_t kva, void *buf, size_t len)
 		}
 		cr = read(kd->pmfd, cp, cc);
 		if (cr < 0) {
-			_fvc_syserr(kd, kd->program, "fvc_read2");
+			_fvc_syserr(kd, kd->program, "fvc_read");
 			break;
 		}
 		/*

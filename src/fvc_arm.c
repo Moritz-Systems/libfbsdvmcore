@@ -161,7 +161,7 @@ _arm_initvtop(fvc_t *kd)
 		_fvc_err(kd, kd->program, "bad namelist");
 		return (-1);
 	}
-	if (fvc_read2(kd, (nl[0].n_value - kernbase + physaddr), &pa,
+	if (fvc_read(kd, (nl[0].n_value - kernbase + physaddr), &pa,
 	    sizeof(pa)) != sizeof(pa)) {
 		_fvc_err(kd, kd->program, "cannot read kernel_l1pa");
 		return (-1);
@@ -171,7 +171,7 @@ _arm_initvtop(fvc_t *kd)
 		_fvc_err(kd, kd->program, "cannot allocate l1pt");
 		return (-1);
 	}
-	if (fvc_read2(kd, pa, l1pt, ARM_L1_TABLE_SIZE) != ARM_L1_TABLE_SIZE) {
+	if (fvc_read(kd, pa, l1pt, ARM_L1_TABLE_SIZE) != ARM_L1_TABLE_SIZE) {
 		_fvc_err(kd, kd->program, "cannot read l1pt");
 		free(l1pt);
 		return (-1);

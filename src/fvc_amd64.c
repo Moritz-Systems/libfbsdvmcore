@@ -142,7 +142,7 @@ _amd64_initvtop(fvc_t *kd)
 		_fvc_err(kd, kd->program, "bad namelist - no KPML4phys");
 		return (-1);
 	}
-	if (fvc_read2(kd, (nl[0].n_value - kernbase), &pa, sizeof(pa)) !=
+	if (fvc_read(kd, (nl[0].n_value - kernbase), &pa, sizeof(pa)) !=
 	    sizeof(pa)) {
 		_fvc_err(kd, kd->program, "cannot read KPML4phys");
 		return (-1);
@@ -153,7 +153,7 @@ _amd64_initvtop(fvc_t *kd)
 		_fvc_err(kd, kd->program, "cannot allocate PML4");
 		return (-1);
 	}
-	if (fvc_read2(kd, pa, PML4, AMD64_PAGE_SIZE) != AMD64_PAGE_SIZE) {
+	if (fvc_read(kd, pa, PML4, AMD64_PAGE_SIZE) != AMD64_PAGE_SIZE) {
 		_fvc_err(kd, kd->program, "cannot read KPML4phys");
 		free(PML4);
 		return (-1);

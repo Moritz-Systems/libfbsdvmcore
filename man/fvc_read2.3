@@ -29,14 +29,14 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.\"     @(#)fvc_read2.3	8.1 (Berkeley) 6/4/93
+.\"     @(#)fvc_read.3	8.1 (Berkeley) 6/4/93
 .\" $FreeBSD$
 .\"
 .Dd November 27, 2015
 .Dt KVM_READ 3
 .Os
 .Sh NAME
-.Nm fvc_read2 ,
+.Nm fvc_read ,
 .Nm fvc_write
 .Nd read or write kernel virtual memory
 .Sh LIBRARY
@@ -44,12 +44,12 @@
 .Sh SYNOPSIS
 .In fvc.h
 .Ft ssize_t
-.Fn fvc_read2 "fvc_t *kd" "kvaddr_t addr" "void *buf" "size_t nbytes"
+.Fn fvc_read "fvc_t *kd" "kvaddr_t addr" "void *buf" "size_t nbytes"
 .Ft ssize_t
 .Fn fvc_write "fvc_t *kd" "unsigned long addr" "const void *buf" "size_t nbytes"
 .Sh DESCRIPTION
 The
-.Fn fvc_read2
+.Fn fvc_read
 and
 .Fn fvc_write
 functions are used to read and write kernel virtual memory (or a crash
@@ -59,7 +59,7 @@ See
 for information regarding opening kernel virtual memory and crash dumps.
 .Pp
 The
-.Fn fvc_read2
+.Fn fvc_read
 function transfers
 .Fa nbytes
 bytes of data from

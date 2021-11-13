@@ -73,18 +73,18 @@ ATF_TC_BODY(fvc_read_positive_test_no_error, tc)
 	if (nl[X_MAXCPUS].n_type == 0)
 		atf_tc_skip("symbol (\"%s\") couldn't be found", SYMNAME);
 
-	rc = fvc_read2(kd, nl[X_MAXCPUS].n_value, &mp_maxcpus,
+	rc = fvc_read(kd, nl[X_MAXCPUS].n_value, &mp_maxcpus,
 	    sizeof(mp_maxcpus));
 
-	ATF_REQUIRE_MSG(rc != -1, "fvc_read2 failed: %s", fvc_geterr(kd));
+	ATF_REQUIRE_MSG(rc != -1, "fvc_read failed: %s", fvc_geterr(kd));
 	ATF_REQUIRE_MSG(fvc_close(kd) == 0, "fvc_close failed: %s",
 	    strerror(errno));
 
-	/* Check if value read from fvc_read2 is sane */
+	/* Check if value read from fvc_read is sane */
         retcode = sysctlbyname("kern.smp.maxcpus", &sysctl_maxcpus, &len, NULL, 0);
 	ATF_REQUIRE_MSG(retcode == 0, "sysctl read failed : %d", retcode);
 	ATF_REQUIRE_EQ_MSG(mp_maxcpus, sysctl_maxcpus,
-	    "failed: fvc_read2 of mp_maxcpus returned %d but sysctl maxcpus returned %d",
+	    "failed: fvc_read of mp_maxcpus returned %d but sysctl maxcpus returned %d",
 	    mp_maxcpus, sysctl_maxcpus);
 }
 

@@ -113,10 +113,10 @@ ATF_TC_BODY(fvc_geterr_positive_test_no_error, tc)
 	if (nl[X_MAXCPUS].n_type == 0)
 		atf_tc_skip("symbol (\"%s\") couldn't be found", SYMNAME);
 	_fvc_err(kd, NULL, "%s", ALL_IS_WELL); /* XXX: internal API */
-	rc = fvc_read2(kd, nl[X_MAXCPUS].n_value, &mp_maxcpus,
+	rc = fvc_read(kd, nl[X_MAXCPUS].n_value, &mp_maxcpus,
 	    sizeof(mp_maxcpus));
 
-	ATF_REQUIRE_MSG(rc != -1, "fvc_read2 failed: %s", fvc_geterr(kd));
+	ATF_REQUIRE_MSG(rc != -1, "fvc_read failed: %s", fvc_geterr(kd));
 	error_msg = fvc_geterr(kd);
 	ATF_REQUIRE_MSG(strcmp(error_msg, ALL_IS_WELL) == 0,
 	    "error message changed: %s", error_msg);

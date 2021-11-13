@@ -149,7 +149,7 @@ _i386_initvtop(fvc_t *kd)
 	if (_fvc_nlist(kd, nl) == 0) {
 		i386_physaddr_pae_t pa64;
 
-		if (fvc_read2(kd, (nl[0].n_value - kernbase), &pa,
+		if (fvc_read(kd, (nl[0].n_value - kernbase), &pa,
 		    sizeof(pa)) != sizeof(pa)) {
 			_fvc_err(kd, kd->program, "cannot read IdlePDPT");
 			return (-1);
@@ -161,14 +161,14 @@ _i386_initvtop(fvc_t *kd)
 			return (-1);
 		}
 		for (i = 0; i < 4; i++) {
-			if (fvc_read2(kd, pa + (i * sizeof(pa64)), &pa64,
+			if (fvc_read(kd, pa + (i * sizeof(pa64)), &pa64,
 			    sizeof(pa64)) != sizeof(pa64)) {
 				_fvc_err(kd, kd->program, "Cannot read PDPT");
 				free(PTD);
 				return (-1);
 			}
 			pa64 = le64toh(pa64);
-			if (fvc_read2(kd, pa64 & I386_PG_FRAME_PAE,
+			if (fvc_read(kd, pa64 & I386_PG_FRAME_PAE,
 			    PTD + (i * I386_PAGE_SIZE), I386_PAGE_SIZE) !=
 			    I386_PAGE_SIZE) {
 				_fvc_err(kd, kd->program, "cannot read PDPT");
@@ -186,7 +186,7 @@ _i386_initvtop(fvc_t *kd)
 			_fvc_err(kd, kd->program, "bad namelist");
 			return (-1);
 		}
-		if (fvc_read2(kd, (nl[0].n_value - kernbase), &pa,
+		if (fvc_read(kd, (nl[0].n_value - kernbase), &pa,
 		    sizeof(pa)) != sizeof(pa)) {
 			_fvc_err(kd, kd->program, "cannot read IdlePTD");
 			return (-1);
@@ -197,7 +197,7 @@ _i386_initvtop(fvc_t *kd)
 			_fvc_err(kd, kd->program, "cannot allocate PTD");
 			return (-1);
 		}
-		if (fvc_read2(kd, pa, PTD, I386_PAGE_SIZE) != I386_PAGE_SIZE) {
+		if (fvc_read(kd, pa, PTD, I386_PAGE_SIZE) != I386_PAGE_SIZE) {
 			_fvc_err(kd, kd->program, "cannot read PTD");
 			return (-1);
 		}
