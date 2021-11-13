@@ -36,12 +36,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <vm/vm.h>
-#include <kvm.h>
 
 #include "../../sys/amd64/include/minidump.h"
 
 #include <limits.h>
 
+#include "kvm.h"
 #include "kvm_private.h"
 #include "kvm_amd64.h"
 

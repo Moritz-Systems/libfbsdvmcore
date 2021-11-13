@@ -44,7 +44,6 @@
 #include <assert.h>
 #include <fcntl.h>
 #include <vm/vm.h>
-#include <kvm.h>
 #include <limits.h>
 #include <nlist.h>
 #include <paths.h>
@@ -56,6 +55,7 @@
 #include <stdarg.h>
 #include <inttypes.h>
 
+#include "kvm.h"
 #include "kvm_private.h"
 
 /*

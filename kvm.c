@@ -45,7 +45,6 @@
 #include <stdbool.h>
 
 #include <fcntl.h>
-#include <kvm.h>
 #include <limits.h>
 #include <paths.h>
 #include <stdint.h>
@@ -54,6 +53,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "kvm.h"
 #include "kvm_private.h"
 
 SET_DECLARE(kvm_arch, struct kvm_arch);

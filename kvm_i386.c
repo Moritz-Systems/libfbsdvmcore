@@ -45,7 +45,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <vm/vm.h>
-#include <kvm.h>
 
 #ifdef __i386__
 #include <machine/vmparam.h>		/* For KERNBASE. */
@@ -53,6 +52,7 @@
 
 #include <limits.h>
 
+#include "kvm.h"
 #include "kvm_private.h"
 #include "kvm_i386.h"
 

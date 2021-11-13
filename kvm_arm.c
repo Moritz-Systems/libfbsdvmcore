@@ -39,7 +39,6 @@
 
 #include <sys/param.h>
 #include <sys/endian.h>
-#include <kvm.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -49,6 +48,7 @@
 #include <machine/vmparam.h>
 #endif
 
+#include "kvm.h"
 #include "kvm_private.h"
 #include "kvm_arm.h"
 

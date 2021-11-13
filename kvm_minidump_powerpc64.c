@@ -28,14 +28,13 @@
 
 #include <sys/param.h>
 
-#include <kvm.h>
-
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 #include "../../sys/powerpc/include/minidump.h"
+#include "kvm.h"
 #include "kvm_private.h"
 #include "kvm_powerpc64.h"
 

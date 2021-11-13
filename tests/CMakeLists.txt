@@ -1,3 +1,6 @@
+include_directories(
+  ${CMAKE_TOP_SOURCE_DIRECTORY})
+
 set(TESTS
     kvm_close_test
     kvm_geterr_test

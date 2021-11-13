@@ -26,7 +26,6 @@
 #include <sys/param.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <kvm.h>
 #include <limits.h>
 #include <signal.h>
 #include <stdio.h>
@@ -34,6 +33,7 @@
 
 #include <atf-c.h>
 
+#include "kvm.h"
 #include "kvm_private.h"
 
 #include "kvm_test_common.h"

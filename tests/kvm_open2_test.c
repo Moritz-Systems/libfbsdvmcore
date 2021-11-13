@@ -26,7 +26,6 @@
 #include <sys/param.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <kvm.h>
 #include <limits.h>
 #include <paths.h>
 #include <signal.h>
@@ -36,6 +35,7 @@
 
 #include <atf-c.h>
 
+#include "kvm.h"
 #include "kvm_test_common.h"
 
 ATF_TC_WITHOUT_HEAD(kvm_open2_negative_test_nonexistent_corefile);

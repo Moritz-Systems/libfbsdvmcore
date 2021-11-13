@@ -31,7 +31,6 @@
 
 #include <sys/param.h>
 #include <vm/vm.h>
-#include <kvm.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -43,6 +42,7 @@
 #include "../../sys/mips/include/cpuregs.h"
 #include "../../sys/mips/include/minidump.h"
 
+#include "kvm.h"
 #include "kvm_private.h"
 #include "kvm_mips.h"
 
