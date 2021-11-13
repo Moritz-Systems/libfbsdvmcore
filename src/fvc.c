@@ -200,7 +200,7 @@ failed:
 }
 
 fvc_t *
-fvc_open2(const char *uf, const char *mf, int flag, char *errout,
+fvc_open(const char *uf, const char *mf, int flag, char *errout,
     int (*resolver)(const char *, kvaddr_t *))
 {
 	fvc_t *kd;

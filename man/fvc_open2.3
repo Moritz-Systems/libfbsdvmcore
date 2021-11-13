@@ -36,7 +36,7 @@
 .Dt KVM_OPEN 3
 .Os
 .Sh NAME
-.Nm fvc_open2 ,
+.Nm fvc_open ,
 .Nm fvc_close
 .Nd initialize kernel virtual memory access
 .Sh LIBRARY
@@ -45,7 +45,7 @@
 .In fcntl.h
 .In fvc.h
 .Ft fvc_t *
-.Fo fvc_open2
+.Fo fvc_open
 .Fa "const char *execfile"
 .Fa "const char *corefile"
 .Fa "int flags"
@@ -56,7 +56,7 @@
 .Fn fvc_close "fvc_t *kd"
 .Sh DESCRIPTION
 The
-.Fn fvc_open2
+.Fn fvc_open
 function returns a descriptor used to access kernel virtual memory
 via the
 .Xr fvc 3
@@ -121,7 +121,7 @@ The mechanism used by a descriptor is determined by the function used to
 open the descriptor.
 .Pp
 The
-.Fn fvc_open2
+.Fn fvc_open
 function provides
 .Bx
 style error reporting.
@@ -141,7 +141,7 @@ on failure,
 .Fn fvc_geterr
 cannot be used to get the error message if open fails.
 Thus,
-.Fn fvc_open2
+.Fn fvc_open
 will place any error message in the
 .Fa errbuf
 argument.
@@ -175,14 +175,14 @@ require a valid
 .Fa resolver .
 .Sh RETURN VALUES
 The
-.Fn fvc_open2
+.Fn fvc_open
 function returns a descriptor to be used
 in all subsequent fvc library calls.
 The library is fully re-entrant.
 On failure,
 .Dv NULL
 is returned, in which case
-.Fn fvc_open2
+.Fn fvc_open
 write the error message into
 .Fa errbuf .
 .Pp

@@ -38,76 +38,76 @@
 #include "fvc.h"
 #include "fvc_test_common.h"
 
-ATF_TC_WITHOUT_HEAD(fvc_open2_negative_test_nonexistent_corefile);
-ATF_TC_BODY(fvc_open2_negative_test_nonexistent_corefile, tc)
+ATF_TC_WITHOUT_HEAD(fvc_open_negative_test_nonexistent_corefile);
+ATF_TC_BODY(fvc_open_negative_test_nonexistent_corefile, tc)
 {
 
 	errbuf_clear();
-	ATF_CHECK(fvc_open2(NULL, "/nonexistent", O_RDONLY, NULL, NULL) == NULL);
+	ATF_CHECK(fvc_open(NULL, "/nonexistent", O_RDONLY, NULL, NULL) == NULL);
 	ATF_CHECK(!errbuf_has_error(errbuf));
 	errbuf_clear();
-	ATF_CHECK(fvc_open2(NULL, "/nonexistent", O_RDONLY,
+	ATF_CHECK(fvc_open(NULL, "/nonexistent", O_RDONLY,
 	    errbuf, NULL) == NULL);
 	ATF_CHECK(errbuf_has_error(errbuf));
 }
 
-ATF_TC_WITHOUT_HEAD(fvc_open2_negative_test_nonexistent_execfile);
-ATF_TC_BODY(fvc_open2_negative_test_nonexistent_execfile, tc)
+ATF_TC_WITHOUT_HEAD(fvc_open_negative_test_nonexistent_execfile);
+ATF_TC_BODY(fvc_open_negative_test_nonexistent_execfile, tc)
 {
 
 	errbuf_clear();
-	ATF_CHECK(fvc_open2("/nonexistent", _PATH_DEVZERO, O_RDONLY,
+	ATF_CHECK(fvc_open("/nonexistent", _PATH_DEVZERO, O_RDONLY,
 	    NULL, NULL) == NULL);
 	ATF_CHECK(strlen(errbuf) == 0);
 	errbuf_clear();
-	ATF_CHECK(fvc_open2("/nonexistent", _PATH_DEVZERO, O_RDONLY,
+	ATF_CHECK(fvc_open("/nonexistent", _PATH_DEVZERO, O_RDONLY,
 	    errbuf, NULL) == NULL);
 	ATF_CHECK(errbuf_has_error(errbuf));
 }
 
-ATF_TC(fvc_open2_negative_test_invalid_corefile);
-ATF_TC_HEAD(fvc_open2_negative_test_invalid_corefile, tc)
+ATF_TC(fvc_open_negative_test_invalid_corefile);
+ATF_TC_HEAD(fvc_open_negative_test_invalid_corefile, tc)
 {
 
 	atf_tc_set_md_var(tc, "require.user", "root");
 }
 
-ATF_TC_BODY(fvc_open2_negative_test_invalid_corefile, tc)
+ATF_TC_BODY(fvc_open_negative_test_invalid_corefile, tc)
 {
 	fvc_t *kd;
 
 	errbuf_clear();
 	atf_utils_create_file("some-file", "this is a text file");
-	kd = fvc_open2(NULL, "some-file", O_RDONLY, errbuf, NULL);
+	kd = fvc_open(NULL, "some-file", O_RDONLY, errbuf, NULL);
 	ATF_CHECK(errbuf_has_error(errbuf));
-	ATF_REQUIRE_MSG(kd == NULL, "fvc_open2 succeeded");
+	ATF_REQUIRE_MSG(kd == NULL, "fvc_open succeeded");
 }
 
-ATF_TC(fvc_open2_negative_test_invalid_execfile);
-ATF_TC_HEAD(fvc_open2_negative_test_invalid_execfile, tc)
+ATF_TC(fvc_open_negative_test_invalid_execfile);
+ATF_TC_HEAD(fvc_open_negative_test_invalid_execfile, tc)
 {
 
 	atf_tc_set_md_var(tc, "require.user", "root");
 }
 
-ATF_TC_BODY(fvc_open2_negative_test_invalid_execfile, tc)
+ATF_TC_BODY(fvc_open_negative_test_invalid_execfile, tc)
 {
 	fvc_t *kd;
 
 	errbuf_clear();
 	atf_utils_create_file("some-file", "this is a text file");
-	kd = fvc_open2("some-file", "/bin/sh", O_RDONLY, errbuf, NULL);
+	kd = fvc_open("some-file", "/bin/sh", O_RDONLY, errbuf, NULL);
 	ATF_CHECK(errbuf_has_error(errbuf));
-	ATF_REQUIRE_MSG(kd == NULL, "fvc_open2 succeeded unexpectedly");
+	ATF_REQUIRE_MSG(kd == NULL, "fvc_open succeeded unexpectedly");
 }
 
 ATF_TP_ADD_TCS(tp)
 {
 
-	ATF_TP_ADD_TC(tp, fvc_open2_negative_test_invalid_corefile);
-	ATF_TP_ADD_TC(tp, fvc_open2_negative_test_invalid_execfile);
-	ATF_TP_ADD_TC(tp, fvc_open2_negative_test_nonexistent_corefile);
-	ATF_TP_ADD_TC(tp, fvc_open2_negative_test_nonexistent_execfile);
+	ATF_TP_ADD_TC(tp, fvc_open_negative_test_invalid_corefile);
+	ATF_TP_ADD_TC(tp, fvc_open_negative_test_invalid_execfile);
+	ATF_TP_ADD_TC(tp, fvc_open_negative_test_nonexistent_corefile);
+	ATF_TP_ADD_TC(tp, fvc_open_negative_test_nonexistent_execfile);
 
 	return (atf_no_error());
 }

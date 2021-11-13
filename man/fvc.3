@@ -60,7 +60,7 @@ looked up efficiently, and information about user processes can
 be gathered.
 .Pp
 The
-.Fn fvc_open2
+.Fn fvc_open
 function is first called to obtain a descriptor for all subsequent calls.
 .Sh COMPATIBILITY
 The fvc interface was first introduced in SunOS.
@@ -69,7 +69,7 @@ number of programs have been developed that use this interface,
 making backward compatibility highly desirable.
 In most respects, the Sun fvc interface is consistent and clean.
 Accordingly, the generic portion of the interface (i.e.,
-.Fn fvc_open2 ,
+.Fn fvc_open ,
 .Fn fvc_close
 and
 .Fn fvc_write )
@@ -108,7 +108,7 @@ To inspect a crash dump of a non-native kernel,
 the caller must provide a
 .Fa resolver
 function when opening a descriptor via
-.Fn fvc_open2 .
+.Fn fvc_open .
 In addition,
 the fvc interface defines an integer type
 .Pq Vt kvaddr_t
@@ -119,7 +119,7 @@ crash dumps:
 .Fn fvc_close ,
 .Fn fvc_geterr ,
 .Fn fvc_kerndisp ,
-.Fn fvc_open2 ,
+.Fn fvc_open ,
 .Fn fvc_native ,
 and
 .Fn fvc_read2 .
@@ -128,7 +128,7 @@ and
 .Xr fvc_geterr 3 ,
 .Xr fvc_kerndisp 3 ,
 .Xr fvc_native 3 ,
-.Xr fvc_open2 3 ,
+.Xr fvc_open 3 ,
 .Xr fvc_read2 3 ,
 .Xr fvc_write 3 ,
 .Xr sysctl 3 ,

@@ -52,7 +52,7 @@ ATF_TC_BODY(fvc_geterr_negative_test_NULL, tc)
 	ATF_REQUIRE(!errbuf_has_error(fvc_geterr(NULL)));
 }
 
-/* 1100090 was where fvc_open2(3) was introduced. */
+/* 1100090 was where fvc_open(3) was introduced. */
 #if __FreeBSD_version >= 1100091
 ATF_TC(fvc_geterr_positive_test_error);
 ATF_TC_HEAD(fvc_geterr_positive_test_error, tc)
@@ -69,9 +69,9 @@ ATF_TC_BODY(fvc_geterr_positive_test_error, tc)
 	char *error_msg;
 
 	errbuf_clear();
-	kd = fvc_open2(NULL, NULL, O_RDONLY, errbuf, NULL);
+	kd = fvc_open(NULL, NULL, O_RDONLY, errbuf, NULL);
 	ATF_CHECK(!errbuf_has_error(errbuf));
-	ATF_REQUIRE_MSG(kd != NULL, "fvc_open2 failed: %s", errbuf);
+	ATF_REQUIRE_MSG(kd != NULL, "fvc_open failed: %s", errbuf);
 	ATF_REQUIRE_MSG(fvc_write(kd, 0, NULL, 0) == -1,
 	    "fvc_write succeeded unexpectedly on an O_RDONLY file descriptor");
 	error_msg = fvc_geterr(kd);
@@ -104,9 +104,9 @@ ATF_TC_BODY(fvc_geterr_positive_test_no_error, tc)
 	int mp_maxcpus, retcode;
 
 	errbuf_clear();
-	kd = fvc_open2(NULL, NULL, O_RDONLY, errbuf, NULL);
+	kd = fvc_open(NULL, NULL, O_RDONLY, errbuf, NULL);
 	ATF_CHECK(!errbuf_has_error(errbuf));
-	ATF_REQUIRE_MSG(kd != NULL, "fvc_open2 failed: %s", errbuf);
+	ATF_REQUIRE_MSG(kd != NULL, "fvc_open failed: %s", errbuf);
 	retcode = _fvc_nlist(kd, nl);
 	ATF_REQUIRE_MSG(retcode != -1,
 	    "_fvc_nlist failed (returned %d): %s", retcode, fvc_geterr(kd));

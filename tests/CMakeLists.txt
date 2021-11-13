@@ -4,7 +4,7 @@ include_directories(
 set(TESTS
     fvc_close_test
     fvc_geterr_test
-    fvc_open2_test
+    fvc_open_test
     fvc_read_test
     )
 

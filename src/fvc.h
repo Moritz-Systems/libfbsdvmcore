@@ -71,7 +71,7 @@ __BEGIN_DECLS
 int	  fvc_close(fvc_t *);
 char	 *fvc_geterr(fvc_t *);
 int	  fvc_native(fvc_t *);
-fvc_t	 *fvc_open2
+fvc_t	 *fvc_open
 	    (const char *, const char *, int, char *,
 	    int (*)(const char *, kvaddr_t *));
 ssize_t	  fvc_read2(fvc_t *, kvaddr_t, void *, size_t);

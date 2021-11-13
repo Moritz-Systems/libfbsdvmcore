@@ -70,10 +70,10 @@ or an error has not been captured for
 .Xr fvc_write 3
 .Sh BUGS
 This routine cannot be used to access error conditions due to a failed
-.Fn fvc_open2
+.Fn fvc_open
 call, since failure is indicated by returning a
 .Dv NULL
 descriptor.
 Therefore, errors on open are output to the special error buffer
 passed to
-.Fn fvc_open2 .
+.Fn fvc_open .

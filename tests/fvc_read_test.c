@@ -64,9 +64,9 @@ ATF_TC_BODY(fvc_read_positive_test_no_error, tc)
 	size_t len = sizeof(sysctl_maxcpus);
 
 	errbuf_clear();
-	kd = fvc_open2(NULL, NULL, O_RDONLY, errbuf, NULL);
+	kd = fvc_open(NULL, NULL, O_RDONLY, errbuf, NULL);
 	ATF_CHECK(!errbuf_has_error(errbuf));
-	ATF_REQUIRE_MSG(kd != NULL, "fvc_open2 failed: %s", errbuf);
+	ATF_REQUIRE_MSG(kd != NULL, "fvc_open failed: %s", errbuf);
 	retcode = _fvc_nlist(kd, nl);
 	ATF_REQUIRE_MSG(retcode != -1,
 	    "_fvc_nlist failed (returned %d): %s", retcode, fvc_geterr(kd));
