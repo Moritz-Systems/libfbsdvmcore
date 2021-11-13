@@ -43,11 +43,12 @@ ATF_TC_BODY(fvc_open_negative_test_nonexistent_corefile, tc)
 {
 
 	errbuf_clear();
-	ATF_CHECK(fvc_open(NULL, "/nonexistent", O_RDONLY, NULL, NULL) == NULL);
+	ATF_CHECK(fvc_open(NULL, "/nonexistent", O_RDONLY, NULL, NULL,
+	    NULL) == NULL);
 	ATF_CHECK(!errbuf_has_error(errbuf));
 	errbuf_clear();
 	ATF_CHECK(fvc_open(NULL, "/nonexistent", O_RDONLY,
-	    errbuf, NULL) == NULL);
+	    errbuf, NULL, NULL) == NULL);
 	ATF_CHECK(errbuf_has_error(errbuf));
 }
 
@@ -57,11 +58,11 @@ ATF_TC_BODY(fvc_open_negative_test_nonexistent_execfile, tc)
 
 	errbuf_clear();
 	ATF_CHECK(fvc_open("/nonexistent", _PATH_DEVZERO, O_RDONLY,
-	    NULL, NULL) == NULL);
+	    NULL, NULL, NULL) == NULL);
 	ATF_CHECK(strlen(errbuf) == 0);
 	errbuf_clear();
 	ATF_CHECK(fvc_open("/nonexistent", _PATH_DEVZERO, O_RDONLY,
-	    errbuf, NULL) == NULL);
+	    errbuf, NULL, NULL) == NULL);
 	ATF_CHECK(errbuf_has_error(errbuf));
 }
 
@@ -78,7 +79,7 @@ ATF_TC_BODY(fvc_open_negative_test_invalid_corefile, tc)
 
 	errbuf_clear();
 	atf_utils_create_file("some-file", "this is a text file");
-	kd = fvc_open(NULL, "some-file", O_RDONLY, errbuf, NULL);
+	kd = fvc_open(NULL, "some-file", O_RDONLY, errbuf, NULL, NULL);
 	ATF_CHECK(errbuf_has_error(errbuf));
 	ATF_REQUIRE_MSG(kd == NULL, "fvc_open succeeded");
 }
@@ -96,7 +97,7 @@ ATF_TC_BODY(fvc_open_negative_test_invalid_execfile, tc)
 
 	errbuf_clear();
 	atf_utils_create_file("some-file", "this is a text file");
-	kd = fvc_open("some-file", "/bin/sh", O_RDONLY, errbuf, NULL);
+	kd = fvc_open("some-file", "/bin/sh", O_RDONLY, errbuf, NULL, NULL);
 	ATF_CHECK(errbuf_has_error(errbuf));
 	ATF_REQUIRE_MSG(kd == NULL, "fvc_open succeeded unexpectedly");
 }

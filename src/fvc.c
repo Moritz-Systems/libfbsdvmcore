@@ -201,7 +201,8 @@ failed:
 
 fvc_t *
 fvc_open(const char *uf, const char *mf, int flag, char *errout,
-    int (*resolver)(const char *, kvaddr_t *))
+    int (*resolver)(const char *, kvaddr_t *, void *),
+    void *resolver_data)
 {
 	fvc_t *kd;
 
@@ -212,6 +213,7 @@ fvc_open(const char *uf, const char *mf, int flag, char *errout,
 		return (NULL);
 	}
 	kd->resolve_symbol = resolver;
+	kd->resolve_symbol_data = resolver_data;
 	return (_fvc_open(kd, uf, mf, flag, errout));
 }
 

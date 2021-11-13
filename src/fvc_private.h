@@ -71,7 +71,8 @@ struct __fvc {
 	int	pmfd;		/* physical memory file (or crashdump) */
 	int	nlfd;		/* namelist file (e.g., /kernel) */
 	GElf_Ehdr nlehdr;	/* ELF file header for namelist file */
-	int	(*resolve_symbol)(const char *, kvaddr_t *);
+	int	(*resolve_symbol)(const char *, kvaddr_t *, void *);
+	void	*resolve_symbol_data;
 	/*
 	 * Kernel virtual address translation state.  This only gets filled
 	 * in for dead kernels; otherwise, the running kernel (i.e. kmem)

@@ -50,7 +50,8 @@
 .Fa "const char *corefile"
 .Fa "int flags"
 .Fa "char *errbuf"
-.Fa "int (*resolver)(const char *name, kvaddr_t *addr)"
+.Fa "int (*resolver)(const char *name, kvaddr_t *addr, void *data)"
+.Fa "void *resolver_data"
 .Fc
 .Ft int
 .Fn fvc_close "fvc_t *kd"
@@ -173,6 +174,12 @@ Non-native kernel images
 .Pq such as when cross-debugging a crash dump
 require a valid
 .Fa resolver .
+.Pp
+The
+.Fa resolver_data
+argument specifies additional pointer that will be passed through to
+.Fa resolver
+calls.
 .Sh RETURN VALUES
 The
 .Fn fvc_open

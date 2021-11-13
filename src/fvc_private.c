@@ -538,7 +538,8 @@ fvc_fdnlist(fvc_t *kd, struct fvc_nlist *list)
 
 	nfail = 0;
 	while (list->n_name != NULL && list->n_name[0] != '\0') {
-		error = kd->resolve_symbol(list->n_name, &addr);
+		error = kd->resolve_symbol(list->n_name, &addr,
+		    kd->resolve_symbol_data);
 		if (error != 0) {
 			nfail++;
 			list->n_value = 0;

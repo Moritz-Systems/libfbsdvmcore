@@ -52,8 +52,6 @@ ATF_TC_BODY(fvc_geterr_negative_test_NULL, tc)
 	ATF_REQUIRE(!errbuf_has_error(fvc_geterr(NULL)));
 }
 
-/* 1100090 was where fvc_open(3) was introduced. */
-#if __FreeBSD_version >= 1100091
 ATF_TC(fvc_geterr_positive_test_error);
 ATF_TC_HEAD(fvc_geterr_positive_test_error, tc)
 {
@@ -69,7 +67,7 @@ ATF_TC_BODY(fvc_geterr_positive_test_error, tc)
 	char *error_msg;
 
 	errbuf_clear();
-	kd = fvc_open(NULL, NULL, O_RDONLY, errbuf, NULL);
+	kd = fvc_open(NULL, NULL, O_RDONLY, errbuf, NULL, NULL);
 	ATF_CHECK(!errbuf_has_error(errbuf));
 	ATF_REQUIRE_MSG(kd != NULL, "fvc_open failed: %s", errbuf);
 	ATF_REQUIRE_MSG(fvc_write(kd, 0, NULL, 0) == -1,
@@ -104,7 +102,7 @@ ATF_TC_BODY(fvc_geterr_positive_test_no_error, tc)
 	int mp_maxcpus, retcode;
 
 	errbuf_clear();
-	kd = fvc_open(NULL, NULL, O_RDONLY, errbuf, NULL);
+	kd = fvc_open(NULL, NULL, O_RDONLY, errbuf, NULL, NULL);
 	ATF_CHECK(!errbuf_has_error(errbuf));
 	ATF_REQUIRE_MSG(kd != NULL, "fvc_open failed: %s", errbuf);
 	retcode = _fvc_nlist(kd, nl);
@@ -123,16 +121,13 @@ ATF_TC_BODY(fvc_geterr_positive_test_no_error, tc)
 	ATF_REQUIRE_MSG(fvc_close(kd) == 0, "fvc_close failed: %s",
 	    strerror(errno));
 }
-#endif
 
 ATF_TP_ADD_TCS(tp)
 {
 
 	ATF_TP_ADD_TC(tp, fvc_geterr_negative_test_NULL);
-#if __FreeBSD_version >= 1100091
 	ATF_TP_ADD_TC(tp, fvc_geterr_positive_test_error);
 	ATF_TP_ADD_TC(tp, fvc_geterr_positive_test_no_error);
-#endif
 
 	return (atf_no_error());
 }
