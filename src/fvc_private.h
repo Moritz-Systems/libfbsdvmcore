@@ -52,7 +52,7 @@ struct fvc_arch {
 	void	(*ka_freevtop)(fvc_t *);
 	int	(*ka_kvatop)(fvc_t *, fvc_addr_t, off_t *);
 	int	(*ka_walk_pages)(fvc_t *, fvc_walk_pages_cb_t *, void *);
-	kssize_t (*ka_kerndisp)(fvc_t *);
+	ssize_t (*ka_kerndisp)(fvc_t *);
 };
 
 #define	KVM_ARCH(ka)	DATA_SET(fvc_arch, ka)

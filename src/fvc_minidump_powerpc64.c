@@ -169,7 +169,7 @@ _powerpc64_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 	return (PPC64_MMU_OP(kd, kvatop, va, pa));
 }
 
-static kssize_t
+static ssize_t
 _powerpc64_kerndisp(fvc_t *kd)
 {
 	return (kd->vmst->hdr.startkernel - PPC64_KERNBASE);
