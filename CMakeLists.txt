@@ -8,27 +8,27 @@ project(
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 include_directories(
-    .
+    src
     /usr/src/sys)
 
 add_library(
     fbsdvmcore
-    kvm.c
-    kvm_amd64.c
-    kvm_arm.c
-    kvm_i386.c
-    kvm_minidump_aarch64.c
-    kvm_minidump_amd64.c
-    kvm_minidump_arm.c
-    kvm_minidump_i386.c
-    kvm_minidump_mips.c
-    kvm_minidump_powerpc64.c
-    kvm_minidump_powerpc64_hpt.c
-    kvm_minidump_riscv.c
-    kvm_powerpc.c
-    kvm_powerpc64.c
-    kvm_private.c
-    kvm.h
+    src/kvm.c
+    src/kvm_amd64.c
+    src/kvm_arm.c
+    src/kvm_i386.c
+    src/kvm_minidump_aarch64.c
+    src/kvm_minidump_amd64.c
+    src/kvm_minidump_arm.c
+    src/kvm_minidump_i386.c
+    src/kvm_minidump_mips.c
+    src/kvm_minidump_powerpc64.c
+    src/kvm_minidump_powerpc64_hpt.c
+    src/kvm_minidump_riscv.c
+    src/kvm_powerpc.c
+    src/kvm_powerpc64.c
+    src/kvm_private.c
+    src/kvm.h
     )
 set_target_properties(
     fbsdvmcore
@@ -68,12 +68,12 @@ install(
 
 install(
     FILES
-    kvm.3
-    kvm_close.3
-    kvm_geterr.3
-    kvm_kerndisp.3
-    kvm_native.3
-    kvm_open2.3
-    kvm_read2.3
-    kvm_write.3
+    man/kvm.3
+    man/kvm_close.3
+    man/kvm_geterr.3
+    man/kvm_kerndisp.3
+    man/kvm_native.3
+    man/kvm_open2.3
+    man/kvm_read2.3
+    man/kvm_write.3
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man3")

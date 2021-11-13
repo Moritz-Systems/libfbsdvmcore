@@ -1,5 +1,5 @@
 include_directories(
-  ${CMAKE_TOP_SOURCE_DIRECTORY})
+  ${CMAKE_TOP_SOURCE_DIRECTORY}/src)
 
 set(TESTS
     kvm_close_test
