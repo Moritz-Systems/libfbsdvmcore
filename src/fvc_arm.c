@@ -109,11 +109,6 @@ _arm_initvtop(fvc_t *kd)
 	size_t i;
 	int found;
 
-	if (kd->rawdump) {
-		_fvc_err(kd, kd->program, "raw dumps not supported on arm");
-		return (-1);
-	}
-
 	vm = _fvc_malloc(kd, sizeof(*vm));
 	if (vm == NULL) {
 		_fvc_err(kd, kd->program, "cannot allocate vm");

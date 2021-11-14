@@ -181,10 +181,6 @@ _fvc_open(fvc_t *kd, const char *uf, const char *mf, char *errout)
 	}
 	if (_fvc_read_kernel_ehdr(kd) < 0)
 		goto failed;
-	if (strncmp(mf, _PATH_FWMEM, strlen(_PATH_FWMEM)) == 0 ||
-	    strncmp(mf, _PATH_DEVVMM, strlen(_PATH_DEVVMM)) == 0) {
-		kd->rawdump = 1;
-	}
 	for (parch = fvc_arches; *parch; parch++) {
 		if ((*parch)->ka_probe(kd)) {
 			kd->arch = *parch;

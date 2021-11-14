@@ -133,8 +133,6 @@ _fvc_is_minidump(fvc_t *kd)
 {
 	char minihdr[8];
 
-	if (kd->rawdump)
-		return (0);
 	if (pread(kd->pmfd, &minihdr, 8, 0) == 8 &&
 	    memcmp(&minihdr, "minidump", 8) == 0)
 		return (1);

@@ -69,11 +69,6 @@ _fvc_pa2off(fvc_t *kd, uint64_t pa, off_t *ofs)
 	GElf_Phdr *p;
 	size_t n;
 
-	if (kd->rawdump) {
-		*ofs = pa;
-		return (AMD64_PAGE_SIZE - (pa & AMD64_PAGE_MASK));
-	}
-
 	p = vm->phdr;
 	n = vm->phnum;
 	while (n && (pa < p->p_paddr || pa >= p->p_paddr + p->p_memsz))
@@ -119,11 +114,9 @@ _amd64_initvtop(fvc_t *kd)
 	}
 	kd->vmst->PML4 = 0;
 
-	if (kd->rawdump == 0) {
-		if (_fvc_read_core_phdrs(kd, &kd->vmst->phnum,
-		    &kd->vmst->phdr) == -1)
-			return (-1);
-	}
+	if (_fvc_read_core_phdrs(kd, &kd->vmst->phnum,
+	    &kd->vmst->phdr) == -1)
+		return (-1);
 
 	nl[0].n_name = "kernbase";
 	nl[1].n_name = 0;

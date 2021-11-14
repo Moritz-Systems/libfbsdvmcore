@@ -84,7 +84,6 @@ struct __fvc {
 	 * only allocate it if necessary.
 	 */
 	struct vmstate *vmst;
-	int	rawdump;	/* raw dump format */
 
 	/* Page table lookup structures. */
 	uint64_t	*pt_map;
