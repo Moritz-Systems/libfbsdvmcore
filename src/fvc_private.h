@@ -163,11 +163,11 @@ int	 _fvc_bitmap_next(struct fvc_bitmap *, u_long *);
 void	 _fvc_bitmap_deinit(struct fvc_bitmap *);
 
 void	 _fvc_err(fvc_t *kd, const char *program, const char *fmt, ...)
-	    __printflike(3, 4);
+	    __attribute__((format(printf, 3, 4)));
 void	*_fvc_malloc(fvc_t *kd, size_t);
 int	 _fvc_nlist(fvc_t *, struct fvc_nlist *);
 void	 _fvc_syserr (fvc_t *kd, const char *program, const char *fmt, ...)
-	    __printflike(3, 4);
+	    __attribute__((format(printf, 3, 4)));
 int	 _fvc_probe_elf_kernel(fvc_t *, int, int);
 int	 _fvc_is_minidump(fvc_t *);
 int	 _fvc_read_core_phdrs(fvc_t *, size_t *, GElf_Phdr **);
