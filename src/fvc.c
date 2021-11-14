@@ -142,14 +142,18 @@ _fvc_open(fvc_t *kd, const char *uf, const char *mf, char *errout)
 	kd->nlfd = -1;
 	kd->vmst = NULL;
 
-	if (uf == NULL)
-		uf = getbootfile();
+	if (uf == NULL) {
+		_fvc_err(kd, kd->program, "exec file must be specified");
+		goto failed;
+	}
 	else if (strlen(uf) >= MAXPATHLEN) {
 		_fvc_err(kd, kd->program, "exec file name too long");
 		goto failed;
 	}
-	if (mf == NULL)
-		mf = _PATH_MEM;
+	if (mf == NULL) {
+		_fvc_err(kd, kd->program, "core file must be specified");
+		goto failed;
+	}
 
 	if ((kd->pmfd = open(mf, O_RDONLY | O_CLOEXEC, 0)) < 0) {
 		_fvc_syserr(kd, kd->program, "%s", mf);
