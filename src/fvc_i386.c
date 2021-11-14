@@ -39,7 +39,6 @@
  */
 
 #include <sys/param.h>
-#include <sys/endian.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

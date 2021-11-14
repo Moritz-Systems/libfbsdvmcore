@@ -32,7 +32,6 @@
  * ARM machine dependent routines for fvc and minidumps.
  */
 
-#include <sys/endian.h>
 #include <sys/param.h>
 #include <vm/vm.h>
 #include <limits.h>

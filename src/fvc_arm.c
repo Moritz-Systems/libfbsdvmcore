@@ -38,7 +38,6 @@
  */
 
 #include <sys/param.h>
-#include <sys/endian.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>

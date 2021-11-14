@@ -1,0 +1,2 @@
+#cmakedefine HAVE_SYS_ENDIAN_H @HAVE_SYS_ENDIAN_H@
+#cmakedefine HAVE_ENDIAN_H @HAVE_ENDIAN_H@

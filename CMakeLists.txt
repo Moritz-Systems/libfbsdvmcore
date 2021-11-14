@@ -8,8 +8,20 @@ project(
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 include_directories(
+    ${CMAKE_BINARY_DIR}/src
     src
     /usr/src/sys)
+
+include(CheckIncludeFile)
+check_include_file("sys/endian.h" HAVE_SYS_ENDIAN_H)
+if(NOT HAVE_SYS_ENDIAN_H)
+  check_include_file("endian.h" HAVE_ENDIAN_H)
+  if(NOT HAVE_ENDIAN_H)
+    message(FATAL_ERROR "Unable to find a working [sys/]endian.h")
+  endif()
+endif()
+
+configure_file(src/config.h.in src/config.h)
 
 add_library(
     fbsdvmcore
