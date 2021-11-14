@@ -225,19 +225,16 @@ _powerpc64_kvatop(fvc_t *kd, fvc_addr_t va, off_t *ofs)
 	return (0);
 }
 
-static struct fvc_arch fvc_powerpc64 = {
+struct fvc_arch fvc_powerpc64 = {
 	.ka_probe = _powerpc64_probe,
 	.ka_initvtop = _powerpc64_initvtop,
 	.ka_freevtop = _powerpc64_freevtop,
 	.ka_kvatop = _powerpc64_kvatop,
 };
 
-static struct fvc_arch fvc_powerpc64le = {
+struct fvc_arch fvc_powerpc64le = {
 	.ka_probe = _powerpc64le_probe,
 	.ka_initvtop = _powerpc64_initvtop,
 	.ka_freevtop = _powerpc64_freevtop,
 	.ka_kvatop = _powerpc64_kvatop,
 };
-
-FVC_ARCH(fvc_powerpc64);
-FVC_ARCH(fvc_powerpc64le);

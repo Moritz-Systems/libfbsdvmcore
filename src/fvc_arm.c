@@ -247,11 +247,9 @@ _fvc_mdopen(fvc_t *kd)
 }
 #endif
 
-static struct fvc_arch fvc_arm = {
+struct fvc_arch fvc_arm = {
 	.ka_probe = _arm_probe,
 	.ka_initvtop = _arm_initvtop,
 	.ka_freevtop = _arm_freevtop,
 	.ka_kvatop = _arm_kvatop,
 };
-
-FVC_ARCH(fvc_arm);

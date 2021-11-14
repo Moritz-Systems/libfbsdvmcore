@@ -212,11 +212,9 @@ _powerpc_kvatop(fvc_t *kd, fvc_addr_t va, off_t *ofs)
 	return (0);
 }
 
-static struct fvc_arch fvc_powerpc = {
+struct fvc_arch fvc_powerpc = {
 	.ka_probe = _powerpc_probe,
 	.ka_initvtop = _powerpc_initvtop,
 	.ka_freevtop = _powerpc_freevtop,
 	.ka_kvatop = _powerpc_kvatop,
 };
-
-FVC_ARCH(fvc_powerpc);

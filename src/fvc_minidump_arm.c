@@ -258,12 +258,10 @@ _arm_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 	return (1);
 }
 
-static struct fvc_arch fvc_arm_minidump = {
+struct fvc_arch fvc_arm_minidump = {
 	.ka_probe = _arm_minidump_probe,
 	.ka_initvtop = _arm_minidump_initvtop,
 	.ka_freevtop = _arm_minidump_freevtop,
 	.ka_kvatop = _arm_minidump_kvatop,
 	.ka_walk_pages = _arm_minidump_walk_pages,
 };
-
-FVC_ARCH(fvc_arm_minidump);

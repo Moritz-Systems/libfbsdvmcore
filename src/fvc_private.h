@@ -37,7 +37,6 @@
  */
 
 #include <sys/endian.h>
-#include <sys/linker_set.h>
 #include <gelf.h>
 
 struct fvc_nlist {
@@ -54,8 +53,6 @@ struct fvc_arch {
 	int	(*ka_walk_pages)(fvc_t *, fvc_walk_pages_cb_t *, void *);
 	ssize_t (*ka_kerndisp)(fvc_t *);
 };
-
-#define	FVC_ARCH(ka)	DATA_SET(fvc_arch, ka)
 
 struct __fvc {
 	struct fvc_arch *arch;

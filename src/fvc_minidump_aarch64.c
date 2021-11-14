@@ -263,12 +263,10 @@ out:
 	return (ret);
 }
 
-static struct fvc_arch fvc_aarch64_minidump = {
+struct fvc_arch fvc_aarch64_minidump = {
 	.ka_probe = _aarch64_minidump_probe,
 	.ka_initvtop = _aarch64_minidump_initvtop,
 	.ka_freevtop = _aarch64_minidump_freevtop,
 	.ka_kvatop = _aarch64_minidump_kvatop,
 	.ka_walk_pages = _aarch64_minidump_walk_pages,
 };
-
-FVC_ARCH(fvc_aarch64_minidump);

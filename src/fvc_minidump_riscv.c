@@ -264,12 +264,10 @@ out:
 	return (ret);
 }
 
-static struct fvc_arch fvc_riscv_minidump = {
+struct fvc_arch fvc_riscv_minidump = {
 	.ka_probe = _riscv_minidump_probe,
 	.ka_initvtop = _riscv_minidump_initvtop,
 	.ka_freevtop = _riscv_minidump_freevtop,
 	.ka_kvatop = _riscv_minidump_kvatop,
 	.ka_walk_pages = _riscv_minidump_walk_pages,
 };
-
-FVC_ARCH(fvc_riscv_minidump);

@@ -398,11 +398,9 @@ _i386_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 		return (_i386_vatop(kd, va, pa));
 }
 
-static struct fvc_arch fvc_i386 = {
+struct fvc_arch fvc_i386 = {
 	.ka_probe = _i386_probe,
 	.ka_initvtop = _i386_initvtop,
 	.ka_freevtop = _i386_freevtop,
 	.ka_kvatop = _i386_kvatop,
 };
-
-FVC_ARCH(fvc_i386);

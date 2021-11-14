@@ -56,7 +56,36 @@
 #include "fvc.h"
 #include "fvc_private.h"
 
-SET_DECLARE(fvc_arch, struct fvc_arch);
+extern struct fvc_arch fvc_aarch64_minidump;
+extern struct fvc_arch fvc_amd64;
+extern struct fvc_arch fvc_amd64_minidump;
+extern struct fvc_arch fvc_arm;
+extern struct fvc_arch fvc_arm_minidump;
+extern struct fvc_arch fvc_i386;
+extern struct fvc_arch fvc_i386_minidump;
+extern struct fvc_arch fvc_mips_minidump;
+extern struct fvc_arch fvc_powerpc64;
+extern struct fvc_arch fvc_powerpc64_minidump;
+extern struct fvc_arch fvc_powerpc64le;
+extern struct fvc_arch fvc_powerpc;
+extern struct fvc_arch fvc_riscv_minidump;
+
+struct fvc_arch *fvc_arches[] = {
+	&fvc_aarch64_minidump,
+	&fvc_amd64,
+	&fvc_amd64_minidump,
+	&fvc_arm,
+	&fvc_arm_minidump,
+	&fvc_i386,
+	&fvc_i386_minidump,
+	&fvc_mips_minidump,
+	&fvc_powerpc64,
+	&fvc_powerpc64_minidump,
+	&fvc_powerpc64le,
+	&fvc_powerpc,
+	&fvc_riscv_minidump,
+	NULL
+};
 
 static char _kd_is_null[] = "";
 
@@ -163,7 +192,7 @@ _fvc_open(fvc_t *kd, const char *uf, const char *mf, int flag, char *errout)
 		kd->rawdump = 1;
 		kd->writable = 1;
 	}
-	SET_FOREACH(parch, fvc_arch) {
+	for (parch = fvc_arches; *parch; parch++) {
 		if ((*parch)->ka_probe(kd)) {
 			kd->arch = *parch;
 			break;

@@ -327,12 +327,10 @@ _i386_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 	return (1);
 }
 
-static struct fvc_arch fvc_i386_minidump = {
+struct fvc_arch fvc_i386_minidump = {
 	.ka_probe = _i386_minidump_probe,
 	.ka_initvtop = _i386_minidump_initvtop,
 	.ka_freevtop = _i386_minidump_freevtop,
 	.ka_kvatop = _i386_minidump_kvatop,
 	.ka_walk_pages = _i386_minidump_walk_pages,
 };
-
-FVC_ARCH(fvc_i386_minidump);

@@ -181,7 +181,7 @@ _powerpc64_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 	return (PPC64_MMU_OP(kd, walk_pages, cb, arg));
 }
 
-static struct fvc_arch fvc_powerpc64_minidump = {
+struct fvc_arch fvc_powerpc64_minidump = {
 	.ka_probe	= _powerpc64_minidump_probe,
 	.ka_initvtop	= _powerpc64_minidump_initvtop,
 	.ka_freevtop	= _powerpc64_minidump_freevtop,
@@ -189,5 +189,3 @@ static struct fvc_arch fvc_powerpc64_minidump = {
 	.ka_walk_pages	= _powerpc64_minidump_walk_pages,
 	.ka_kerndisp	= _powerpc64_kerndisp,
 };
-
-FVC_ARCH(fvc_powerpc64_minidump);

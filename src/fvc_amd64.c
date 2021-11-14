@@ -306,11 +306,9 @@ _amd64_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 	return (_amd64_vatop(kd, va, pa));
 }
 
-static struct fvc_arch fvc_amd64 = {
+struct fvc_arch fvc_amd64 = {
 	.ka_probe = _amd64_probe,
 	.ka_initvtop = _amd64_initvtop,
 	.ka_freevtop = _amd64_freevtop,
 	.ka_kvatop = _amd64_kvatop,
 };
-
-FVC_ARCH(fvc_amd64);

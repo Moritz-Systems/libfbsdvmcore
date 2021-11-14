@@ -315,12 +315,10 @@ _mips_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 	return (1);
 }
 
-static struct fvc_arch fvc_mips_minidump = {
+struct fvc_arch fvc_mips_minidump = {
 	.ka_probe = _mips_minidump_probe,
 	.ka_initvtop = _mips_minidump_initvtop,
 	.ka_freevtop = _mips_minidump_freevtop,
 	.ka_kvatop = _mips_minidump_kvatop,
 	.ka_walk_pages = _mips_minidump_walk_pages,
 };
-
-FVC_ARCH(fvc_mips_minidump);
