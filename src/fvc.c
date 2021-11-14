@@ -261,6 +261,8 @@ fvc_close(fvc_t *kd)
 	}
 	if (kd->vmst != NULL)
 		kd->arch->ka_freevtop(kd);
+	if (kd->resolve_symbol == _fvc_libelf_resolver)
+		_fvc_libelf_resolver_data_deinit(kd);
 	if (kd->pmfd >= 0)
 		error |= close(kd->pmfd);
 	if (kd->nlfd >= 0)
