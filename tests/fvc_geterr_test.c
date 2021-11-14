@@ -76,7 +76,7 @@ ATF_TC_BODY(fvc_geterr_positive_test_no_error, tc)
 	int mp_maxcpus, retcode;
 
 	errbuf_clear();
-	kd = fvc_open(NULL, NULL, O_RDONLY, errbuf, NULL, NULL);
+	kd = fvc_open(NULL, NULL, errbuf, NULL, NULL);
 	ATF_CHECK(!errbuf_has_error(errbuf));
 	ATF_REQUIRE_MSG(kd != NULL, "fvc_open failed: %s", errbuf);
 	retcode = _fvc_nlist(kd, nl);

@@ -133,7 +133,7 @@ _fvc_read_kernel_ehdr(fvc_t *kd)
 }
 
 static fvc_t *
-_fvc_open(fvc_t *kd, const char *uf, const char *mf, int flag, char *errout)
+_fvc_open(fvc_t *kd, const char *uf, const char *mf, char *errout)
 {
 	struct fvc_arch **parch;
 	struct stat st;
@@ -148,14 +148,10 @@ _fvc_open(fvc_t *kd, const char *uf, const char *mf, int flag, char *errout)
 		_fvc_err(kd, kd->program, "exec file name too long");
 		goto failed;
 	}
-	if (flag & ~O_RDWR) {
-		_fvc_err(kd, kd->program, "bad flags arg");
-		goto failed;
-	}
 	if (mf == NULL)
 		mf = _PATH_MEM;
 
-	if ((kd->pmfd = open(mf, flag | O_CLOEXEC, 0)) < 0) {
+	if ((kd->pmfd = open(mf, O_RDONLY | O_CLOEXEC, 0)) < 0) {
 		_fvc_syserr(kd, kd->program, "%s", mf);
 		goto failed;
 	}
@@ -229,7 +225,7 @@ failed:
 }
 
 fvc_t *
-fvc_open(const char *uf, const char *mf, int flag, char *errout,
+fvc_open(const char *uf, const char *mf, char *errout,
     int (*resolver)(const char *, fvc_addr_t *, void *),
     void *resolver_data)
 {
@@ -246,7 +242,7 @@ fvc_open(const char *uf, const char *mf, int flag, char *errout,
 
 	kd->resolve_symbol = resolver;
 	kd->resolve_symbol_data = resolver_data;
-	return (_fvc_open(kd, uf, mf, flag, errout));
+	return (_fvc_open(kd, uf, mf, errout));
 }
 
 int

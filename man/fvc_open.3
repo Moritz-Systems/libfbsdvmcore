@@ -48,7 +48,6 @@
 .Fo fvc_open
 .Fa "const char *execfile"
 .Fa "const char *corefile"
-.Fa "int flags"
 .Fa "char *errbuf"
 .Fa "int (*resolver)(const char *name, kvaddr_t *addr, void *data)"
 .Fa "void *resolver_data"
@@ -100,18 +99,6 @@ that do not directly access kernel memory.
 The
 .Fa swapfile
 argument is currently unused.
-.Pp
-The
-.Fa flags
-argument indicates read/write access as in
-.Xr open 2
-and applies only to the core file.
-Only
-.Dv O_RDONLY ,
-.Dv O_WRONLY ,
-and
-.Dv O_RDWR
-are permitted.
 .Pp
 The
 .Nm fvc
