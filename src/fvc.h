@@ -77,7 +77,6 @@ fvc_t	 *fvc_open
 	    (const char *, const char *, int, char *,
 	    int (*)(const char *, fvc_addr_t *, void *), void *);
 ssize_t	  fvc_read(fvc_t *, fvc_addr_t, void *, size_t);
-ssize_t	  fvc_write(fvc_t *, unsigned long, const void *, size_t);
 ssize_t   fvc_kerndisp(fvc_t *);
 
 typedef int fvc_walk_pages_cb_t(struct fvc_page *, void *);

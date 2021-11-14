@@ -86,5 +86,4 @@ install(
     man/fvc_kerndisp.3
     man/fvc_open.3
     man/fvc_read.3
-    man/fvc_write.3
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man3")

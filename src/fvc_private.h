@@ -85,7 +85,6 @@ struct __fvc {
 	 */
 	struct vmstate *vmst;
 	int	rawdump;	/* raw dump format */
-	int	writable;	/* physical memory is writable */
 
 	/* Page table lookup structures. */
 	uint64_t	*pt_map;

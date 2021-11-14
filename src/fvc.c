@@ -188,7 +188,6 @@ _fvc_open(fvc_t *kd, const char *uf, const char *mf, int flag, char *errout)
 	if (strncmp(mf, _PATH_FWMEM, strlen(_PATH_FWMEM)) == 0 ||
 	    strncmp(mf, _PATH_DEVVMM, strlen(_PATH_DEVVMM)) == 0) {
 		kd->rawdump = 1;
-		kd->writable = 1;
 	}
 	for (parch = fvc_arches; *parch; parch++) {
 		if ((*parch)->ka_probe(kd)) {
@@ -316,52 +315,6 @@ fvc_read(fvc_t *kd, fvc_addr_t kva, void *buf, size_t len)
 	}
 
 	return (cp - (char *)buf);
-}
-
-ssize_t
-fvc_write(fvc_t *kd, u_long kva, const void *buf, size_t len)
-{
-	int cc;
-	ssize_t cw;
-	off_t pa;
-	const char *cp;
-
-	if (!kd->writable) {
-		_fvc_err(kd, kd->program,
-		    "fvc_write not implemented for dead kernels");
-		return (-1);
-	}
-
-	cp = buf;
-	while (len > 0) {
-		cc = kd->arch->ka_kvatop(kd, kva, &pa);
-		if (cc == 0)
-			return (-1);
-		if (cc > (ssize_t)len)
-			cc = len;
-		errno = 0;
-		if (lseek(kd->pmfd, pa, 0) == -1 && errno != 0) {
-			_fvc_syserr(kd, 0, _PATH_MEM);
-			break;
-		}
-		cw = write(kd->pmfd, cp, cc);
-		if (cw < 0) {
-			_fvc_syserr(kd, kd->program, "fvc_write");
-			break;
-		}
-		/*
-		 * If ka_kvatop returns a bogus value or our core file is
-		 * truncated, we might wind up seeking beyond the end of the
-		 * core file in which case the read will return 0 (EOF).
-		 */
-		if (cw == 0)
-			break;
-		cp += cw;
-		kva += cw;
-		len -= cw;
-	}
-
-	return (cp - (const char *)buf);
 }
 
 int
