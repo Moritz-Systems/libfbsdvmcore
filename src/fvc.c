@@ -211,8 +211,10 @@ failed:
 	/*
 	 * Copy out the error if doing sane error semantics.
 	 */
-	if (errout != NULL)
-		strlcpy(errout, kd->errbuf, _POSIX2_LINE_MAX);
+	if (errout != NULL) {
+		strncpy(errout, kd->errbuf, _POSIX2_LINE_MAX - 1);
+		errout[_POSIX2_LINE_MAX - 1] = 0;
+	}
 	(void)fvc_close(kd);
 	return (NULL);
 }
@@ -225,9 +227,11 @@ fvc_open(const char *uf, const char *mf, int flag, char *errout,
 	fvc_t *kd;
 
 	if ((kd = calloc(1, sizeof(*kd))) == NULL) {
-		if (errout != NULL)
-			(void)strlcpy(errout, strerror(errno),
-			    _POSIX2_LINE_MAX);
+		if (errout != NULL) {
+			strncpy(errout, strerror(errno),
+			    _POSIX2_LINE_MAX - 1);
+			errout[_POSIX2_LINE_MAX - 1] = 0;
+		}
 		return (NULL);
 	}
 
