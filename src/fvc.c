@@ -41,6 +41,7 @@
 
 #include <stdbool.h>
 
+#include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
 #include <paths.h>
