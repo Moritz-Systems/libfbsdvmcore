@@ -202,10 +202,20 @@ _fvc_open(fvc_t *kd, const char *uf, const char *mf, int flag, char *errout)
 	}
 
 	/*
+	 * Use the built-in resolver if none was specified.
+	 */
+	if (kd->resolve_symbol == NULL) {
+		if (_fvc_libelf_resolver_data_init(kd, uf) != 0)
+			goto failed;
+		kd->resolve_symbol = _fvc_libelf_resolver;
+	}
+
+	/*
 	 * Initialize the virtual address translation machinery.
 	 */
 	if (kd->arch->ka_initvtop(kd) < 0)
 		goto failed;
+
 	return (kd);
 failed:
 	/*
@@ -235,14 +245,8 @@ fvc_open(const char *uf, const char *mf, int flag, char *errout,
 		return (NULL);
 	}
 
-	if (resolver != NULL) {
-		kd->resolve_symbol = resolver;
-		kd->resolve_symbol_data = resolver_data;
-	} else {
-		kd->resolve_symbol = _fvc_libelf_resolver;
-		if (_fvc_libelf_resolver_data_init(kd, uf) != 0)
-			return (NULL);
-	}
+	kd->resolve_symbol = resolver;
+	kd->resolve_symbol_data = resolver_data;
 	return (_fvc_open(kd, uf, mf, flag, errout));
 }
 
