@@ -25,8 +25,8 @@
  * $FreeBSD$
  */
 
-#ifndef __KVM_I386_H__
-#define	__KVM_I386_H__
+#ifndef __FVC_I386_H__
+#define	__FVC_I386_H__
 
 #ifdef __i386__
 #include <vm/vm.h>
@@ -80,4 +80,4 @@ _Static_assert(PG_PS_FRAME_NOPAE == I386_PG_PS_FRAME, "PG_PS_FRAME mismatch");
 
 int	_i386_native(fvc_t *);
 
-#endif /* !__KVM_I386_H__ */
+#endif /* !__FVC_I386_H__ */

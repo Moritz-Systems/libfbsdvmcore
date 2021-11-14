@@ -27,12 +27,12 @@
  * $FreeBSD$
  */
 
-#ifndef	__KVM_POWERPC64_H__
-#define	__KVM_POWERPC64_H__
+#ifndef	__FVC_POWERPC64_H__
+#define	__FVC_POWERPC64_H__
 
 /* Debug stuff */
-#define	KVM_PPC64_DBG	0
-#if	KVM_PPC64_DBG
+#define	FVC_PPC64_DBG	0
+#if	FVC_PPC64_DBG
 #include <stdio.h>
 #define	dprintf(fmt, ...)	printf(fmt, ## __VA_ARGS__)
 #else
@@ -78,4 +78,4 @@ struct vmstate {
 
 extern struct ppc64_mmu_ops *ppc64_mmu_ops_hpt;
 
-#endif /* !__KVM_POWERPC64_H__ */
+#endif /* !__FVC_POWERPC64_H__ */

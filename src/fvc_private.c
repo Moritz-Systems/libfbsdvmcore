@@ -421,7 +421,7 @@ _fvc_pa_bit_id(fvc_t *kd, uint64_t pa, unsigned int page_size)
 			    dump_avail_n(kd, i) / page_size + adj);
 		}
 	}
-	return (_KVM_BIT_ID_INVALID);
+	return (_FVC_BIT_ID_INVALID);
 }
 
 uint64_t
@@ -439,7 +439,7 @@ _fvc_bit_id_pa(fvc_t *kd, uint64_t bit_id, unsigned int page_size)
 		}
 		bit_id -= sz;
 	}
-	return (_KVM_PA_INVALID);
+	return (_FVC_PA_INVALID);
 }
 
 /*
@@ -468,7 +468,7 @@ _fvc_pt_find(fvc_t *kd, uint64_t pa, unsigned int page_size)
 	uint32_t count;
 
 	/* Check whether the page address requested is in the dump. */
-	if (pte_bit_id == _KVM_BIT_ID_INVALID ||
+	if (pte_bit_id == _FVC_BIT_ID_INVALID ||
 	    pte_bit_id >= (kd->pt_map_size * NBBY) ||
 	    (bitmap[pte_u64] & pte_mask) == 0)
 		return (-1);
@@ -709,7 +709,7 @@ _fvc_visit_cb(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg, u_long pa,
 {
 	unsigned int pgsz = page_size ? page_size : len;
 	struct fvc_page p = {
-		.kp_version = LIBKVM_WALK_PAGES_VERSION,
+		.kp_version = LIBFVC_WALK_PAGES_VERSION,
 		.kp_paddr = pa,
 		.kp_kmap_vaddr = kmap_vaddr,
 		.kp_dmap_vaddr = dmap_vaddr,

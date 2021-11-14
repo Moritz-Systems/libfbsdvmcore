@@ -405,4 +405,4 @@ static struct fvc_arch fvc_i386 = {
 	.ka_kvatop = _i386_kvatop,
 };
 
-KVM_ARCH(fvc_i386);
+FVC_ARCH(fvc_i386);

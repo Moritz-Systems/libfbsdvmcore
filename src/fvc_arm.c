@@ -254,4 +254,4 @@ static struct fvc_arch fvc_arm = {
 	.ka_kvatop = _arm_kvatop,
 };
 
-KVM_ARCH(fvc_arm);
+FVC_ARCH(fvc_arm);

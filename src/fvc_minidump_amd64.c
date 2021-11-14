@@ -402,7 +402,7 @@ _amd64_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 
 	while (_fvc_bitmap_next(&bm, &bmindex)) {
 		pa = _fvc_bit_id_pa(kd, bmindex, AMD64_PAGE_SIZE);
-		if (pa == _KVM_PA_INVALID)
+		if (pa == _FVC_PA_INVALID)
 			break;
 		dva = vm->hdr.dmapbase + pa;
 		if (vm->hdr.dmapend < (dva + pgsz))
@@ -430,4 +430,4 @@ static struct fvc_arch fvc_amd64_minidump = {
 	.ka_walk_pages = _amd64_minidump_walk_pages,
 };
 
-KVM_ARCH(fvc_amd64_minidump);
+FVC_ARCH(fvc_amd64_minidump);

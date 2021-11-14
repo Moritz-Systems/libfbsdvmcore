@@ -266,4 +266,4 @@ static struct fvc_arch fvc_arm_minidump = {
 	.ka_walk_pages = _arm_minidump_walk_pages,
 };
 
-KVM_ARCH(fvc_arm_minidump);
+FVC_ARCH(fvc_arm_minidump);

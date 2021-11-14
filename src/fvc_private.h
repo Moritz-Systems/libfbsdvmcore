@@ -55,7 +55,7 @@ struct fvc_arch {
 	ssize_t (*ka_kerndisp)(fvc_t *);
 };
 
-#define	KVM_ARCH(ka)	DATA_SET(fvc_arch, ka)
+#define	FVC_ARCH(ka)	DATA_SET(fvc_arch, ka)
 
 struct __fvc {
 	struct fvc_arch *arch;
@@ -149,8 +149,8 @@ _fvc64toh(fvc_t *kd, uint64_t val)
 
 uint64_t _fvc_pa_bit_id(fvc_t *kd, uint64_t pa, unsigned int page_size);
 uint64_t _fvc_bit_id_pa(fvc_t *kd, uint64_t bit_id, unsigned int page_size);
-#define _KVM_PA_INVALID		ULONG_MAX
-#define _KVM_BIT_ID_INVALID	ULONG_MAX
+#define _FVC_PA_INVALID		ULONG_MAX
+#define _FVC_BIT_ID_INVALID	ULONG_MAX
 
 int	 _fvc_bitmap_init(struct fvc_bitmap *, u_long, u_long *);
 void	 _fvc_bitmap_set(struct fvc_bitmap *, u_long);

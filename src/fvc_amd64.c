@@ -313,4 +313,4 @@ static struct fvc_arch fvc_amd64 = {
 	.ka_kvatop = _amd64_kvatop,
 };
 
-KVM_ARCH(fvc_amd64);
+FVC_ARCH(fvc_amd64);

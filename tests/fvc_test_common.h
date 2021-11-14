@@ -25,7 +25,7 @@
  * $FreeBSD$
  */
 
-#ifndef	__KVM_TEST_COMMON_H__
+#ifndef	__FVC_TEST_COMMON_H__
 
 #include <sys/types.h>
 #include <limits.h>

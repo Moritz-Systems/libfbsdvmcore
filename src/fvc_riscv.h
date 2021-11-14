@@ -26,8 +26,8 @@
  * $FreeBSD$
  */
 
-#ifndef __KVM_RISCV_H__
-#define	__KVM_RISCV_H__
+#ifndef __FVC_RISCV_H__
+#define	__FVC_RISCV_H__
 
 #ifdef __riscv
 #include <machine/pte.h>
@@ -86,4 +86,4 @@ _Static_assert(PTE_V == RISCV_PTE_V, "PTE_V mismatch");
 _Static_assert(PTE_RWX == RISCV_PTE_RWX, "PTE_RWX mismatch");
 #endif
 
-#endif /* !__KVM_RISCV_H__ */
+#endif /* !__FVC_RISCV_H__ */

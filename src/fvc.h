@@ -32,8 +32,8 @@
  * $FreeBSD$
  */
 
-#ifndef _KVM_H_
-#define	_KVM_H_
+#ifndef _FVC_H_
+#define	_FVC_H_
 
 #include <sys/types.h>
 
@@ -67,7 +67,7 @@ struct fvc_page {
 };
 
 #define SWIF_DEV_PREFIX	0x0002
-#define	LIBKVM_WALK_PAGES_VERSION	2
+#define	LIBFVC_WALK_PAGES_VERSION	2
 
 __BEGIN_DECLS
 int	  fvc_close(fvc_t *);
@@ -84,4 +84,4 @@ typedef int fvc_walk_pages_cb_t(struct fvc_page *, void *);
 int fvc_walk_pages(fvc_t *, fvc_walk_pages_cb_t *, void *);
 __END_DECLS
 
-#endif /* !_KVM_H_ */
+#endif /* !_FVC_H_ */

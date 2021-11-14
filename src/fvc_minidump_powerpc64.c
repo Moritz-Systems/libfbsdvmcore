@@ -190,4 +190,4 @@ static struct fvc_arch fvc_powerpc64_minidump = {
 	.ka_kerndisp	= _powerpc64_kerndisp,
 };
 
-KVM_ARCH(fvc_powerpc64_minidump);
+FVC_ARCH(fvc_powerpc64_minidump);

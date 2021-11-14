@@ -335,4 +335,4 @@ static struct fvc_arch fvc_i386_minidump = {
 	.ka_walk_pages = _i386_minidump_walk_pages,
 };
 
-KVM_ARCH(fvc_i386_minidump);
+FVC_ARCH(fvc_i386_minidump);

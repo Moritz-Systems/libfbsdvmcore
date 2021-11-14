@@ -25,8 +25,8 @@
  * $FreeBSD$
  */
 
-#ifndef __KVM_ARM_H__
-#define	__KVM_ARM_H__
+#ifndef __FVC_ARM_H__
+#define	__FVC_ARM_H__
 
 typedef uint32_t	arm_physaddr_t;
 typedef uint32_t	arm_pd_entry_t;
@@ -122,4 +122,4 @@ _Static_assert(L2_TYPE_MASK == ARM_L2_TYPE_MASK, "L2_TYPE_MASK mismatch");
 
 int	_arm_native(fvc_t *);
 
-#endif /* !__KVM_ARM_H__ */
+#endif /* !__FVC_ARM_H__ */

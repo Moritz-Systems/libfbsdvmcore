@@ -239,5 +239,5 @@ static struct fvc_arch fvc_powerpc64le = {
 	.ka_kvatop = _powerpc64_kvatop,
 };
 
-KVM_ARCH(fvc_powerpc64);
-KVM_ARCH(fvc_powerpc64le);
+FVC_ARCH(fvc_powerpc64);
+FVC_ARCH(fvc_powerpc64le);

@@ -25,8 +25,8 @@
  * $FreeBSD$
  */
 
-#ifndef __KVM_MIPS_H__
-#define	__KVM_MIPS_H__
+#ifndef __FVC_MIPS_H__
+#define	__FVC_MIPS_H__
 
 #ifdef __mips__
 #include <machine/pte.h>
@@ -114,4 +114,4 @@ _Static_assert(TLBLO_PFN_SHIFT == MIPS_PFN_SHIFT, "TLBLO_PFN_SHIFT mismatch");
 _Static_assert(TLB_PAGE_SHIFT == MIPS_PAGE_SHIFT, "TLB_PAGE_SHIFT mismatch");
 #endif
 
-#endif /* !__KVM_MIPS_H__ */
+#endif /* !__FVC_MIPS_H__ */

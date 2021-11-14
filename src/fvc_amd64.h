@@ -25,8 +25,8 @@
  * $FreeBSD$
  */
 
-#ifndef __KVM_AMD64_H__
-#define	__KVM_AMD64_H__
+#ifndef __FVC_AMD64_H__
+#define	__FVC_AMD64_H__
 
 #ifdef __amd64__
 #include <vm/vm.h>
@@ -86,4 +86,4 @@ _Static_assert(PG_PS_FRAME == AMD64_PG_PS_FRAME, "PG_PS_FRAME mismatch");
 
 int	_amd64_native(fvc_t *);
 
-#endif /* !__KVM_AMD64_H__ */
+#endif /* !__FVC_AMD64_H__ */

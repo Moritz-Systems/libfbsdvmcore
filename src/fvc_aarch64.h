@@ -25,8 +25,8 @@
  * $FreeBSD$
  */
 
-#ifndef __KVM_AARCH64_H__
-#define	__KVM_AARCH64_H__
+#ifndef __FVC_AARCH64_H__
+#define	__FVC_AARCH64_H__
 
 #ifdef __aarch64__
 #include <machine/pte.h>
@@ -63,4 +63,4 @@ _Static_assert(L3_SHIFT == AARCH64_L3_SHIFT, "L3_SHIFT mismatch");
 _Static_assert(L3_PAGE == AARCH64_L3_PAGE, "L3_PAGE mismatch");
 #endif
 
-#endif /* !__KVM_AARCH64_H__ */
+#endif /* !__FVC_AARCH64_H__ */
