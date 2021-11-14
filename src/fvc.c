@@ -36,10 +36,7 @@
 #include <sys/param.h>
 
 #include <sys/user.h>
-#include <sys/linker.h>
-#include <sys/pcpu.h>
 #include <sys/stat.h>
-#include <sys/sysctl.h>
 #include <sys/mman.h>
 
 #include <stdbool.h>
