@@ -27,7 +27,6 @@
  */
 
 #include <sys/param.h>
-#include <vm/vm.h>
 
 #include <limits.h>
 #include <stdint.h>
@@ -520,12 +519,12 @@ invalid:
 static vm_prot_t
 entry_to_prot(ppc64_pt_entry_t *pte)
 {
-	vm_prot_t prot = VM_PROT_READ;
+	vm_prot_t prot = FVC_VM_PROT_READ;
 
 	if (pte->pte_lo & LPTEL_RW)
-		prot |= VM_PROT_WRITE;
+		prot |= FVC_VM_PROT_WRITE;
 	if ((pte->pte_lo & LPTEL_NOEXEC) != 0)
-		prot |= VM_PROT_EXECUTE;
+		prot |= FVC_VM_PROT_EXECUTE;
 	return (prot);
 }
 

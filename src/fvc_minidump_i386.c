@@ -34,7 +34,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <vm/vm.h>
 
 #include "../../sys/i386/include/minidump.h"
 
@@ -243,13 +242,13 @@ _i386_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 static vm_prot_t
 _i386_entry_to_prot(uint64_t pte)
 {
-	vm_prot_t prot = VM_PROT_READ;
+	vm_prot_t prot = FVC_VM_PROT_READ;
 
 	/* Source: i386/pmap.c:pmap_protect() */
 	if (pte & I386_PG_RW)
-		prot |= VM_PROT_WRITE;
+		prot |= FVC_VM_PROT_WRITE;
 	if ((pte & I386_PG_NX) == 0)
-		prot |= VM_PROT_EXECUTE;
+		prot |= FVC_VM_PROT_EXECUTE;
 
 	return prot;
 }

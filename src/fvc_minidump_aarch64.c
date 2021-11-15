@@ -34,7 +34,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <vm/vm.h>
 
 #include "../../sys/arm64/include/minidump.h"
 
@@ -204,13 +203,13 @@ _aarch64_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 static vm_prot_t
 _aarch64_entry_to_prot(aarch64_pte_t pte)
 {
-	vm_prot_t prot = VM_PROT_READ;
+	vm_prot_t prot = FVC_VM_PROT_READ;
 
 	/* Source: arm64/arm64/pmap.c:pmap_protect() */
 	if ((pte & AARCH64_ATTR_AP(AARCH64_ATTR_AP_RO)) == 0)
-		prot |= VM_PROT_WRITE;
+		prot |= FVC_VM_PROT_WRITE;
 	if ((pte & AARCH64_ATTR_XN) == 0)
-		prot |= VM_PROT_EXECUTE;
+		prot |= FVC_VM_PROT_EXECUTE;
 	return prot;
 }
 
@@ -250,7 +249,7 @@ _aarch64_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 		if (vm->hdr.dmapend < (dva + AARCH64_PAGE_SIZE))
 			break;
 		va = 0;
-		prot = VM_PROT_READ | VM_PROT_WRITE;
+		prot = FVC_VM_PROT_READ | FVC_VM_PROT_WRITE;
 		if (!_fvc_visit_cb(kd, cb, arg, pa, va, dva,
 		    prot, AARCH64_PAGE_SIZE, 0)) {
 			goto out;

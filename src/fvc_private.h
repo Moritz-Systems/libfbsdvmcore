@@ -47,6 +47,11 @@
 
 #include <gelf.h>
 
+/* Constants from sys/vm/vm.h */
+#define	FVC_VM_PROT_READ		((unsigned char) 0x01)
+#define	FVC_VM_PROT_WRITE		((unsigned char) 0x02)
+#define	FVC_VM_PROT_EXECUTE		((unsigned char) 0x04)
+
 struct fvc_nlist {
 	const char *n_name;
 	unsigned char n_type;

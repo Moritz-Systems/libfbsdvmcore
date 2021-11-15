@@ -33,7 +33,6 @@
  */
 
 #include <sys/param.h>
-#include <vm/vm.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -205,20 +204,20 @@ static vm_prot_t
 _arm_entry_to_prot(fvc_t *kd, arm_pt_entry_t pte)
 {
 	struct vmstate *vm = kd->vmst;
-	vm_prot_t prot = VM_PROT_READ;
+	vm_prot_t prot = FVC_VM_PROT_READ;
 
 	/* Source: arm/arm/pmap-v4.c:pmap_fault_fixup() */
 	if (vm->hdr.mmuformat == MINIDUMP_MMU_FORMAT_V4) {
 		if (pte & ARM_L2_S_PROT_W)
-			prot |= VM_PROT_WRITE;
+			prot |= FVC_VM_PROT_WRITE;
 		return prot;
 	}
 
 	/* Source: arm/arm/pmap-v6.c:pmap_protect() */
 	if ((pte & ARM_PTE2_RO) == 0)
-		prot |= VM_PROT_WRITE;
+		prot |= FVC_VM_PROT_WRITE;
 	if ((pte & ARM_PTE2_NX) == 0)
-		prot |= VM_PROT_EXECUTE;
+		prot |= FVC_VM_PROT_EXECUTE;
 	return prot;
 }
 

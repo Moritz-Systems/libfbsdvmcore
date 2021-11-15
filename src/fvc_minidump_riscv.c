@@ -35,7 +35,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <vm/vm.h>
 
 #include "../../sys/riscv/include/minidump.h"
 
@@ -205,12 +204,12 @@ _riscv_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 static vm_prot_t
 _riscv_entry_to_prot(riscv_pt_entry_t pte)
 {
-	vm_prot_t prot = VM_PROT_READ;
+	vm_prot_t prot = FVC_VM_PROT_READ;
 
 	if ((pte & RISCV_PTE_W) != 0)
-		prot |= VM_PROT_WRITE;
+		prot |= FVC_VM_PROT_WRITE;
 	if ((pte & RISCV_PTE_X) != 0)
-		prot |= VM_PROT_EXECUTE;
+		prot |= FVC_VM_PROT_EXECUTE;
 	return prot;
 }
 
@@ -251,7 +250,7 @@ _riscv_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 		if (vm->hdr.dmapend < (dva + RISCV_PAGE_SIZE))
 			break;
 		va = 0;
-		prot = VM_PROT_READ | VM_PROT_WRITE;
+		prot = FVC_VM_PROT_READ | FVC_VM_PROT_WRITE;
 		if (!_fvc_visit_cb(kd, cb, arg, pa, va, dva,
 		    prot, RISCV_PAGE_SIZE, 0)) {
 			goto out;

@@ -30,7 +30,6 @@
  */
 
 #include <sys/param.h>
-#include <vm/vm.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -260,7 +259,7 @@ _mips_iterator_next(struct mips_iter *it, u_long *pa, u_long *va, u_long *dva,
 	 * mips/mips/pmap.c: init_pte_prot / pmap_protect indicate that all
 	 * pages are R|X at least.
 	 */
-	*prot = VM_PROT_READ | VM_PROT_EXECUTE;
+	*prot = FVC_VM_PROT_READ | FVC_VM_PROT_EXECUTE;
 	*pa = 0;
 	*va = 0;
 	*dva = 0;
@@ -270,14 +269,14 @@ _mips_iterator_next(struct mips_iter *it, u_long *pa, u_long *va, u_long *dva,
 			if ((pte64 & MIPS_PTE_V) == 0)
 				continue;
 			if ((pte64 & MIPS64_PTE_RO) == 0)
-				*prot |= VM_PROT_WRITE;
+				*prot |= FVC_VM_PROT_WRITE;
 			*pa = MIPS64_PTE_TO_PA(pte64);
 		} else {
 			pte32 = _mips32_pte_get(it->kd, it->pteindex);
 			if ((pte32 & MIPS_PTE_V) == 0)
 				continue;
 			if ((pte32 & MIPS32_PTE_RO) == 0)
-				*prot |= VM_PROT_WRITE;
+				*prot |= FVC_VM_PROT_WRITE;
 			*pa = MIPS32_PTE_TO_PA(pte32);
 		}
 		*va = vm->hdr.kernbase + (it->pteindex << MIPS_PAGE_SHIFT);

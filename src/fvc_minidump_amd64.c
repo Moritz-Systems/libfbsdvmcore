@@ -34,7 +34,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <vm/vm.h>
 
 #include "../../sys/amd64/include/minidump.h"
 
@@ -56,12 +55,12 @@ struct vmstate {
 static vm_prot_t
 _amd64_entry_to_prot(uint64_t entry)
 {
-	vm_prot_t prot = VM_PROT_READ;
+	vm_prot_t prot = FVC_VM_PROT_READ;
 
 	if ((entry & AMD64_PG_RW) != 0)
-		prot |= VM_PROT_WRITE;
+		prot |= FVC_VM_PROT_WRITE;
 	if ((entry & AMD64_PG_NX) == 0)
-		prot |= VM_PROT_EXECUTE;
+		prot |= FVC_VM_PROT_EXECUTE;
 	return prot;
 }
 
@@ -408,7 +407,7 @@ _amd64_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 			break;
 		va = 0;
 		/* amd64/pmap.c: create_pagetables(): dmap always R|W. */
-		prot = VM_PROT_READ | VM_PROT_WRITE;
+		prot = FVC_VM_PROT_READ | FVC_VM_PROT_WRITE;
 		if (!_fvc_visit_cb(kd, cb, arg, pa, va, dva, prot, pgsz, 0)) {
 			goto out;
 		}
