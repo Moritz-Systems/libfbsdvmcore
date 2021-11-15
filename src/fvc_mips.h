@@ -28,7 +28,7 @@
 #ifndef __FVC_MIPS_H__
 #define	__FVC_MIPS_H__
 
-#ifdef __mips__
+#if defined(__FreeBSD__) && defined(__mips__)
 #include <machine/pte.h>
 #endif
 
@@ -82,7 +82,7 @@ _mips64_pte_get(fvc_t *kd, u_long pteindex)
 	return _fvc64toh(kd, *pte);
 }
 
-#ifdef __mips__
+#if defined(__FreeBSD__) && defined(__mips__)
 _Static_assert(PAGE_SHIFT == MIPS_PAGE_SHIFT, "PAGE_SHIFT mismatch");
 _Static_assert(PAGE_SIZE == MIPS_PAGE_SIZE, "PAGE_SIZE mismatch");
 _Static_assert(PAGE_MASK == MIPS_PAGE_MASK, "PAGE_MASK mismatch");

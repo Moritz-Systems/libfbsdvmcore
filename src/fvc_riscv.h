@@ -29,7 +29,7 @@
 #ifndef __FVC_RISCV_H__
 #define	__FVC_RISCV_H__
 
-#ifdef __riscv
+#if defined(__FreeBSD__) && defined(__riscv)
 #include <machine/pte.h>
 #endif
 
@@ -59,7 +59,7 @@ typedef uint64_t	riscv_pt_entry_t;
 
 #define	RISCV_PTE_PPN0_S	10
 
-#ifdef __riscv
+#if defined(__FreeBSD__) && defined(__riscv)
 _Static_assert(sizeof(pt_entry_t) == sizeof(riscv_pt_entry_t),
     "pt_entry_t size mismatch");
 

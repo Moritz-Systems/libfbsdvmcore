@@ -28,7 +28,7 @@
 #ifndef __FVC_I386_H__
 #define	__FVC_I386_H__
 
-#ifdef __i386__
+#if defined(__FreeBSD__) && defined(__i386__)
 #include <vm/vm.h>
 #include <vm/pmap.h>
 #endif
@@ -62,7 +62,7 @@ typedef	uint64_t	i386_pde_pae_t;
 #define	I386_PG_FRAME		(0xfffff000)
 #define	I386_PG_PS_FRAME	(0xffc00000)
 
-#ifdef __i386__
+#if defined(__FreeBSD__) && defined(__i386__)
 _Static_assert(PAGE_SHIFT == I386_PAGE_SHIFT, "PAGE_SHIFT mismatch");
 _Static_assert(PAGE_SIZE == I386_PAGE_SIZE, "PAGE_SIZE mismatch");
 _Static_assert(PAGE_MASK == I386_PAGE_MASK, "PAGE_MASK mismatch");

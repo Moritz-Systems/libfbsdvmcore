@@ -28,7 +28,7 @@
 #ifndef __FVC_AARCH64_H__
 #define	__FVC_AARCH64_H__
 
-#ifdef __aarch64__
+#if defined(__FreeBSD__) && defined(__aarch64__)
 #include <machine/pte.h>
 #endif
 
@@ -52,7 +52,7 @@ typedef uint64_t	aarch64_pte_t;
 #define	AARCH64_L3_SHIFT	12
 #define	AARCH64_L3_PAGE		0x3
 
-#ifdef __aarch64__
+#if defined(__FreeBSD__) && defined(__aarch64__)
 _Static_assert(PAGE_SHIFT == AARCH64_PAGE_SHIFT, "PAGE_SHIFT mismatch");
 _Static_assert(PAGE_SIZE == AARCH64_PAGE_SIZE, "PAGE_SIZE mismatch");
 _Static_assert(PAGE_MASK == AARCH64_PAGE_MASK, "PAGE_MASK mismatch");

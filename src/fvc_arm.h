@@ -80,7 +80,7 @@ typedef uint32_t	arm_pt_entry_t;
 #define	ARM_L2_TYPE_T	0x03		/* Tiny Page  -  1k - not used */
 #define	ARM_L2_TYPE_MASK	0x03
 
-#ifdef __arm__
+#if defined(__FreeBSD__) && defined(__arm__)
 #include <machine/acle-compat.h>
 
 #if __ARM_ARCH >= 6

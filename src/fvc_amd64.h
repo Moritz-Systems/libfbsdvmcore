@@ -28,7 +28,7 @@
 #ifndef __FVC_AMD64_H__
 #define	__FVC_AMD64_H__
 
-#ifdef __amd64__
+#if defined(__FreeBSD__) && defined(__amd64__)
 #include <vm/vm.h>
 #include <vm/pmap.h>
 #endif
@@ -62,7 +62,7 @@ typedef	uint64_t	amd64_pml4e_t;
 #define	AMD64_PG_PS_FRAME	(0x000fffffffe00000)
 #define	AMD64_PG_1GB_FRAME	(0x000fffffc0000000)
 
-#ifdef __amd64__
+#if defined(__FreeBSD__) && defined(__amd64__)
 _Static_assert(NPTEPG == AMD64_NPTEPG, "NPTEPG mismatch");
 _Static_assert(PAGE_SHIFT == AMD64_PAGE_SHIFT, "PAGE_SHIFT mismatch");
 _Static_assert(PAGE_SIZE == AMD64_PAGE_SIZE, "PAGE_SIZE mismatch");
@@ -83,7 +83,5 @@ _Static_assert(PG_PS == AMD64_PG_PS, "PG_PS mismatch");
 _Static_assert(PG_FRAME == AMD64_PG_FRAME, "PG_FRAME mismatch");
 _Static_assert(PG_PS_FRAME == AMD64_PG_PS_FRAME, "PG_PS_FRAME mismatch");
 #endif
-
-int	_amd64_native(fvc_t *);
 
 #endif /* !__FVC_AMD64_H__ */
