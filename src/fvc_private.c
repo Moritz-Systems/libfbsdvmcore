@@ -43,7 +43,6 @@
 
 #include <assert.h>
 #include <fcntl.h>
-#include <vm/vm.h>
 #include <limits.h>
 #include <nlist.h>
 #include <paths.h>
