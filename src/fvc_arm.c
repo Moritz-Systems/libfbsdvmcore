@@ -118,7 +118,7 @@ _arm_initvtop(fvc_t *kd)
 
 	found = 0;
 	for (i = 0; i < vm->phnum; i++) {
-		if (vm->phdr[i].p_type == PT_DUMP_DELTA) {
+		if (vm->phdr[i].p_type == ARM_PT_DUMP_DELTA) {
 			kernbase = vm->phdr[i].p_vaddr;
 			physaddr = vm->phdr[i].p_paddr;
 			found = 1;
