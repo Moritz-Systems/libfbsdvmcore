@@ -45,10 +45,6 @@
 #include <unistd.h>
 #include <vm/vm.h>
 
-#ifdef __i386__
-#include <machine/vmparam.h>		/* For KERNBASE. */
-#endif
-
 #include <limits.h>
 
 #include "fvc.h"
@@ -126,14 +122,10 @@ _i386_initvtop(fvc_t *kd)
 	nl[1].n_name = 0;
 
 	if (_fvc_nlist(kd, nl) != 0) {
-#ifdef __i386__
-		kernbase = KERNBASE;	/* for old kernels */
-#else
 		_fvc_err(kd, kd->program, "cannot resolve kernbase");
 		return (-1);
-#endif
-	} else
-		kernbase = nl[0].n_value;
+	}
+	kernbase = nl[0].n_value;
 
 	nl[0].n_name = "IdlePDPT";
 	nl[1].n_name = 0;

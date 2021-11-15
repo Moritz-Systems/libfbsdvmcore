@@ -43,10 +43,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#ifdef __arm__
-#include <machine/vmparam.h>
-#endif
-
 #include "fvc.h"
 #include "fvc_private.h"
 #include "fvc_arm.h"
@@ -134,14 +130,10 @@ _arm_initvtop(fvc_t *kd)
 	if (!found) {
 		nl[0].n_name = "kernbase";
 		if (_fvc_nlist(kd, nl) != 0) {
-#ifdef __arm__
-			kernbase = KERNBASE;
-#else
-		_fvc_err(kd, kd->program, "cannot resolve kernbase");
-		return (-1);
-#endif
-		} else
-			kernbase = nl[0].n_value;
+			_fvc_err(kd, kd->program, "cannot resolve kernbase");
+			return (-1);
+		}
+		kernbase = nl[0].n_value;
 
 		nl[0].n_name = "physaddr";
 		if (_fvc_nlist(kd, nl) != 0) {
