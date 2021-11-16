@@ -55,11 +55,11 @@ ATF_TC_BODY(fvc_open_negative_test_nonexistent_execfile, tc)
 {
 
 	errbuf_clear();
-	ATF_CHECK(fvc_open("/nonexistent", _PATH_DEVZERO, NULL, NULL, NULL) ==
+	ATF_CHECK(fvc_open("/nonexistent", "/dev/zero", NULL, NULL, NULL) ==
 	    NULL);
 	ATF_CHECK(strlen(errbuf) == 0);
 	errbuf_clear();
-	ATF_CHECK(fvc_open("/nonexistent", _PATH_DEVZERO, errbuf, NULL, NULL) ==
+	ATF_CHECK(fvc_open("/nonexistent", "/dev/zero", errbuf, NULL, NULL) ==
 	    NULL);
 	ATF_CHECK(errbuf_has_error(errbuf));
 }
