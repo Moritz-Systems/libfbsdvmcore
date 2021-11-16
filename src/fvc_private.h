@@ -68,7 +68,6 @@
 
 struct fvc_nlist {
 	const char *n_name;
-	unsigned char n_type;
 	fvc_addr_t n_value;
 };
 

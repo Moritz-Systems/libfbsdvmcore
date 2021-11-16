@@ -56,8 +56,8 @@ ATF_TC_BODY(fvc_read_positive_test_no_error, tc)
 	struct fvc_nlist nl[] = {
 #define	SYMNAME	"_mp_maxcpus"
 #define	X_MAXCPUS	0
-		{ SYMNAME, 0, 0 },
-		{ NULL, 0, 0 },
+		{ SYMNAME, 0 },
+		{ NULL, 0 },
 	};
 	ssize_t rc;
 	int sysctl_maxcpus, mp_maxcpus, retcode;
@@ -70,7 +70,7 @@ ATF_TC_BODY(fvc_read_positive_test_no_error, tc)
 	retcode = _fvc_nlist(kd, nl);
 	ATF_REQUIRE_MSG(retcode != -1,
 	    "_fvc_nlist failed (returned %d): %s", retcode, fvc_geterr(kd));
-	if (nl[X_MAXCPUS].n_type == 0)
+	if (nl[X_MAXCPUS].n_value == 0)
 		atf_tc_skip("symbol (\"%s\") couldn't be found", SYMNAME);
 
 	rc = fvc_read(kd, nl[X_MAXCPUS].n_value, &mp_maxcpus,

@@ -517,11 +517,8 @@ fvc_fdnlist(fvc_t *kd, struct fvc_nlist *list)
 		if (error != 0) {
 			nfail++;
 			list->n_value = 0;
-			list->n_type = 0;
-		} else {
+		} else
 			list->n_value = addr;
-			list->n_type = N_DATA | N_EXT;
-		}
 		list++;
 	}
 	return (nfail);
