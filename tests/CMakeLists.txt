@@ -5,7 +5,6 @@ set(TESTS
     fvc_close_test
     fvc_geterr_test
     fvc_open_test
-    fvc_read_test
     )
 
 set(KYUAFILE "syntax(2)\ntest_suite(\"${CMAKE_PROJECT_NAME}\")\n")

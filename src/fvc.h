@@ -36,6 +36,7 @@
 #define	_FVC_H_
 
 #include <sys/types.h>
+#include <stdint.h>
 
 /*
  * Including vm/vm.h causes namespace pollution issues.  For the
