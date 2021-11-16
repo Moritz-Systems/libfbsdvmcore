@@ -35,7 +35,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../../sys/i386/include/minidump.h"
+#include "minidump/i386.h"
 
 #include <limits.h>
 

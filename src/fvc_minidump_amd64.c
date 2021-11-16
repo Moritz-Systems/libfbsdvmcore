@@ -35,7 +35,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../../sys/amd64/include/minidump.h"
+#include "minidump/amd64.h"
 
 #include <limits.h>
 

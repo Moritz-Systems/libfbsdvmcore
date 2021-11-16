@@ -39,7 +39,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../../sys/arm/include/minidump.h"
+#include "minidump/arm.h"
 
 #include "fvc.h"
 #include "fvc_private.h"

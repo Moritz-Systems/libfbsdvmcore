@@ -39,7 +39,7 @@
 #include "../../sys/mips/include/cca.h"
 #define	_KVM_MINIDUMP
 #include "../../sys/mips/include/cpuregs.h"
-#include "../../sys/mips/include/minidump.h"
+#include "minidump/mips.h"
 
 #include "fvc.h"
 #include "fvc_private.h"

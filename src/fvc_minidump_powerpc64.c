@@ -29,11 +29,12 @@
 #include <sys/param.h>
 
 #include <limits.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-#include "../../sys/powerpc/include/minidump.h"
+#include "minidump/powerpc.h"
 #include "fvc.h"
 #include "fvc_private.h"
 #include "fvc_powerpc64.h"

@@ -1,0 +1,2 @@
+These are the original FreeBSD headers copied
+from sys/${arch}/include/minidump.h to ${arch}.h.

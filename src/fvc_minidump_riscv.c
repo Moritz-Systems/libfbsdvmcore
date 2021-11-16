@@ -36,7 +36,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../../sys/riscv/include/minidump.h"
+#include "minidump/riscv.h"
 
 #include <limits.h>
 
