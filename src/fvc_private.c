@@ -34,8 +34,6 @@
 #include <sys/param.h>
 
 #include <sys/user.h>
-#include <sys/linker.h>
-#include <sys/pcpu.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 
@@ -528,127 +526,11 @@ fvc_fdnlist(fvc_t *kd, struct fvc_nlist *list)
 	return (nfail);
 }
 
-/*
- * Walk the list of unresolved symbols, generate a new list and prefix the
- * symbol names, try again, and merge back what we could resolve.
- */
-static int
-fvc_fdnlist_prefix(fvc_t *kd, struct fvc_nlist *nl, int missing,
-    const char *prefix, fvc_addr_t (*validate_fn)(fvc_t *, kvaddr_t))
-{
-	struct fvc_nlist *n, *np, *p;
-	char *cp, *ce;
-	const char *ccp;
-	size_t len;
-	int slen, unresolved;
-
-	/*
-	 * Calculate the space we need to malloc for nlist and names.
-	 * We are going to store the name twice for later lookups: once
-	 * with the prefix and once the unmodified name delmited by \0.
-	 */
-	len = 0;
-	unresolved = 0;
-	for (p = nl; p->n_name && p->n_name[0]; ++p) {
-		if (p->n_type != N_UNDF)
-			continue;
-		len += sizeof(struct fvc_nlist) + strlen(prefix) +
-		    2 * (strlen(p->n_name) + 1);
-		unresolved++;
-	}
-	if (unresolved == 0)
-		return (unresolved);
-	/* Add space for the terminating nlist entry. */
-	len += sizeof(struct fvc_nlist);
-	unresolved++;
-
-	/* Alloc one chunk for (nlist, [names]) and setup pointers. */
-	n = np = malloc(len);
-	bzero(n, len);
-	if (n == NULL)
-		return (missing);
-	cp = ce = (char *)np;
-	cp += unresolved * sizeof(struct fvc_nlist);
-	ce += len;
-
-	/* Generate shortened nlist with special prefix. */
-	unresolved = 0;
-	for (p = nl; p->n_name && p->n_name[0]; ++p) {
-		if (p->n_type != N_UNDF)
-			continue;
-		*np = *p;
-		/* Save the new\0orig. name so we can later match it again. */
-		slen = snprintf(cp, ce - cp, "%s%s%c%s", prefix,
-		    (prefix[0] != '\0' && p->n_name[0] == '_') ?
-			(p->n_name + 1) : p->n_name, '\0', p->n_name);
-		if (slen < 0 || slen >= ce - cp)
-			continue;
-		np->n_name = cp;
-		cp += slen + 1;
-		np++;
-		unresolved++;
-	}
-
-	/* Do lookup on the reduced list. */
-	np = n;
-	unresolved = fvc_fdnlist(kd, np);
-
-	/* Check if we could resolve further symbols and update the list. */
-	if (unresolved >= 0 && unresolved < missing) {
-		/* Find the first freshly resolved entry. */
-		for (; np->n_name && np->n_name[0]; np++)
-			if (np->n_type != N_UNDF)
-				break;
-		/*
-		 * The lists are both in the same order,
-		 * so we can walk them in parallel.
-		 */
-		for (p = nl; np->n_name && np->n_name[0] &&
-		    p->n_name && p->n_name[0]; ++p) {
-			if (p->n_type != N_UNDF)
-				continue;
-			/* Skip expanded name and compare to orig. one. */
-			ccp = np->n_name + strlen(np->n_name) + 1;
-			if (strcmp(ccp, p->n_name) != 0)
-				continue;
-			/* Update nlist with new, translated results. */
-			p->n_type = np->n_type;
-			if (validate_fn)
-				p->n_value = (*validate_fn)(kd, np->n_value);
-			else
-				p->n_value = np->n_value;
-			missing--;
-			/* Find next freshly resolved entry. */
-			for (np++; np->n_name && np->n_name[0]; np++)
-				if (np->n_type != N_UNDF)
-					break;
-		}
-	}
-	/* We could assert missing = unresolved here. */
-
-	free(n);
-	return (unresolved);
-}
-
 int
 _fvc_nlist(fvc_t *kd, struct fvc_nlist *nl)
 {
-	struct fvc_nlist *p;
-	int nvalid;
-	struct kld_sym_lookup lookup;
-	int error;
-	const char *prefix = "";
-	char symname[1024]; /* XXX-BZ symbol name length limit? */
 
-	/*
-	 * If we can't use the kld symbol lookup, revert to the
-	 * slow library call.
-	 */
-	error = fvc_fdnlist(kd, nl);
-	if (error <= 0)			/* Hard error or success. */
-		return (error);
-
-	return (error);
+	return fvc_fdnlist(kd, nl);
 }
 
 int
