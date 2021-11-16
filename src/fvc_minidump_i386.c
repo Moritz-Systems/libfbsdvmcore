@@ -43,7 +43,7 @@
 #include "fvc_private.h"
 #include "fvc_i386.h"
 
-#define	i386_round_page(x)	roundup2((fvc_addr_t)(x), I386_PAGE_SIZE)
+#define	i386_round_page(x)	fvc_roundup2((fvc_addr_t)(x), I386_PAGE_SIZE)
 
 struct vmstate {
 	struct minidumphdr hdr;

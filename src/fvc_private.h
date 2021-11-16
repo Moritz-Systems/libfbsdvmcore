@@ -52,6 +52,20 @@
 #define	FVC_VM_PROT_WRITE		((unsigned char) 0x02)
 #define	FVC_VM_PROT_EXECUTE		((unsigned char) 0x04)
 
+#if __has_builtin(__builtin_align_up)
+#define fvc_roundup2(x, align) __builtin_align_up(x, align)
+#else
+#define fvc_roundup2(x, align)	\
+	((__typeof__(x))(((uintptr_t)(x)+((align)-1))&(~((align)-1))))
+#endif
+#if __has_builtin(__builtin_align_down)
+#define fvc_rounddown2(x, align) __builtin_align_down(x, align)
+#else
+#define fvc_rounddown2(x, align)	\
+	((__typeof__(x))((x)&(~((align)-1))))
+#endif
+
+
 struct fvc_nlist {
 	const char *n_name;
 	unsigned char n_type;

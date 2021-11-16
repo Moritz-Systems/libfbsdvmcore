@@ -234,7 +234,7 @@ popcount_bytes(uint64_t *addr, uint32_t bit0, uint32_t bitN)
 
 	/* Align to 64-bit boundary on the left side if needed. */
 	if ((bit0 % BITS_IN(*addr)) != 0) {
-		bound = MIN(bitN, roundup2(bit0, BITS_IN(*addr)));
+		bound = MIN(bitN, fvc_roundup2(bit0, BITS_IN(*addr)));
 		count += __builtin_popcountll(bitmask_range(*addr, bit0, bound));
 		res -= (bound - bit0);
 		addr++;
@@ -430,7 +430,7 @@ _fvc_bit_id_pa(fvc_t *kd, uint64_t bit_id, unsigned int page_size)
 		sz = howmany(dump_avail_n(kd, i + 1), page_size) -
 		    dump_avail_n(kd, i) / page_size;
 		if (bit_id < sz) {
-			return (rounddown2(dump_avail_n(kd, i), page_size) +
+			return (fvc_rounddown2(dump_avail_n(kd, i), page_size) +
 			    bit_id * page_size);
 		}
 		bit_id -= sz;

@@ -43,7 +43,7 @@
 #include "fvc_private.h"
 #include "fvc_aarch64.h"
 
-#define	aarch64_round_page(x)	roundup2((fvc_addr_t)(x), AARCH64_PAGE_SIZE)
+#define	aarch64_round_page(x)	fvc_roundup2((fvc_addr_t)(x), AARCH64_PAGE_SIZE)
 
 struct vmstate {
 	struct minidumphdr hdr;

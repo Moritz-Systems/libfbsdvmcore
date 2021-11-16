@@ -60,7 +60,7 @@
 
 #define	SEGMENT_LENGTH		0x10000000ULL
 
-#define	round_seg(x)		roundup2((uint64_t)(x), SEGMENT_LENGTH)
+#define	round_seg(x)		fvc_roundup2((uint64_t)(x), SEGMENT_LENGTH)
 
 /* Virtual real-mode VSID in LPARs */
 #define	VSID_VRMA		0x1ffffffULL

@@ -45,7 +45,7 @@
 #include "fvc_private.h"
 #include "fvc_mips.h"
 
-#define	mips_round_page(x)	roundup2((fvc_addr_t)(x), MIPS_PAGE_SIZE)
+#define	mips_round_page(x)	fvc_roundup2((fvc_addr_t)(x), MIPS_PAGE_SIZE)
 
 struct vmstate {
 	struct		minidumphdr hdr;

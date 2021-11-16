@@ -43,7 +43,7 @@
 #include "fvc_private.h"
 #include "fvc_amd64.h"
 
-#define	amd64_round_page(x)	roundup2((fvc_addr_t)(x), AMD64_PAGE_SIZE)
+#define	amd64_round_page(x)	fvc_roundup2((fvc_addr_t)(x), AMD64_PAGE_SIZE)
 #define	VM_IS_V1(vm)		(vm->hdr.version == 1)
 #define	VA_OFF(vm, va)		\
 	(VM_IS_V1(vm) ? ((va) & (AMD64_PAGE_SIZE - 1)) : ((va) & AMD64_PAGE_MASK))
