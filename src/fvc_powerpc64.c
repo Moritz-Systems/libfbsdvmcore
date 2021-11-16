@@ -29,7 +29,6 @@
  */
 
 #include <sys/param.h>
-#include <sys/kerneldump.h>
 #include <sys/mman.h>
 
 #include <elf.h>

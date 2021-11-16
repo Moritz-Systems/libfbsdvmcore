@@ -65,6 +65,12 @@
 	((__typeof__(x))((x)&(~((align)-1))))
 #endif
 
+/* from sys/elf_common.h */
+#define	IS_ELF(ehdr)	((ehdr).e_ident[EI_MAG0] == ELFMAG0 && \
+			 (ehdr).e_ident[EI_MAG1] == ELFMAG1 && \
+			 (ehdr).e_ident[EI_MAG2] == ELFMAG2 && \
+			 (ehdr).e_ident[EI_MAG3] == ELFMAG3)
+
 
 struct fvc_nlist {
 	const char *n_name;
@@ -134,6 +140,27 @@ struct fvc_libelf_resolver_data {
 #define POPCOUNT_BITS	1024
 #define BITS_IN(v)	(sizeof(v) * NBBY)
 #define POPCOUNTS_IN(v)	(POPCOUNT_BITS / BITS_IN(v))
+
+/* from sys/kerendump.h */
+#define	KERNELDUMPMAGIC		"FreeBSD Kernel Dump"
+
+struct kerneldumpheader {
+	char		magic[20];
+	char		architecture[12];
+	uint32_t	version;
+	uint32_t	architectureversion;
+	uint64_t	dumplength;		/* excl headers */
+	uint64_t	dumptime;
+	uint32_t	dumpkeysize;
+	uint32_t	blocksize;
+	char		hostname[64];
+	char		versionstring[192];
+	char		panicstring[175];
+	uint8_t		compression;
+	uint64_t	dumpextent;
+	char		unused[4];
+	uint32_t	parity;
+};
 
 /*
  * Functions used internally by fvc, but across fvc modules.
