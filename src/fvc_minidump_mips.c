@@ -36,9 +36,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../../sys/mips/include/cca.h"
-#define	_KVM_MINIDUMP
-#include "../../sys/mips/include/cpuregs.h"
 #include "minidump/mips.h"
 
 #include "fvc.h"

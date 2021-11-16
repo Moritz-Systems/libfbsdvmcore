@@ -9,8 +9,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 include_directories(
     ${CMAKE_BINARY_DIR}/src
-    src
-    /usr/src/sys)
+    src)
 
 include(CheckIncludeFile)
 check_include_file("sys/endian.h" HAVE_SYS_ENDIAN_H)

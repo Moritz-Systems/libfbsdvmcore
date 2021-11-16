@@ -66,6 +66,12 @@ typedef uint64_t	mips64_pte_t;
 #define	MIPS32_PTE_RO		((mips32_pte_t)0x01 << MIPS32_SWBITS_SHIFT)
 #define	MIPS64_PTE_RO		((mips64_pte_t)0x01 << MIPS64_SWBITS_SHIFT)
 
+/* from sys/mips/include/cpuregs.h */
+#define	MIPS_XKPHYS_START	0x8000000000000000
+#define	MIPS_XKPHYS_END		0xbfffffffffffffff
+#define	MIPS_XKPHYS_PHYS_MASK	(0x0ffffffffff)
+#define	MIPS_KSEG0_PHYS_MASK	(0x1fffffff)
+
 static inline mips32_pte_t
 _mips32_pte_get(fvc_t *kd, u_long pteindex)
 {
