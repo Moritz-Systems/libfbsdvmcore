@@ -235,14 +235,14 @@ popcount_bytes(uint64_t *addr, uint32_t bit0, uint32_t bitN)
 	/* Align to 64-bit boundary on the left side if needed. */
 	if ((bit0 % BITS_IN(*addr)) != 0) {
 		bound = MIN(bitN, roundup2(bit0, BITS_IN(*addr)));
-		count += __bitcount64(bitmask_range(*addr, bit0, bound));
+		count += __builtin_popcountll(bitmask_range(*addr, bit0, bound));
 		res -= (bound - bit0);
 		addr++;
 	}
 
 	while (res > 0) {
 		bound = MIN(res, BITS_IN(*addr));
-		count += __bitcount64(bitmask_range(*addr, 0, bound));
+		count += __builtin_popcountll(bitmask_range(*addr, 0, bound));
 		res -= bound;
 		addr++;
 	}
