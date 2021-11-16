@@ -326,9 +326,6 @@ fvc_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *closure)
 ssize_t
 fvc_kerndisp(fvc_t *kd)
 {
-	unsigned long kernbase, rel_kernbase;
-	size_t kernbase_len = sizeof(kernbase);
-	size_t rel_kernbase_len = sizeof(rel_kernbase);
 
 	if (kd->arch->ka_kerndisp == NULL)
 		return (0);
