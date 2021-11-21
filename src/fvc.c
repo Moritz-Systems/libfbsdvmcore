@@ -35,7 +35,6 @@
 
 #include <sys/param.h>
 
-#include <sys/user.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 
