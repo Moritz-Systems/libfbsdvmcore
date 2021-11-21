@@ -44,6 +44,10 @@
 
 #define	mips_round_page(x)	fvc_roundup2((fvc_addr_t)(x), MIPS_PAGE_SIZE)
 
+#ifndef EF_MIPS_ABI2
+#define EF_MIPS_ABI2 32
+#endif
+
 struct vmstate {
 	struct		minidumphdr hdr;
 	int		pte_size;
