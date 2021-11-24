@@ -52,10 +52,10 @@ struct vmstate {
 	struct minidumphdr hdr;
 };
 
-static vm_prot_t
+static fvc_vm_prot_t
 _amd64_entry_to_prot(uint64_t entry)
 {
-	vm_prot_t prot = FVC_VM_PROT_READ;
+	fvc_vm_prot_t prot = FVC_VM_PROT_READ;
 
 	if ((entry & AMD64_PG_RW) != 0)
 		prot |= FVC_VM_PROT_WRITE;
@@ -339,7 +339,7 @@ _amd64_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 	u_long bmindex, dva, pa, pdeindex, va;
 	struct fvc_bitmap bm;
 	int ret = 0;
-	vm_prot_t prot;
+	fvc_vm_prot_t prot;
 	unsigned int pgsz = AMD64_PAGE_SIZE;
 
 	if (vm->hdr.version < 2)

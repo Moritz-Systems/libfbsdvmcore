@@ -38,14 +38,6 @@
 #include <sys/types.h>
 #include <stdint.h>
 
-/*
- * Including vm/vm.h causes namespace pollution issues.  For the
- * most part, only things using fvc_walk_pages() need to #include it.
- */
-#ifndef VM_H
-typedef u_char vm_prot_t;
-#endif
-
 /* Default version symbol. */
 #define	VRS_SYM		"_version"
 #define	VRS_KEY		"VERSION"
@@ -55,13 +47,19 @@ typedef struct __fvc fvc_t;
 struct proc;
 
 typedef uint64_t fvc_addr_t;
+typedef unsigned char fvc_vm_prot_t;
+
+/* Constants from sys/vm/vm.h */
+#define	FVC_VM_PROT_READ		((fvc_vm_prot_t) 0x01)
+#define	FVC_VM_PROT_WRITE		((fvc_vm_prot_t) 0x02)
+#define	FVC_VM_PROT_EXECUTE		((fvc_vm_prot_t) 0x04)
 
 struct fvc_page {
 	unsigned int	kp_version;
 	fvc_addr_t	kp_paddr;
 	fvc_addr_t	kp_kmap_vaddr;
 	fvc_addr_t	kp_dmap_vaddr;
-	vm_prot_t	kp_prot;
+	fvc_vm_prot_t	kp_prot;
 	off_t		kp_offset;
 	size_t		kp_len;
 	/* end of version 2 */

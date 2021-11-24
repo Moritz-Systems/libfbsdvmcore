@@ -239,10 +239,10 @@ _i386_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 		return (_i386_minidump_vatop(kd, va, pa));
 }
 
-static vm_prot_t
+static fvc_vm_prot_t
 _i386_entry_to_prot(uint64_t pte)
 {
-	vm_prot_t prot = FVC_VM_PROT_READ;
+	fvc_vm_prot_t prot = FVC_VM_PROT_READ;
 
 	/* Source: i386/pmap.c:pmap_protect() */
 	if (pte & I386_PG_RW)
@@ -276,7 +276,7 @@ _i386_iterator_init(struct i386_iter *it, fvc_t *kd)
 
 static int
 _i386_iterator_next(struct i386_iter *it, u_long *pa, u_long *va, u_long *dva,
-    vm_prot_t *prot)
+    fvc_vm_prot_t *prot)
 {
 	struct vmstate *vm = it->kd->vmst;
 	i386_pte_t pte32;
@@ -313,7 +313,7 @@ _i386_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 {
 	struct i386_iter it;
 	u_long dva, pa, va;
-	vm_prot_t prot;
+	fvc_vm_prot_t prot;
 
 	_i386_iterator_init(&it, kd);
 	while (_i386_iterator_next(&it, &pa, &va, &dva, &prot)) {

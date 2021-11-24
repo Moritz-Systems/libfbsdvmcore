@@ -200,10 +200,10 @@ _aarch64_minidump_kvatop(fvc_t *kd, fvc_addr_t va, off_t *pa)
 	return (_aarch64_minidump_vatop(kd, va, pa));
 }
 
-static vm_prot_t
+static fvc_vm_prot_t
 _aarch64_entry_to_prot(aarch64_pte_t pte)
 {
-	vm_prot_t prot = FVC_VM_PROT_READ;
+	fvc_vm_prot_t prot = FVC_VM_PROT_READ;
 
 	/* Source: arm64/arm64/pmap.c:pmap_protect() */
 	if ((pte & AARCH64_ATTR_AP(AARCH64_ATTR_AP_RO)) == 0)
@@ -220,7 +220,7 @@ _aarch64_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 	u_long nptes = vm->hdr.pmapsize / sizeof(aarch64_pte_t);
 	u_long bmindex, dva, pa, pteindex, va;
 	struct fvc_bitmap bm;
-	vm_prot_t prot;
+	fvc_vm_prot_t prot;
 	int ret = 0;
 
 	if (!_fvc_bitmap_init(&bm, vm->hdr.bitmapsize, &bmindex))

@@ -47,11 +47,6 @@
 
 #include <gelf.h>
 
-/* Constants from sys/vm/vm.h */
-#define	FVC_VM_PROT_READ		((unsigned char) 0x01)
-#define	FVC_VM_PROT_WRITE		((unsigned char) 0x02)
-#define	FVC_VM_PROT_EXECUTE		((unsigned char) 0x04)
-
 #if defined(__has_builtin)
 #if __has_builtin(__builtin_align_up)
 #define fvc_roundup2(x, align) __builtin_align_up(x, align)
@@ -222,7 +217,7 @@ int	 _fvc_read_core_phdrs(fvc_t *, size_t *, GElf_Phdr **);
 int	 _fvc_pt_init(fvc_t *, size_t, off_t, size_t, off_t, off_t, int);
 off_t	 _fvc_pt_find(fvc_t *, uint64_t, unsigned int);
 int	 _fvc_visit_cb(fvc_t *, fvc_walk_pages_cb_t *, void *, u_long,
-	    u_long, u_long, vm_prot_t, size_t, unsigned int);
+	    u_long, u_long, fvc_vm_prot_t, size_t, unsigned int);
 int	 _fvc_pmap_init(fvc_t *, uint32_t, off_t);
 void *	 _fvc_pmap_get(fvc_t *, u_long, size_t);
 void *	 _fvc_map_get(fvc_t *, u_long, unsigned int);

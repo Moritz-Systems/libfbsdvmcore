@@ -516,10 +516,10 @@ invalid:
 	return (0);
 }
 
-static vm_prot_t
+static fvc_vm_prot_t
 entry_to_prot(ppc64_pt_entry_t *pte)
 {
-	vm_prot_t prot = FVC_VM_PROT_READ;
+	fvc_vm_prot_t prot = FVC_VM_PROT_READ;
 
 	if (pte->pte_lo & LPTEL_RW)
 		prot |= FVC_VM_PROT_WRITE;

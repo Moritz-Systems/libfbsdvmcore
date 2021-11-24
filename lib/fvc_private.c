@@ -580,7 +580,7 @@ _fvc_bitmap_deinit(struct fvc_bitmap *bm)
 
 int
 _fvc_visit_cb(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg, u_long pa,
-    u_long kmap_vaddr, u_long dmap_vaddr, vm_prot_t prot, size_t len,
+    u_long kmap_vaddr, u_long dmap_vaddr, fvc_vm_prot_t prot, size_t len,
     unsigned int page_size)
 {
 	unsigned int pgsz = page_size ? page_size : len;

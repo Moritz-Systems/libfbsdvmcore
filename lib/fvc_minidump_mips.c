@@ -249,7 +249,7 @@ _mips_iterator_init(struct mips_iter *it, fvc_t *kd)
 
 static int
 _mips_iterator_next(struct mips_iter *it, u_long *pa, u_long *va, u_long *dva,
-    vm_prot_t *prot)
+    fvc_vm_prot_t *prot)
 {
 	struct vmstate *vm = it->kd->vmst;
 	int found = 0;
@@ -293,7 +293,7 @@ _mips_minidump_walk_pages(fvc_t *kd, fvc_walk_pages_cb_t *cb, void *arg)
 {
 	struct mips_iter it;
 	u_long dva, pa, va;
-	vm_prot_t prot;
+	fvc_vm_prot_t prot;
 
 	/* Generate direct mapped entries; need page entries for prot etc? */
 	if (kd->nlehdr.e_ident[EI_CLASS] == ELFCLASS64) {

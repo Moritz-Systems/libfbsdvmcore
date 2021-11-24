@@ -200,11 +200,11 @@ invalid:
 	return (0);
 }
 
-static vm_prot_t
+static fvc_vm_prot_t
 _arm_entry_to_prot(fvc_t *kd, arm_pt_entry_t pte)
 {
 	struct vmstate *vm = kd->vmst;
-	vm_prot_t prot = FVC_VM_PROT_READ;
+	fvc_vm_prot_t prot = FVC_VM_PROT_READ;
 
 	/* Source: arm/arm/pmap-v4.c:pmap_fault_fixup() */
 	if (vm->hdr.mmuformat == MINIDUMP_MMU_FORMAT_V4) {
