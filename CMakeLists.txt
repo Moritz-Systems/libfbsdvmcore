@@ -50,6 +50,14 @@ set_target_properties(
     VERSION "${PROJECT_VERSION}"
     SOVERSION "${PROJECT_VERSION_MAJOR}")
 
+add_executable(
+    minidump-to-elf
+    src/minidump-to-elf.c)
+target_link_libraries(
+    minidump-to-elf
+    fbsdvmcore
+    elf)
+
 set(ENABLE_TESTS ON)
 find_program(KYUA kyua)
 if(NOT KYUA)

@@ -45,6 +45,8 @@
 #	include <endian.h>
 #endif
 
+#include <limits.h>
+
 #include <gelf.h>
 
 #if defined(__has_builtin)
