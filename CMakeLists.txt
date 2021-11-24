@@ -8,8 +8,8 @@ project(
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 include_directories(
-    ${CMAKE_BINARY_DIR}/src
-    src)
+    ${CMAKE_BINARY_DIR}/lib
+    lib)
 
 include(CheckIncludeFile)
 check_include_file("sys/endian.h" HAVE_SYS_ENDIAN_H)
@@ -20,26 +20,26 @@ if(NOT HAVE_SYS_ENDIAN_H)
   endif()
 endif()
 
-configure_file(src/config.h.in src/config.h)
+configure_file(lib/config.h.in lib/config.h)
 
 add_library(
     fbsdvmcore
-    src/fvc.c
-    src/fvc_amd64.c
-    src/fvc_arm.c
-    src/fvc_i386.c
-    src/fvc_minidump_aarch64.c
-    src/fvc_minidump_amd64.c
-    src/fvc_minidump_arm.c
-    src/fvc_minidump_i386.c
-    src/fvc_minidump_mips.c
-    src/fvc_minidump_powerpc64.c
-    src/fvc_minidump_powerpc64_hpt.c
-    src/fvc_minidump_riscv.c
-    src/fvc_powerpc.c
-    src/fvc_powerpc64.c
-    src/fvc_private.c
-    src/fvc.h
+    lib/fvc.c
+    lib/fvc_amd64.c
+    lib/fvc_arm.c
+    lib/fvc_i386.c
+    lib/fvc_minidump_aarch64.c
+    lib/fvc_minidump_amd64.c
+    lib/fvc_minidump_arm.c
+    lib/fvc_minidump_i386.c
+    lib/fvc_minidump_mips.c
+    lib/fvc_minidump_powerpc64.c
+    lib/fvc_minidump_powerpc64_hpt.c
+    lib/fvc_minidump_riscv.c
+    lib/fvc_powerpc.c
+    lib/fvc_powerpc64.c
+    lib/fvc_private.c
+    lib/fvc.h
     )
 set_target_properties(
     fbsdvmcore

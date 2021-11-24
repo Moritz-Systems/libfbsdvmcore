@@ -1,5 +1,5 @@
 include_directories(
-  ${CMAKE_TOP_SOURCE_DIRECTORY}/src)
+  ${CMAKE_TOP_SOURCE_DIRECTORY}/lib)
 
 set(TESTS
     fvc_close_test
