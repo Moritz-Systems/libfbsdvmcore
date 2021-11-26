@@ -8,6 +8,7 @@
 
 #include <fcntl.h>
 #include <limits.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <libelf.h>
 #include <gelf.h>
@@ -183,9 +184,10 @@ int main(int argc, char** argv) {
 		cr = fvc_read(fvc, ranges[i].vaddr, ranges[i].buf,
 				ranges[i].filelen);
 
-		if (cr != ranges[i].filelen)
-			errx(EXIT_FAILURE, "fvc_read() failed: %s",
-				fvc_geterr(fvc));
+		if (cr != ranges[i].filelen) {
+			ranges[i].filelen = 0;
+			fprintf(stderr, "fvc_read() failed: %s\n", fvc_geterr(fvc));
+		}
 
 		if ((section = elf_newscn(e)) == NULL)
 			errx(EXIT_FAILURE, "elf_newscn() failed: %s",
