@@ -46,7 +46,7 @@ set_target_properties(
     PROPERTIES
     LINK_FLAGS "-Wl,-z,defs"
     LINK_LIBRARIES elf
-    PUBLIC_HEADER "fvc.h"
+    PUBLIC_HEADER "lib/fvc.h"
     VERSION "${PROJECT_VERSION}"
     SOVERSION "${PROJECT_VERSION_MAJOR}")
 
@@ -87,7 +87,7 @@ install(
 
 install(
     FILES
-    man/fvc.3
+    man/fbsdvmcore.3
     man/fvc_close.3
     man/fvc_geterr.3
     man/fvc_kerndisp.3
