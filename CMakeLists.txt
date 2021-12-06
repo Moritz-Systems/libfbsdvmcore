@@ -82,6 +82,7 @@ endif()
 include(GNUInstallDirs)
 install(
     TARGETS fbsdvmcore
+    EXPORT FBSDVMCoreTargets
     DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
@@ -94,3 +95,22 @@ install(
     man/fvc_open.3
     man/fvc_read.3
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man3")
+
+install(
+    EXPORT FBSDVMCoreTargets
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/FBSDVMCore")
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    cmake/FBSDVMCoreConfig.cmake.in
+    cmake/FBSDVMCoreConfig.cmake
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/FBSDVMCore"
+    PATH_VARS CMAKE_INSTALL_LIBDIR)
+write_basic_package_version_file(
+    cmake/FBSDVMCoreConfigVersion.cmake
+    COMPATIBILITY SameMajorVersion)
+install(
+    FILES
+    "${CMAKE_BINARY_DIR}/cmake/FBSDVMCoreConfig.cmake"
+    "${CMAKE_BINARY_DIR}/cmake/FBSDVMCoreConfigVersion.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/FBSDVMCore")
